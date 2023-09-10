@@ -1,0 +1,30 @@
+.header {
+  width: 100%;
+  min-height: 80px;
+  border-bottom: 2px solid $primary-text;
+  position: fixed;
+  background: $white;
+
+  &-right {
+    width: 120px;
+    @include flex-center;
+    margin-top: 2px;
+    cursor: pointer;
+  }
+
+  &-icon {
+    width: 40px;
+    height: 40px;
+    @include flex-center;
+    color: var(--bs-white);
+    background-color: $primary-bg;
+  }
+
+  &-text {
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: inherit;
+  }
+}

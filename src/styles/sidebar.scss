@@ -1,0 +1,33 @@
+.sidebar {
+  width: 240px;
+  min-height: 100vh;
+  cursor: pointer;
+  color: $secondary-text;
+  position: fixed;
+
+  &-list:hover {
+    color: inherit;
+    transition: all 0.3s ease-out 0s;
+    color: $primary-bg;
+    background-color: rgba($color: $primary-bg, $alpha: 0.1);
+  }
+
+  &-list {
+    color: inherit;
+  }
+
+  &-logo {
+    min-height: 80px;
+    border-bottom: 2px solid $primary-text;
+  }
+
+  &-menu {
+    border-right: 2px solid var(--bs-light);
+    padding-top: 8px;
+    box-shadow: 0px 2px 20px rgba(1, 41, 112, 0.1);
+  }
+
+  &-link {
+    font-family: $nunito--semi;
+  }
+}

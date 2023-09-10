@@ -1,0 +1,13 @@
+.sign {
+  &-container {
+    @include flex-center;
+    min-height: 100vh;
+    background: url("../assets/images/hero-bg.png") top center no-repeat;
+    background-size: cover;
+    padding: 16px;
+  }
+  &-heading {
+    font-family: $nunito--bold;
+    color: $primary-text;
+  }
+}

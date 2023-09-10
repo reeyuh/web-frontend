@@ -1,0 +1,22 @@
+@import "../../node_modules/bootstrap/scss/bootstrap";
+@import "partials/reset";
+@import "partials/typography";
+@import "partials/fonts";
+
+.error {
+  color: $error;
+}
+
+.layout-container {
+  @include flex-center;
+  min-height: 100vh;
+  background: url("../assets/images/hero-bg.png") top center no-repeat;
+  background-size: cover;
+}
+
+.logo-text {
+  font-size: 28px;
+  color: $primary-text;
+  font-family: $nunito--bold;
+  margin: 0 0 0 8px;
+}
