@@ -1,13 +1,9 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import axios from 'axios';
-import {
-  Alert,
-  CircularProgress,
-  Grid,
-} from "@mui/material";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import { Alert, CircularProgress, Grid } from "@mui/material";
 
 const VerificationPage = ({ params }) => {
   const router = useRouter();
@@ -19,7 +15,7 @@ const VerificationPage = ({ params }) => {
   useEffect(() => {
     if (token) {
       axios
-        .post('/api/verify', { token })
+        .post("/api/verify", { token })
         .then(() => {
           setSuccess(true);
         })
@@ -34,7 +30,7 @@ const VerificationPage = ({ params }) => {
     }
 
     setTimeout(() => {
-      router.push('/sign-in');
+      router.push("/sign-in");
     }, 3000);
   }, [token, router]);
 
@@ -46,9 +42,14 @@ const VerificationPage = ({ params }) => {
             <CircularProgress /> <p>Verifying user ...</p>
           </div>
         ) : success ? (
-          <Alert severity="success">Verification successful. Redirecting...</Alert>
+          <Alert severity="success">
+            Verification successful. Redirecting to sign in page...
+          </Alert>
         ) : (
-          <Alert severity="error">Verification failed. Please try again.  Redirecting...</Alert>
+          <Alert severity="error">
+            Verification failed. Please try again. Redirecting to sign in
+            page...
+          </Alert>
         )}
       </Grid>
     </Grid>
