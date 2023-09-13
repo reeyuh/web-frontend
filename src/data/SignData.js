@@ -150,6 +150,7 @@ export const REGISTER_FORM_INPUTS = {
     password,
     {
       ...password,
+      name: "confirmPassword",
       label: "Confirm Password",
       placeholder: "Confirm Password",
       errors: [
@@ -269,11 +270,11 @@ export const RESET_PASSWORD_FORM = {
   header: {
     heading: {
       title: "Reset Password",
-      className: "reset-password-heading my-1",
+      className: "sign-heading my-1",
     },
     subheading: {
       title: "Enter your new password below",
-      className: "reset-password-subheading",
+      className: "sign-subheading",
     },
   },
   footer: {
@@ -282,5 +283,8 @@ export const RESET_PASSWORD_FORM = {
       title: "Submit",
     },
   },
-  data: [RESET_PASSWORD_FORM_INPUTS.newPassword, RESET_PASSWORD_FORM_INPUTS.confirmNewPassword],
+  data: [
+    RESET_PASSWORD_FORM_INPUTS.newPassword,
+    RESET_PASSWORD_FORM_INPUTS.confirmNewPassword,
+  ],
 };
