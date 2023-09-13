@@ -210,3 +210,77 @@ export const FORGOT_FORM_INPUTS = {
   },
   data: [email],
 };
+
+export const RESET_PASSWORD_FORM_INPUTS = {
+  newPassword: {
+    label: "New Password",
+    name: "newPassword",
+    placeholder: "New Password",
+    formControlClass: "my-4",
+    fieldClass: "w-100",
+    type: "password",
+    isRequired: true,
+    pattern: VALIDATION.PASSWORD,
+    maxLength: 50,
+    minLength: 8,
+    errors: [
+      { type: "required", message: "Please enter your new password" },
+      {
+        type: "minLength",
+        message:
+          "Password must be more than 7 characters including uppercase, lowercase, numbers, and special characters",
+      },
+      {
+        type: "pattern",
+        message:
+          "Password must be more than 7 characters including uppercase, lowercase, numbers, and special characters",
+      },
+    ],
+  },
+  confirmNewPassword: {
+    label: "Confirm New Password",
+    name: "confirmNewPassword",
+    placeholder: "Confirm New Password",
+    formControlClass: "my-4",
+    fieldClass: "w-100",
+    type: "password",
+    isRequired: true,
+    pattern: VALIDATION.PASSWORD,
+    maxLength: 50,
+    minLength: 8,
+    errors: [
+      { type: "required", message: "Please enter your confirm new password" },
+      {
+        type: "minLength",
+        message:
+          "Confirm new password must be more than 7 characters including uppercase, lowercase, numbers, and special characters",
+      },
+      {
+        type: "pattern",
+        message:
+          "Confirm new password must be more than 7 characters including uppercase, lowercase, numbers, and special characters",
+      },
+    ],
+  },
+};
+
+export const RESET_PASSWORD_FORM = {
+  className: "sign-container",
+  header: {
+    heading: {
+      title: "Reset Password",
+      className: "reset-password-heading my-1",
+    },
+    subheading: {
+      title: "Enter your new password below",
+      className: "reset-password-subheading",
+    },
+  },
+  footer: {
+    buttonText: {
+      className: "",
+      title: "Submit",
+    },
+  },
+  data: [RESET_PASSWORD_FORM_INPUTS.newPassword, RESET_PASSWORD_FORM_INPUTS.confirmNewPassword],
+};
