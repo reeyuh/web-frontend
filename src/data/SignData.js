@@ -199,7 +199,7 @@ export const FORGOT_FORM_INPUTS = {
     },
     subheading: {
       title:
-        "Enter your email and hit submit, we will send you a link to reset your password.",
+        "Enter your email and hit submit, we will send you a OTP to reset your password.",
       className: "sign-subheading",
     },
   },
@@ -213,6 +213,29 @@ export const FORGOT_FORM_INPUTS = {
 };
 
 export const RESET_PASSWORD_FORM_INPUTS = {
+  otp: {
+    label: "OTP",
+    name: "otp",
+    placeholder: "OTP",
+    formControlClass: "my-4",
+    fieldClass: "w-100",
+    type: "otp",
+    isRequired: true,
+    pattern: VALIDATION.OTP,
+    maxLength: 6,
+    minLength: 6,
+    errors: [
+      { type: "required", message: "Please enter OTP" },
+      {
+        type: "minLength",
+        message: "OTP must be 6 digit",
+      },
+      {
+        type: "pattern",
+        message: "OTP must be 6 digit",
+      },
+    ],
+  },
   newPassword: {
     label: "New Password",
     name: "newPassword",
@@ -284,6 +307,8 @@ export const RESET_PASSWORD_FORM = {
     },
   },
   data: [
+    email,
+    RESET_PASSWORD_FORM_INPUTS.otp,
     RESET_PASSWORD_FORM_INPUTS.newPassword,
     RESET_PASSWORD_FORM_INPUTS.confirmNewPassword,
   ],

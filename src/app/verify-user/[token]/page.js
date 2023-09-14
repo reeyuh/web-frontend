@@ -35,7 +35,7 @@ const VerificationPage = ({ params }) => {
   }, [token, router]);
 
   return (
-    <Grid container maxWidth="xl" className="layout-container">
+    <Grid container maxWidth="xl" className="verify-user-container">
       <Grid item xs={12} sm={10} md={6} lg={5} xl={5}>
         {loading ? (
           <div className="d-flex justify-content-center align-items-center gap-3">
