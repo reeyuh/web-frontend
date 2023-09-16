@@ -7,7 +7,7 @@
   color: $error;
 }
 
-.layout-container {
+.verify-user-container {
   @include flex-center;
   min-height: 100vh;
   background: url("../assets/images/hero-bg.png") top center no-repeat;
@@ -19,4 +19,18 @@
   color: $primary-text;
   font-family: $nunito--bold;
   margin: 0 0 0 8px;
+}
+
+.main-layout {
+  padding-top: 80px;
+  margin-left: 0px;
+  width: 100%;
+  padding-bottom: 50px;
+  background: $secondary-bg;
+  min-height: 100%;
+
+  @include media-breakpoint-up(lg) {
+    width: calc(100% - 240px);
+    margin-left: 240px;
+  }
 }
