@@ -14,7 +14,7 @@ export const SIDEBAR_MENU_LIST = [
   },
   {
     label: "User",
-    route: "/user",
+    route: "/users",
     icon: PeopleIcon,
     key: "user",
     hiddenKey: "view-user",
