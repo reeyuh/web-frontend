@@ -14,7 +14,7 @@ const PageHeader = ({
     showImage,
 }) => {
     return (
-        <Card className='details'>
+        <Card className='page-header'>
             <div className='title'>
                 <div>
                     <Typography color="textPrimary">
