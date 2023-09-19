@@ -21,20 +21,22 @@ export const Sidebar = () => {
 
   const MenuList = ({ isMobile }) => (
     <>
-      <div className="ps-3 d-flex align-items-center sidebar-logo">
+      <div className="ps-md-3 ps-1 d-flex align-items-center sidebar-logo">
         <div onClick={() => toggleDrawer(!isOpen)}>
           {!isOpen && (
-            <MenuIcon className="sidebar-mobile-icon me-3 d-lg-none" />
+            <MenuIcon className="sidebar-mobile-icon me-md-3 m-1 d-lg-none" />
           )}
           {isOpen && (
-            <CloseIcon className="sidebar-mobile-icon me-3 d-lg-none" />
+            <CloseIcon className="sidebar-mobile-icon me-md-3 m-1 d-lg-none" />
           )}
         </div>
         <Image src={Logo} alt="Logo" height={40} />
         <h1 className="logo-text">TrueNil</h1>
       </div>
       <div
-        className={`sidebar-menu flex-fill d-lg-block ${isMobile && "d-block"}`}
+        className={`sidebar-menu flex-fill d-lg-block ${
+          isMobile ? "d-block" : ""
+        }`}
       >
         {SIDEBAR_MENU_LIST?.map((option, index) => {
           return (
@@ -57,7 +59,7 @@ export const Sidebar = () => {
   );
 
   return (
-    <div className="sidebar d-flex flex-column">
+    <div className={`sidebar d-flex flex-column`}>
       <MenuList />
       <Drawer anchor={"left"} open={isOpen} onClose={() => toggleDrawer(false)}>
         <MenuList isMobile />

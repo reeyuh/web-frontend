@@ -1,26 +1,15 @@
 "use client";
 
 import { Sidebar, Header, PageHeader } from "@/components";
-import { ThemeProvider, createTheme } from '@mui/material';
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#4154f1',
-    },
-    secondary: {
-      main: '#f2f4f6',
-    },
-  },
-});
 
 export default function MainLayout(props) {
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Header />
       <Sidebar />
-      <div className="main-layout">
+      <div className="main-layout px-2 px-md-4 pb-2 pb-md-4">
+        <PageHeader title="title" summary="summary" text={"Button"} />
       </div>
-    </ThemeProvider>
+    </>
   );
 }
