@@ -34,18 +34,16 @@ export const Sidebar = () => {
         <h1 className="logo-text">TrueNil</h1>
       </div>
       <div
-        className={`sidebar-menu flex-fill d-lg-block ${
-          isMobile ? "d-block" : ""
-        }`}
+        className={`sidebar-menu flex-fill d-lg-block ${isMobile ? "d-block" : ""
+          }`}
       >
         {SIDEBAR_MENU_LIST?.map((option, index) => {
           return (
             <Link
               key={index}
               href={option.route}
-              className={`d-flex py-3 pe-2 ps-3 text-decoration-none align-items-center sidebar-list ${
-                option.route === pathname ? "active" : ""
-              }`}
+              className={`d-flex py-3 pe-2 ps-3 text-decoration-none align-items-center sidebar-list ${(option.route === pathname || (option.routeGroups && option.routeGroups.some(route => route === pathname))) ? "active" : ""
+                }`}
             >
               <option.icon />
               {option.route && (
