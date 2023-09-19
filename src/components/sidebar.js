@@ -11,15 +11,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import Drawer from "@mui/material/Drawer";
 import "@/styles/sidebar.scss";
 
-export const Sidebar = () => {
-  const [isOpen, setItOpen] = useState(false);
+const MenuList = ({ isMobile, isOpen }) => {
   const pathname = usePathname();
-
-  const toggleDrawer = (value) => {
-    setItOpen(() => value);
-  };
-
-  const MenuList = ({ isMobile }) => (
+  return (
     <>
       <div className="ps-md-3 ps-1 d-flex align-items-center sidebar-logo">
         <div onClick={() => toggleDrawer(!isOpen)}>
@@ -34,16 +28,22 @@ export const Sidebar = () => {
         <h1 className="logo-text">TrueNil</h1>
       </div>
       <div
-        className={`sidebar-menu flex-fill d-lg-block ${isMobile ? "d-block" : ""
-          }`}
+        className={`sidebar-menu flex-fill d-lg-block ${
+          isMobile ? "d-block" : ""
+        }`}
       >
         {SIDEBAR_MENU_LIST?.map((option, index) => {
           return (
             <Link
               key={index}
               href={option.route}
-              className={`d-flex py-3 pe-2 ps-3 text-decoration-none align-items-center sidebar-list ${(option.route === pathname || (option.routeGroups && option.routeGroups.some(route => route === pathname))) ? "active" : ""
-                }`}
+              className={`d-flex py-3 pe-2 ps-3 text-decoration-none align-items-center sidebar-list ${
+                option.route === pathname ||
+                (option.routeGroups &&
+                  option.routeGroups.some((route) => route === pathname))
+                  ? "active"
+                  : ""
+              }`}
             >
               <option.icon />
               {option.route && (
@@ -55,12 +55,19 @@ export const Sidebar = () => {
       </div>
     </>
   );
+};
 
+export const Sidebar = () => {
+  const [isOpen, setItOpen] = useState(false);
+
+  const toggleDrawer = (value) => {
+    setItOpen(() => value);
+  };
   return (
     <div className={`sidebar d-flex flex-column`}>
-      <MenuList />
+      <MenuList isOpen={isOpen} />
       <Drawer anchor={"left"} open={isOpen} onClose={() => toggleDrawer(false)}>
-        <MenuList isMobile />
+        <MenuList isMobile isOpen={isOpen} />
       </Drawer>
     </div>
   );

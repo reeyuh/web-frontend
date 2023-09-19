@@ -1,10 +1,10 @@
 "use client";
 
-import React from 'react';
-import Users from '@/components/users';
+import React from "react";
+import { UsersList } from "./usersList";
 
-function UsersList() {
-    return <Users />;
+function Users() {
+  return <UsersList />;
 }
 
-export default UsersList;
+export default Users;

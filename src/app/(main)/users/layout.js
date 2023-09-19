@@ -1,26 +1,16 @@
 "use client";
 
-import React from 'react';
-import TabbedContent from '@/components/UI/tabs';
-
-import UsersList from '@/components/users';
-import CreateUsers from './create/page';
-
-const tabs = [
-    { label: 'Users', link: '/users' },
-    { label: 'Create User', link: '/users/create' },
-];
+import React from "react";
+import { PageTabs } from "@/components";
+import { USER_TABS } from "@/data/pageTabsData.js";
 
 const UsersLayout = ({ children }) => {
-    const defaultTab = tabs.find((tab) => tab.link === window.location.pathname);
-
-    return (
-        <div>
-            <TabbedContent tabs={tabs} defaultTab={defaultTab}>
-                {children}
-            </TabbedContent>
-        </div>
-    );
+  return (
+    <div>
+      <PageTabs tabs={USER_TABS} />
+      {children}
+    </div>
+  );
 };
 
 export default UsersLayout;

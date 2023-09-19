@@ -1,10 +1,9 @@
 "use client";
 
-import React from 'react';
-import CreateUsers from '@/components/users/create';
+import React from "react";
 
 function CreateUsersPage() {
-    return <CreateUsers />
+  return <>Create User</>;
 }
 
 export default CreateUsersPage;
