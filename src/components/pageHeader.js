@@ -4,8 +4,6 @@ import React from 'react';
 import "@/styles/pageheader.scss";
 import { Card, Typography } from '@mui/material';
 import PrimaryButton from './primaryButton';
-import Avatar from './UI/Avatar';
-import { getInitials } from '@/shared';
 
 const PageHeader = ({
     onClick,
@@ -18,12 +16,6 @@ const PageHeader = ({
     return (
         <Card className='details'>
             <div className='title'>
-                {showImage && <div className='user-image'>
-                    <Avatar
-                        initials={getInitials(title)}
-                        imageSrc={userImage}
-                    />
-                </div>}
                 <div>
                     <Typography color="textPrimary">
                         {title}
@@ -42,12 +34,5 @@ const PageHeader = ({
         </Card>
     );
 };
-
-PageHeader.defaultProps = {
-    text: 'Add User',
-    title: 'All Clients',
-    summary: 'All client info, status, and actions to edit, delete a client',
-    showImage: true,
-}
 
 export { PageHeader };
