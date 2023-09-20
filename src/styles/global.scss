@@ -33,19 +33,3 @@
     margin-left: 240px;
   }
 }
-
-.MuiTabs-root {
-  margin: 15px 0;
-}
-
-[class*="css-"][class*="-MuiButtonBase-root-MuiTab-root"] {
-  margin-right: 20px;
-  display: inline-block;
-  left: -16px;
-}
-
-[class*="css-"][class*="-MuiButtonBase-root-MuiTab-root"],
-[class*="css-"][class*="-MuiButtonBase-root-MuiTab-root"].Mui-selected {
-  color: $secondary-text;
-  padding: 10px 0 0;
-}
