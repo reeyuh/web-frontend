@@ -10,19 +10,11 @@ const ButtonStyled = styled(Button)`
   border-color: ${colors.primary} !important;
   color: ${colors.white} !important;
   text-transform: inherit !important;
-  line-height: 1.5 !important;
-  height: 38px !important;
-  font-size: 14px !important;
-  margin-top: 1px !important;
   border-radius: 0.2rem !important;
 
   &:hover {
     opacity: 0.9;
     box-shadow: 0 5px 10px 0 rgb(0 0 0 / 20%) !important;
-  }
-  &.view-close {
-    background-color: ${colors.white} !important;
-    color: ${colors.primary} !important;
   }
 `;
 
@@ -50,4 +42,39 @@ export const PrimaryButton = (props) => {
   );
 };
 
-export default PrimaryButton;
+const ButtonOutlinedStyled = styled(Button)`
+  background-color: ${colors.white} !important;
+  border-color: ${colors.primary} !important;
+  color: ${colors.primary} !important;
+  text-transform: inherit !important;
+  border-radius: 0.2rem !important;
+
+  &:hover {
+    background-color: ${colors.primary} !important;
+    color: ${colors.white} !important;
+  }
+`;
+
+export const PrimaryOutlinedButton = (props) => {
+  return props.withIcon ? (
+    <ButtonOutlinedStyled
+      variant="outlined"
+      type={props?.type || "submit"}
+      hidden={props?.hidden}
+      className={props.class}
+      sx={props.sx}
+    >
+      {props?.children}
+    </ButtonOutlinedStyled>
+  ) : (
+    <ButtonOutlinedStyled
+      variant="outlined"
+      type={props?.type || "submit"}
+      hidden={props?.hidden}
+      className={props.class}
+      sx={props.sx}
+    >
+      {props?.text}
+    </ButtonOutlinedStyled>
+  );
+};

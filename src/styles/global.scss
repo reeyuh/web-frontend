@@ -2,6 +2,7 @@
 @import "partials/reset";
 @import "partials/typography";
 @import "partials/fonts";
+@import "form";
 
 .error {
   color: $error;
@@ -32,5 +33,17 @@
   @include media-breakpoint-up(lg) {
     width: calc(100% - 240px);
     margin-left: 240px;
+  }
+}
+
+.form-control {
+  color: $secondary-text;
+  border: 1px solid var(--bs-gray-400);
+  border-radius: 3px;
+  min-height: 40px;
+  &:focus {
+    opacity: 0.9;
+    box-shadow: 0 10px 10px 0 $secondary-bg !important;
+    border-color: inherit;
   }
 }

@@ -3,6 +3,7 @@
   min-height: 100vh;
   color: $secondary-text;
   position: fixed;
+  z-index: 2;
 
   &-list:hover,
   &-list.active {

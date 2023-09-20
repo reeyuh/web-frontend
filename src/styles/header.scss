@@ -4,6 +4,7 @@
   border-bottom: 2px solid $primary-text;
   position: fixed;
   background: $white;
+  z-index: 1;
 
   &-right {
     width: 120px;

@@ -1,24 +1,17 @@
 "use client";
 
-import { VALIDATION } from "./CommonData";
+import {
+  VALIDATION,
+  FIRST_NAME,
+  LAST_NAME,
+  COMPANY,
+  EMAIL,
+  NEW_PASSWORD,
+  CONFIRM_PASSWORD,
+} from "./CommonData";
 
 export const FORM_INPUTS = {
-  email: {
-    label: "Email",
-    name: "email",
-    placeholder: "Email Address",
-    formControlClass: "my-4",
-    fieldClass: "w-100",
-    type: "text",
-    isRequired: true,
-    pattern: VALIDATION.EMAIL,
-    maxLength: 100,
-    minLength: 1,
-    errors: [
-      { type: "required", message: "Please enter your email" },
-      { type: "pattern", message: "Please enter valid email" },
-    ],
-  },
+  email: EMAIL,
   password: {
     label: "Password",
     name: "password",
@@ -114,38 +107,8 @@ export const REGISTER_FORM_INPUTS = {
     },
   },
   data: [
-    {
-      label: "First Name",
-      name: "firstName",
-      placeholder: "First Name",
-      formControlClass: "my-4",
-      fieldClass: "w-100",
-      type: "text",
-      isRequired: true,
-      maxLength: 50,
-      minLength: 1,
-      pattern: VALIDATION.ALPHABET_ONLY,
-      errors: [
-        { type: "required", message: "Please enter your first name" },
-        { type: "pattern", message: "Please enter only alphabets" },
-      ],
-    },
-    {
-      label: "Last Name",
-      name: "lastName",
-      placeholder: "Last Name",
-      formControlClass: "my-4",
-      fieldClass: "w-100",
-      type: "text",
-      isRequired: true,
-      maxLength: 50,
-      minLength: 1,
-      pattern: VALIDATION.ALPHABET_ONLY,
-      errors: [
-        { type: "required", message: "Please enter your last name" },
-        { type: "pattern", message: "Please enter only alphabets" },
-      ],
-    },
+    FIRST_NAME,
+    LAST_NAME,
     email,
     password,
     {
@@ -167,22 +130,7 @@ export const REGISTER_FORM_INPUTS = {
         },
       ],
     },
-    {
-      label: "Company Name",
-      name: "company",
-      placeholder: "Company Name",
-      formControlClass: "my-4",
-      fieldClass: "w-100",
-      type: "text",
-      isRequired: true,
-      maxLength: 100,
-      minLength: 1,
-      pattern: VALIDATION.ALPHABET_NUMBER,
-      errors: [
-        { type: "required", message: "Please enter your company name" },
-        { type: "pattern", message: "Please enter valid company name" },
-      ],
-    },
+    COMPANY,
   ],
 };
 
@@ -219,7 +167,7 @@ export const RESET_PASSWORD_FORM_INPUTS = {
     placeholder: "OTP",
     formControlClass: "my-4",
     fieldClass: "w-100",
-    type: "otp",
+    type: "text",
     isRequired: true,
     pattern: VALIDATION.OTP,
     maxLength: 6,
@@ -233,56 +181,6 @@ export const RESET_PASSWORD_FORM_INPUTS = {
       {
         type: "pattern",
         message: "OTP must be 6 digit",
-      },
-    ],
-  },
-  newPassword: {
-    label: "New Password",
-    name: "newPassword",
-    placeholder: "New Password",
-    formControlClass: "my-4",
-    fieldClass: "w-100",
-    type: "password",
-    isRequired: true,
-    pattern: VALIDATION.PASSWORD,
-    maxLength: 50,
-    minLength: 8,
-    errors: [
-      { type: "required", message: "Please enter your new password" },
-      {
-        type: "minLength",
-        message:
-          "Password must be more than 7 characters including uppercase, lowercase, numbers, and special characters",
-      },
-      {
-        type: "pattern",
-        message:
-          "Password must be more than 7 characters including uppercase, lowercase, numbers, and special characters",
-      },
-    ],
-  },
-  confirmNewPassword: {
-    label: "Confirm New Password",
-    name: "confirmNewPassword",
-    placeholder: "Confirm New Password",
-    formControlClass: "my-4",
-    fieldClass: "w-100",
-    type: "password",
-    isRequired: true,
-    pattern: VALIDATION.PASSWORD,
-    maxLength: 50,
-    minLength: 8,
-    errors: [
-      { type: "required", message: "Please enter your confirm new password" },
-      {
-        type: "minLength",
-        message:
-          "Confirm new password must be more than 7 characters including uppercase, lowercase, numbers, and special characters",
-      },
-      {
-        type: "pattern",
-        message:
-          "Confirm new password must be more than 7 characters including uppercase, lowercase, numbers, and special characters",
       },
     ],
   },
@@ -306,10 +204,5 @@ export const RESET_PASSWORD_FORM = {
       title: "Submit",
     },
   },
-  data: [
-    email,
-    RESET_PASSWORD_FORM_INPUTS.otp,
-    RESET_PASSWORD_FORM_INPUTS.newPassword,
-    RESET_PASSWORD_FORM_INPUTS.confirmNewPassword,
-  ],
+  data: [email, RESET_PASSWORD_FORM_INPUTS.otp, NEW_PASSWORD, CONFIRM_PASSWORD],
 };
