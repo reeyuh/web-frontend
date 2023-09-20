@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
+import Box from "@mui/material/Box";
 import { useRouter, usePathname } from "next/navigation";
 import { Link } from "next/link";
-import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
+import Tabs from "@mui/material/Tabs";
 
 export const PageTabs = ({ tabs }) => {
   const pathname = usePathname();
@@ -17,7 +17,12 @@ export const PageTabs = ({ tabs }) => {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Tabs value={pathname} onChange={handleChange} aria-label="common tabs">
+      <Tabs
+        value={pathname}
+        onChange={handleChange}
+        aria-label="common tabs"
+        className="common-tabs"
+      >
         {tabs.map((tab, index) => (
           <Tab
             key={index}
