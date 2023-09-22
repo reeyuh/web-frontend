@@ -40,7 +40,8 @@ const Table = ({
       target,
     } = column;
     const type = column.type || "text";
-    const cell = data[key];
+    const cell = row[key];
+
     return (
       <TableCell hidden={hide}>
         {
@@ -48,7 +49,7 @@ const Table = ({
             file: <Image src={cell} alt="img" height={40} />,
             innerHTML: <span dangerouslySetInnerHTML={{ __html: cell, }}></span>,
             text: <span>{cell}</span>,
-            link: <a href={cell} target={target}>{cell}</a>,
+            link: <a href={cell} target={target || '_blank'}>{cell}</a>,
             actions:
               <Box>
                 {actions?.map((action, actionIndex) => (
@@ -90,7 +91,7 @@ const Table = ({
         component={Paper}
         style={{ width: "100%", marginTop: "15px", marginBottom: "15px" }}
       >
-        <DataTable className={"table " + tableClass}>
+        <DataTable className={"common-table"}>
           <TableHead>
             <TableRow key={"thead-key"}>
               {
@@ -116,7 +117,7 @@ const Table = ({
           <TableBody>
             {data && data.map((row, trowIndex) => (
               <TableRow key={`tdatarow_${trowIndex}`}>
-                {columns.map(renderCell).bind(row)}
+                {columns.map((column) => renderCell(row, column))}
               </TableRow>
             ))}
             {data?.length === 0 && (
@@ -155,5 +156,22 @@ const Table = ({
     </>
   );
 }
+
+Table.defaultProps = {
+  data: [],
+  columns: [],
+  key: "key",
+  onClick: () => { },
+  errorMessage: "No data found",
+  pagination: {},
+  hiddenKeys: [],
+  aliasObject: {},
+  count: 0,
+  skip: 0,
+  hiddenAction: {},
+  toolTipKey: [],
+  tableClass: "",
+  renderer: {},
+};
 
 export default Table;
