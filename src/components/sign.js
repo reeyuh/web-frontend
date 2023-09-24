@@ -1,6 +1,14 @@
 "use client";
 
-import { Grid, Card, CardContent, Box, Divider, Alert } from "@mui/material";
+import {
+  Grid,
+  Card,
+  CardContent,
+  Box,
+  Divider,
+  Alert,
+  CircularProgress,
+} from "@mui/material";
 import { useForm } from "react-hook-form";
 import { PrimaryButton } from "./primaryButton";
 import { OutlinedInputWrapper } from "./muiOverWrite";
@@ -14,8 +22,7 @@ export const Sign = ({
   formInputs,
   sendForm = () => {},
   googleSSO = () => {},
-  error,
-  success,
+  actionHandler = {},
 }) => {
   const {
     reset,
@@ -23,6 +30,7 @@ export const Sign = ({
     handleSubmit,
     formState: { errors },
   } = useForm({});
+  const { error, success, hidden, disabled, isLoading } = actionHandler;
 
   return (
     <Grid container maxWidth="xl" className={formInputs?.className}>
@@ -49,7 +57,12 @@ export const Sign = ({
                     className="d-flex justify-content-center my-4"
                     onClick={googleSSO}
                   >
-                    <PrimaryButton withIcon type="button" class="px-3">
+                    <PrimaryButton
+                      withIcon
+                      type="button"
+                      class="px-3"
+                      disabled={disabled?.google}
+                    >
                       <Image
                         src={GoogleLogo}
                         alt="Google Logo"
@@ -90,6 +103,7 @@ export const Sign = ({
                         ...(inputVal?.maxLength > 0
                           ? { maxLength: inputVal?.maxLength }
                           : {}),
+                        disabled: [inputVal?.name]?.disabled,
                       }}
                     />
 
@@ -110,24 +124,30 @@ export const Sign = ({
                 {error && <Alert severity="error">{error}</Alert>}
               </Box>
 
-              {/* Button component */}
-              {formInputs?.footer?.buttonText?.title && (
-                <Box
-                  display="flex"
-                  mt={4}
-                  justifyContent="space-between"
-                  alignItems={"center"}
-                >
-                  <PrimaryButton
-                    type="submit"
-                    text={formInputs?.footer?.buttonText?.title}
-                  />
-                  {formInputs?.footer?.link?.url && (
-                    <Link href={formInputs?.footer?.link?.url}>
-                      {formInputs?.footer?.link?.title}
-                    </Link>
-                  )}
-                </Box>
+              {isLoading ? (
+                <CircularProgress />
+              ) : (
+                <>
+                  {formInputs?.footer?.buttonText?.title &&
+                    !hidden?.btnSection && (
+                      <Box
+                        display="flex"
+                        mt={4}
+                        justifyContent="space-between"
+                        alignItems={"center"}
+                      >
+                        <PrimaryButton
+                          type="submit"
+                          text={formInputs?.footer?.buttonText?.title}
+                        />
+                        {formInputs?.footer?.link?.url && (
+                          <Link href={formInputs?.footer?.link?.url}>
+                            {formInputs?.footer?.link?.title}
+                          </Link>
+                        )}
+                      </Box>
+                    )}
+                </>
               )}
             </CardContent>
           </Card>

@@ -12,6 +12,10 @@ const ButtonStyled = styled(Button)`
   text-transform: inherit !important;
   border-radius: 0.2rem !important;
 
+  &:disabled {
+    opacity: 0.5;
+  }
+
   &:hover {
     opacity: 0.9;
     box-shadow: 0 5px 10px 0 rgb(0 0 0 / 20%) !important;
@@ -26,6 +30,7 @@ export const PrimaryButton = (props) => {
       hidden={props?.hidden}
       className={props.class}
       sx={props.sx}
+      disabled={props.disabled}
     >
       {props?.children}
     </ButtonStyled>
@@ -36,6 +41,7 @@ export const PrimaryButton = (props) => {
       hidden={props?.hidden}
       className={props.class}
       sx={props.sx}
+      disabled={props.disabled}
     >
       {props?.text}
     </ButtonStyled>
@@ -48,6 +54,10 @@ const ButtonOutlinedStyled = styled(Button)`
   color: ${colors.primary} !important;
   text-transform: inherit !important;
   border-radius: 0.2rem !important;
+
+  &:disabled {
+    opacity: 0.5;
+  }
 
   &:hover {
     background-color: ${colors.primary} !important;
@@ -63,6 +73,7 @@ export const PrimaryOutlinedButton = (props) => {
       hidden={props?.hidden}
       className={props.class}
       sx={props.sx}
+      disabled={props.disabled}
     >
       {props?.children}
     </ButtonOutlinedStyled>
@@ -73,6 +84,7 @@ export const PrimaryOutlinedButton = (props) => {
       hidden={props?.hidden}
       className={props.class}
       sx={props.sx}
+      disabled={props.disabled}
     >
       {props?.text}
     </ButtonOutlinedStyled>

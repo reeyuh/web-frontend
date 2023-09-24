@@ -113,7 +113,7 @@ export const REGISTER_FORM_INPUTS = {
     password,
     {
       ...password,
-      name: "confirmPassword",
+      name: "confirm_password",
       label: "Confirm Password",
       placeholder: "Confirm Password",
       errors: [

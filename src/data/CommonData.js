@@ -22,7 +22,7 @@ export const MAX_FILE_UPLOAD_SIZE = 5242880;
 
 export const FIRST_NAME = {
   label: "First Name",
-  name: "firstName",
+  name: "first_name",
   placeholder: "First Name",
   formControlClass: "my-4",
   fieldClass: "w-100",
@@ -39,7 +39,7 @@ export const FIRST_NAME = {
 
 export const LAST_NAME = {
   label: "Last Name",
-  name: "lastName",
+  name: "last_name",
   placeholder: "Last Name",
   formControlClass: "my-4",
   fieldClass: "w-100",
@@ -56,7 +56,7 @@ export const LAST_NAME = {
 
 export const COMPANY = {
   label: "Company Name",
-  name: "company",
+  name: "organization",
   placeholder: "Company Name",
   formControlClass: "my-4",
   fieldClass: "w-100",
@@ -90,7 +90,7 @@ export const EMAIL = {
 
 export const NEW_PASSWORD = {
   label: "New Password",
-  name: "newPassword",
+  name: "password",
   placeholder: "New Password",
   formControlClass: "my-4",
   fieldClass: "w-100",

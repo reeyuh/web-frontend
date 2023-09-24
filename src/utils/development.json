@@ -1,8 +1,6 @@
 {
   "APP_ENV": "development",
   "API_SERVER": {
-    "PLAIN": "https://test.com/api",
-    "AUTH": "https://test.com/api/auth",
-    "USER": "https:/test.com/api/User"
+    "PLAIN": "http://10.0.150.153:8000"
   }
 }
