@@ -93,7 +93,7 @@ export default function SignIn() {
     } else {
       fetchSSOUrl();
     }
-  }, []);
+  }, [getSSOCode]);
   return (
     <Sign
       formInputs={LOGIN_FORM_INPUTS}

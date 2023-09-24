@@ -114,7 +114,7 @@ export default function Register() {
     } else {
       fetchSSOUrl();
     }
-  }, []);
+  }, [getSSOCode]);
   return (
     <Sign
       formInputs={REGISTER_FORM_INPUTS}

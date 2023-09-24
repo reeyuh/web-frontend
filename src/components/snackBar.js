@@ -3,9 +3,11 @@ import { Snackbar } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import { CommonContext } from "@/components/commonProvider";
 
-const Alert = React.forwardRef(function (props, ref) {
+const AlertMessage = React.forwardRef((props, ref) => {
   return <MuiAlert elevation={6} variant="filled" ref={ref} {...props} />;
 });
+
+AlertMessage.displayName = "AlertMessage";
 
 export const CustomSnackbar = () => {
   const {
@@ -26,9 +28,9 @@ export const CustomSnackbar = () => {
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         {message ? (
-          <Alert onClose={handleClose} severity={severity || "success"}>
+          <AlertMessage onClose={handleClose} severity={severity || "success"}>
             {message}
-          </Alert>
+          </AlertMessage>
         ) : null}
       </Snackbar>
     </div>
