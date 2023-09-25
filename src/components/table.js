@@ -99,7 +99,7 @@ const Table = ({
     return (
       <TableCell
         hidden={hide}
-        onClick={(event) => onClick(
+        onClick={(event) => onClick && onClick(
           {
             action: { key },
             row,

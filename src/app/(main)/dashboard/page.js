@@ -5,12 +5,52 @@ import React, { useEffect, useState } from "react";
 import Logo from "@/assets/images/logo.png";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Modal, Button, Box, Typography, Divider } from "@mui/material";
+import { Modal, Button, Box, Typography, Divider, Select, MenuItem } from "@mui/material";
 
 export default function Dashboard() {
-  const [data, setData] = useState([{ name: 'user1', id: '1', link: 'https://www.google.co.in/', logo: Logo }, { name: 'user2', id: '2', link: 'https://mail.google.com/mail', logo: Logo }]);
+  const [data, setData] = useState(
+    [
+      { name: 'user1', id: '1', link: 'https://www.google.co.in/', logo: Logo, isActive: 'Yes' },
+      { name: 'user2', id: '2', link: 'https://mail.google.com/mail', logo: Logo, isActive: 'No' }
+    ]
+  );
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedActionItem, setSelectedActionItem] = useState({});
+
+  const RenderActiveColumn = ({ row, cell }) => {
+    const options = [
+      { label: 'Yes', value: 'Yes' },
+      { label: 'No', value: 'No' },
+    ];
+
+    const [activeValue, setActiveValue] = useState(cell);
+
+    const handleChange = (event) => {
+      const updatedValue = event.target.value;
+      setActiveValue(updatedValue);
+
+      // Update the data with the updated value
+      const updatedRow = { ...row, active: updatedValue };
+      // Call a function to update your data (setData) with the updated row
+    };
+
+    return (
+      <Select
+        value={activeValue}
+        onChange={handleChange}
+      >
+        {options.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </Select>
+    );
+  };
+
+  const renderer = {
+    activeRenderer: RenderActiveColumn,
+  };
 
   const columns = [
     {
@@ -32,6 +72,12 @@ export default function Dashboard() {
       label: 'Link'
     },
     {
+      key: 'isActive',
+      label: 'Active',
+      type: 'renderer',
+      rendererKey: 'activeRenderer',
+    },
+    {
       key: 'actions',
       label: 'Actions',
       type: 'actions',
@@ -40,6 +86,7 @@ export default function Dashboard() {
           type: 'edit',
           actionClass: 'edit-action',
           icon: EditIcon,
+          onClickAction: () => { }
         },
         {
           type: 'delete',
@@ -65,6 +112,7 @@ export default function Dashboard() {
     outline: 'none',
     p: 4,
   };
+
   const handleDelete = () => {
     setIsDeleteModalOpen(false);
   };
@@ -76,6 +124,7 @@ export default function Dashboard() {
         count={2}
         columns={columns}
         data={data}
+        renderer={renderer}
       />
       {isDeleteModalOpen && (
         <Modal
