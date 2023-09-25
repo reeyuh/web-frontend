@@ -38,10 +38,8 @@ const Table = ({
       key,
       actions,
       onClick,
-      onClickAction,
       target,
       showToolTip,
-      toolTipText,
     } = column;
     const type = column.type || "text";
     const cell = row[key];
@@ -56,9 +54,11 @@ const Table = ({
           {actions?.map((action, actionIndex) => (
             <React.Fragment key={`action_${actionIndex}`}>
               <span
+                style={{ cursor: 'pointer' }}
                 className={action.actionClass}
-                onClick={(event) =>
-                  onClickAction(
+                onClick={(event) => {
+                  event.stopPropagation();
+                  action.onClickAction(
                     {
                       action,
                       row,
@@ -67,6 +67,7 @@ const Table = ({
                     },
                     event
                   )
+                }
                 }
               >
                 <action.icon />
