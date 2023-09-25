@@ -108,7 +108,7 @@ const Table = ({
         )}
       >
         {showToolTip
-          ? <Tooltip enterDelay={500} leaveDelay={200} title={toolTipText}>{content}</Tooltip>
+          ? <Tooltip enterDelay={500} leaveDelay={200} title={cell.toolTipText}>{content}</Tooltip>
           : content
         }
       </TableCell>

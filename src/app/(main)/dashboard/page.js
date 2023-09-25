@@ -17,7 +17,8 @@ export default function Dashboard() {
     },
     {
       key: 'name',
-      label: 'Name'
+      label: 'Name',
+      showToolTip: true,
     },
     {
       key: 'link',
