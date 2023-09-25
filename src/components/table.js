@@ -47,7 +47,7 @@ const Table = ({
     const content = {
       file: <Image src={cell} alt="img" height={40} />,
       innerHTML: <span dangerouslySetInnerHTML={{ __html: cell, }}></span>,
-      text: <span>{cell}</span>,
+      text: <span>{showToolTip ? cell.value : cell}</span>,
       link: <a href={cell} target={target || '_blank'}>{cell}</a>,
       actions:
         <Box>
