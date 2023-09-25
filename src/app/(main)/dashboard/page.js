@@ -28,10 +28,7 @@ export default function Dashboard() {
     const handleChange = (event) => {
       const updatedValue = event.target.value;
       setActiveValue(updatedValue);
-
-      // Update the data with the updated value
       const updatedRow = { ...row, active: updatedValue };
-      // Call a function to update your data (setData) with the updated row
     };
 
     return (
