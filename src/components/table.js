@@ -11,6 +11,7 @@ import {
   TableBody,
   TableRow,
   Pagination,
+  Tooltip,
 } from "@mui/material";
 import Image from 'next/image';
 
@@ -31,55 +32,84 @@ const Table = ({
     handleChange = () => { },
   } = pagination;
 
-  const renderCell = (row, column) => {
+  const renderCell = (row, column, trowIndex, tcolIndex) => {
     const {
       hide,
       key,
       actions,
       onClick,
+      onClickAction,
       target,
+      showToolTip,
+      toolTipText,
     } = column;
     const type = column.type || "text";
     const cell = row[key];
 
+    const content = {
+      file: <Image src={cell} alt="img" height={40} />,
+      innerHTML: <span dangerouslySetInnerHTML={{ __html: cell, }}></span>,
+      text: <span>{cell}</span>,
+      link: <a href={cell} target={target || '_blank'}>{cell}</a>,
+      actions:
+        <Box>
+          {actions?.map((action, actionIndex) => (
+            <React.Fragment key={`action_${actionIndex}`}>
+              <span
+                className={action.actionClass}
+                onClick={(event) =>
+                  onClickAction(
+                    {
+                      action,
+                      row,
+                      actionIndex,
+                      cell
+                    },
+                    event
+                  )
+                }
+              >
+                <action.icon />
+              </span>
+            </React.Fragment>
+          ))}
+        </Box>,
+      renderer:
+        renderer?.[column?.rendererKey]?.({
+          row,
+          cell,
+          value: cell,
+        }),
+      array:
+        <span>
+          {cell?.multiValue?.map(
+            (multiVal, multiIndex) => (
+              <span
+                hidden={hide}
+                key={`mutli_${multiIndex}`}
+              >
+                {multiVal?.value}
+              </span>
+            )
+          )}
+        </span>
+    }[type];
+
     return (
-      <TableCell hidden={hide}>
-        {
+      <TableCell
+        hidden={hide}
+        onClick={(event) => onClick(
           {
-            file: <Image src={cell} alt="img" height={40} />,
-            innerHTML: <span dangerouslySetInnerHTML={{ __html: cell, }}></span>,
-            text: <span>{cell}</span>,
-            link: <a href={cell} target={target || '_blank'}>{cell}</a>,
-            actions:
-              <Box>
-                {actions?.map((action, actionIndex) => (
-                  <React.Fragment key={`action_${actionIndex}`}>
-                    <span
-                      className={action.actionClass}
-                      onClick={(event) =>
-                        onClick(
-                          {
-                            action,
-                            row,
-                            actionIndex,
-                            cell
-                          },
-                          event
-                        )
-                      }
-                    >
-                      <action.icon />
-                    </span>
-                  </React.Fragment>
-                ))}
-              </Box>,
-            renderer:
-              renderer?.[column?.rendererKey]?.({
-                row,
-                cell,
-                value: cell,
-              })
-          }[type]
+            action: { key },
+            row,
+            trowIndex
+          },
+          event
+        )}
+      >
+        {showToolTip
+          ? <Tooltip enterDelay={500} leaveDelay={200} title={toolTipText}>{content}</Tooltip>
+          : content
         }
       </TableCell>
     );
@@ -117,7 +147,7 @@ const Table = ({
           <TableBody>
             {data && data.map((row, trowIndex) => (
               <TableRow key={`tdatarow_${trowIndex}`}>
-                {columns.map((column) => renderCell(row, column))}
+                {columns.map((column, tcolIndex) => renderCell(row, column, trowIndex, tcolIndex))}
               </TableRow>
             ))}
             {data?.length === 0 && (
