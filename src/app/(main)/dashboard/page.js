@@ -12,10 +12,6 @@ export default function Dashboard() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedActionItem, setSelectedActionItem] = useState({});
 
-  useEffect(() => {
-    setData(data.map(item => ({ ...item, name: { value: item.name, toolTipText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." } })))
-  }, []);
-
   const columns = [
     {
       key: 'logo',
@@ -29,7 +25,6 @@ export default function Dashboard() {
     {
       key: 'name',
       label: 'Name',
-      showToolTip: true,
     },
     {
       key: 'link',
@@ -93,7 +88,6 @@ export default function Dashboard() {
             <Typography id="modal-modal-description" variant="h6" sx={{ mt: 2 }}>
               Are you sure you want to delete {selectedActionItem.name}?
             </Typography>
-            <Divider sx={{ mt: 1 }} />
             <div className="d-flex justify-content-center">
               <Button onClick={handleDelete}>Delete</Button>
               <Button onClick={() => setIsDeleteModalOpen(false)}>Cancel</Button>
