@@ -3,9 +3,10 @@
 import { useState, useEffect, useContext } from "react";
 import { Form, CommonContext } from "@/components";
 import { PROFILE_INPUTS, CHANGE_PASSWORD_INPUTS } from "@/data/ProfileData";
-import { baseApiServer } from "@/utils/enviroment";
 import { getService, postService } from "@/utils/httpService";
 import { apiList } from "@/utils/apiList";
+import { MfaOptions } from "./mfaOptions";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function Profile() {
   const [formValues, setFormValues] = useState({});
@@ -31,7 +32,7 @@ export default function Profile() {
 
   const { setSnackBarMessage } = useContext(CommonContext);
   const fetchProfile = async () => {
-    const response = await getService(`${baseApiServer}${apiList.getProfile}`);
+    const response = await getService(apiList.getProfile);
     const result = response[0]?.data;
     if (result) {
       setProfileActionHandler((val) => ({ ...val, key: val.key + 1 }));
@@ -70,10 +71,7 @@ export default function Profile() {
       isLoading: true,
     }));
 
-    const response = await postService(
-      `${baseApiServer}${apiList.changePassword}`,
-      data
-    );
+    const response = await postService(apiList.changePassword, data);
 
     if (response[0]) {
       setPasswordActionHandler((val) => ({
@@ -101,18 +99,31 @@ export default function Profile() {
 
   return (
     <>
-      <Form
-        key={profileActionHandler.key}
-        list={PROFILE_INPUTS}
-        values={formValues}
-        actionHandler={profileActionHandler}
-      />
-      <Form
-        key={passwordActionHandler.key}
-        list={CHANGE_PASSWORD_INPUTS}
-        formSubmit={onChangePassword}
-        actionHandler={passwordActionHandler}
-      />
+      {!formValues.email ? (
+        <div className="d-flex align-items-center justify-content-center pt-5">
+          <CircularProgress />
+        </div>
+      ) : (
+        <>
+          <Form
+            key={profileActionHandler.key}
+            list={PROFILE_INPUTS}
+            values={formValues}
+            actionHandler={profileActionHandler}
+          />
+          {formValues.set_password && (
+            <>
+              <Form
+                key={passwordActionHandler.key}
+                list={CHANGE_PASSWORD_INPUTS}
+                formSubmit={onChangePassword}
+                actionHandler={passwordActionHandler}
+              />
+              <MfaOptions values={formValues} />
+            </>
+          )}
+        </>
+      )}
     </>
   );
 }

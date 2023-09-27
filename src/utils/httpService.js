@@ -9,9 +9,9 @@ const header = {
 };
 
 // GET Request
-export const getService = async (url) => {
+export const getService = async (url, customerHeader) => {
   try {
-    const response = await axios.get(url, header);
+    const response = await axios.get(url, customerHeader || header);
     return [response?.data, null];
   } catch ({ response }) {
     return [null, response?.data];

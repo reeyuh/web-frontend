@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { baseApiServer } from "@/utils/enviroment";
 import { apiList } from "@/utils/apiList";
 
 export async function middleware(request, context) {
@@ -20,14 +19,19 @@ export async function middleware(request, context) {
       new URL(`/sign-in?code=${token}`, request.url)
     );
   } else if (
-    ["/", "/sign-in", "/reset-password", "/mfa", "/forgot-password"].indexOf(
-      request.nextUrl.pathname
-    ) > -1 &&
+    [
+      "/",
+      "/sign-in",
+      "/reset-password",
+      "/register",
+      "/mfa",
+      "/forgot-password",
+    ].indexOf(request.nextUrl.pathname) > -1 &&
     !token
   ) {
     if (storedToken && storedToken.value) {
       const data = await (
-        await fetch(`${baseApiServer}${apiList.validateToken}`, {
+        await fetch(apiList.validateToken, {
           headers: { Authorization: `Bearer ${storedToken.value}` },
         })
       ).json();
@@ -44,7 +48,7 @@ export async function middleware(request, context) {
   ) {
     if (storedToken && storedToken.value) {
       const data = await (
-        await fetch(`${baseApiServer}${apiList.validateToken}`, {
+        await fetch(apiList.validateToken, {
           headers: { Authorization: `Bearer ${storedToken.value}` },
         })
       ).json();

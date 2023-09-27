@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useEffect, useContext } from "react";
-import { Sign, CommonContext } from "@/components";
+import { Sign, CommonContext, Modal } from "@/components";
 import { LOGIN_FORM_INPUTS } from "@/data/SignData";
-import { baseApiServer } from "@/utils/enviroment";
 import { getService, postService } from "@/utils/httpService";
 import { apiList } from "@/utils/apiList";
 import { setAccessToken, redirectToSsoUrl } from "@/utils/commonFn";
@@ -13,6 +12,11 @@ import { setCookie } from "@/utils/cookiesHandler";
 export default function SignIn() {
   const searchParams = useSearchParams();
   const getSSOCode = searchParams.get("code");
+  const [modal, setModal] = useState({
+    open: false,
+    title: "Error",
+    width: 400,
+  });
   const [actionHandler, setActionHandler] = useState({
     error: "",
     success: "",
@@ -34,7 +38,7 @@ export default function SignIn() {
       success: "",
       disabled: { ...val.disabled, google: true },
     }));
-    onLogin(`${baseApiServer}${apiList.login}`, data, true);
+    onLogin(apiList.login, data, true);
   };
 
   const setDisabledSso = (isDisabled) => {
@@ -46,7 +50,7 @@ export default function SignIn() {
   };
 
   const fetchSSOUrl = async () => {
-    const response = await getService(`${baseApiServer}${apiList.ssoUrl}`);
+    const response = await getService(apiList.ssoUrl);
     const result = response[0]?.data;
     if (result) {
       setSSOUrl(result);
@@ -92,11 +96,11 @@ export default function SignIn() {
       } else {
         fetchSSOUrl();
         router.replace("/sign-in");
-        setSnackBarMessage({
-          message: response[1]?.message,
-          time: 3000,
-          severity: "error",
-        });
+        setModal((val) => ({
+          ...val,
+          open: true,
+          error: response[1]?.message,
+        }));
       }
     }
   };
@@ -104,7 +108,7 @@ export default function SignIn() {
   useEffect(() => {
     if (getSSOCode) {
       setDisabledSso(true);
-      onLogin(`${baseApiServer}${apiList.ssoLogin}`, {
+      onLogin(apiList.ssoLogin, {
         authorization_code: getSSOCode,
       });
     } else {
@@ -113,15 +117,25 @@ export default function SignIn() {
     }
   }, [getSSOCode]);
   return (
-    <Sign
-      formInputs={LOGIN_FORM_INPUTS}
-      sendForm={customSignin}
-      googleSSO={() =>
-        ssoUrl && !actionHandler.disabled?.google
-          ? redirectToSsoUrl(ssoUrl)
-          : null
-      }
-      actionHandler={actionHandler}
-    />
+    <>
+      <Modal
+        {...modal}
+        closeModal={() => {
+          setModal((val) => ({ ...val, open: false }));
+        }}
+      >
+        <div className="error">{modal.error}</div>
+      </Modal>
+      <Sign
+        formInputs={LOGIN_FORM_INPUTS}
+        sendForm={customSignin}
+        googleSSO={() =>
+          ssoUrl && !actionHandler.disabled?.google
+            ? redirectToSsoUrl(ssoUrl)
+            : null
+        }
+        actionHandler={actionHandler}
+      />
+    </>
   );
 }

@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useEffect, useContext } from "react";
-import { Sign, CommonContext } from "@/components";
+import { Sign, CommonContext, Modal } from "@/components";
 import { REGISTER_FORM_INPUTS } from "@/data/SignData";
-import { baseApiServer } from "@/utils/enviroment";
 import { getService, postService } from "@/utils/httpService";
 import { apiList } from "@/utils/apiList";
 import { setAccessToken, redirectToSsoUrl } from "@/utils/commonFn";
@@ -22,6 +21,11 @@ export default function Register() {
     disabled: {},
   });
   const [ssoUrl, setSSOUrl] = useState();
+  const [modal, setModal] = useState({
+    open: false,
+    title: "Error",
+    width: 400,
+  });
   const { setSnackBarMessage } = useContext(CommonContext);
   const router = useRouter();
 
@@ -40,7 +44,7 @@ export default function Register() {
       success: "",
       disabled: { ...val.disabled, google: true },
     }));
-    onRegister(`${baseApiServer}${apiList.signup}`, data, true);
+    onRegister(apiList.signup, data, true);
   };
 
   const setDisabledSso = (isDisabled) => {
@@ -52,9 +56,10 @@ export default function Register() {
   };
 
   const fetchSSOUrl = async () => {
-    const response = await getService(`${baseApiServer}${apiList.ssoUrl}`);
-    if (response[0]?.data) {
-      setSSOUrl(response[0].data);
+    const response = await getService(apiList.ssoUrl);
+    const result = response[0].data;
+    if (result) {
+      setSSOUrl(result);
     } else {
       setActionHandler((val) => ({
         ...val,
@@ -96,16 +101,17 @@ export default function Register() {
       }, 3000);
     } else {
       setDisabledSso(false);
-      if (isCustomSignup) {
-        setActionHandler((val) => ({ ...val, error: response[1]?.message }));
-      } else {
+
+      if (!isCustomSignup) {
         fetchSSOUrl();
         router.replace("/");
-        setSnackBarMessage({
-          message: response[1]?.message,
-          time: 3000,
-          severity: "error",
-        });
+        setModal((val) => ({
+          ...val,
+          open: true,
+          error: response[1]?.message,
+        }));
+      } else {
+        setActionHandler((val) => ({ ...val, error: response[1]?.message }));
       }
     }
   };
@@ -113,7 +119,7 @@ export default function Register() {
   useEffect(() => {
     if (getSSOCode) {
       setDisabledSso(true);
-      onRegister(`${baseApiServer}${apiList.ssoSignup}`, {
+      onRegister(apiList.ssoSignup, {
         authorization_code: getSSOCode,
       });
     } else {
@@ -121,16 +127,28 @@ export default function Register() {
       fetchSSOUrl();
     }
   }, [getSSOCode]);
+
   return (
-    <Sign
-      formInputs={REGISTER_FORM_INPUTS}
-      sendForm={customSignup}
-      googleSSO={() =>
-        ssoUrl && !actionHandler.disabled?.google
-          ? redirectToSsoUrl(ssoUrl)
-          : null
-      }
-      actionHandler={actionHandler}
-    />
+    <>
+      <Modal
+        {...modal}
+        closeModal={() => {
+          setModal((val) => ({ ...val, open: false }));
+        }}
+      >
+        <div className="error">{modal.error}</div>
+      </Modal>
+
+      <Sign
+        formInputs={REGISTER_FORM_INPUTS}
+        sendForm={customSignup}
+        googleSSO={() =>
+          ssoUrl && !actionHandler.disabled?.google
+            ? redirectToSsoUrl(ssoUrl)
+            : null
+        }
+        actionHandler={actionHandler}
+      />
+    </>
   );
 }

@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import { Alert, CircularProgress, Grid } from "@mui/material";
+import { getService, postService } from "@/utils/httpService";
+import { apiList } from "@/utils/apiList";
 
 const VerificationPage = ({ params }) => {
   const router = useRouter();
@@ -12,27 +13,22 @@ const VerificationPage = ({ params }) => {
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
 
-  useEffect(() => {
-    if (token) {
-      axios
-        .post("/api/verify", { token })
-        .then(() => {
-          setSuccess(true);
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    } else {
-      setLoading(false);
+  const onVerifyEmail = async () => {
+    const response = await getService(apiList.verifyEmail, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setLoading(false);
+    if (response[0]?.data) {
+      setSuccess(true);
     }
-
     setTimeout(() => {
-      router.push("/sign-in");
+      router.replace("/sign-in");
     }, 3000);
-  }, [token, router]);
+  };
+
+  useEffect(() => {
+    onVerifyEmail();
+  }, []);
 
   return (
     <Grid container maxWidth="xl" className="verify-user-container">

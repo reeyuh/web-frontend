@@ -5,7 +5,6 @@ import { Sign } from "@/components";
 import { FORGOT_FORM_INPUTS } from "@/data/SignData";
 import { useRouter } from "next/navigation";
 import { postService } from "@/utils/httpService";
-import { baseApiServer } from "@/utils/enviroment";
 import { apiList } from "@/utils/apiList";
 
 export default function ForgotPassword() {
@@ -25,10 +24,7 @@ export default function ForgotPassword() {
       success: "",
       error: "",
     }));
-    const response = await postService(
-      `${baseApiServer}${apiList.sendOtp}`,
-      data
-    );
+    const response = await postService(apiList.sendOtp, data);
     setActionHandler((val) => ({
       ...val,
       isLoading: false,

@@ -5,7 +5,6 @@ import { Sign } from "@/components";
 import { RESET_PASSWORD_FORM } from "@/data/SignData";
 import { useRouter } from "next/navigation";
 import { postService } from "@/utils/httpService";
-import { baseApiServer } from "@/utils/enviroment";
 import { apiList } from "@/utils/apiList";
 
 export default function ResetUser() {
@@ -36,10 +35,10 @@ export default function ResetUser() {
         isLoading: true,
         hidden: { ...val.hidden, btnSection: true },
       }));
-      const response = await postService(
-        `${baseApiServer}${apiList.verifyOtp}`,
-        { ...formData, ...data }
-      );
+      const response = await postService(apiList.verifyOtp, {
+        ...formData,
+        ...data,
+      });
       setActionHandler((val) => ({
         ...val,
         isLoading: false,
@@ -93,10 +92,10 @@ export default function ResetUser() {
       success: "",
       error: "",
     }));
-    const response = await postService(
-      `${baseApiServer}${apiList.resetPassword}`,
-      { ...formData, ...data }
-    );
+    const response = await postService(apiList.resetPassword, {
+      ...formData,
+      ...data,
+    });
     setActionHandler((val) => ({
       ...val,
       isLoading: false,

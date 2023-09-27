@@ -5,7 +5,6 @@ import { Sign } from "@/components";
 import { MFA_FORM_INPUTS } from "@/data/SignData";
 import { useRouter } from "next/navigation";
 import { postService } from "@/utils/httpService";
-import { baseApiServer } from "@/utils/enviroment";
 import { apiList } from "@/utils/apiList";
 import { setAccessToken, getLocalStore } from "@/utils/commonFn";
 import { setCookie } from "@/utils/cookiesHandler";
@@ -27,7 +26,7 @@ export default function MFA() {
       success: "",
       error: "",
     }));
-    const response = await postService(`${baseApiServer}${apiList.mfaLogin}`, {
+    const response = await postService(apiList.mfaLogin, {
       ...data,
       email: getLocalStore("email"),
     });
