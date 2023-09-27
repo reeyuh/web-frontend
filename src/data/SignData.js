@@ -16,7 +16,7 @@ export const FORM_INPUTS = {
     label: "Password",
     name: "password",
     placeholder: "Password",
-    formControlClass: "my-4",
+    formControlClass: "mt-4 pt-0",
     fieldClass: "w-100",
     type: "password",
     isRequired: true,
@@ -107,8 +107,18 @@ export const REGISTER_FORM_INPUTS = {
     },
   },
   data: [
-    FIRST_NAME,
-    LAST_NAME,
+    {
+      ...FIRST_NAME,
+      md: 6,
+      lg: 6,
+      xl: 6,
+    },
+    {
+      ...LAST_NAME,
+      md: 6,
+      lg: 6,
+      xl: 6,
+    },
     email,
     password,
     {
@@ -165,7 +175,7 @@ export const RESET_PASSWORD_FORM_INPUTS = {
     label: "OTP",
     name: "otp",
     placeholder: "OTP",
-    formControlClass: "my-4",
+    formControlClass: "mt-4 pt-0",
     fieldClass: "w-100",
     type: "text",
     isRequired: true,
@@ -201,8 +211,33 @@ export const RESET_PASSWORD_FORM = {
   footer: {
     buttonText: {
       className: "",
-      title: "Submit",
+      title: "Verify",
+    },
+    link: {
+      className: "",
+      title: "Step 1 of 2",
     },
   },
   data: [email, RESET_PASSWORD_FORM_INPUTS.otp, NEW_PASSWORD, CONFIRM_PASSWORD],
+};
+
+export const MFA_FORM_INPUTS = {
+  className: "sign-container",
+  header: {
+    heading: {
+      title: "Multi-Factor Authentication",
+      className: "sign-heading my-1",
+    },
+    subheading: {
+      title: "Enter one time password",
+      className: "sign-subheading",
+    },
+  },
+  footer: {
+    buttonText: {
+      className: "",
+      title: "Next",
+    },
+  },
+  data: [RESET_PASSWORD_FORM_INPUTS.otp],
 };

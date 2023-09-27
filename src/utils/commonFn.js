@@ -11,7 +11,8 @@ const getInitials = (name) => {
 };
 
 const setAccessToken = (data) => {
-  localStorage.setItem("access_token", data?.access_token);
+  data?.access_token &&
+    localStorage.setItem("access_token", data?.access_token);
   data?.display_name &&
     localStorage.setItem("display_name", data?.display_name);
 

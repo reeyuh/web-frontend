@@ -6,6 +6,9 @@ const nextConfig = {
           @import "@/styles/partials/mixins";
         `,
   },
+  experimental: {
+    serverActions: true,
+  },
 };
 
 module.exports = nextConfig;

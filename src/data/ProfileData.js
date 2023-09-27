@@ -22,7 +22,7 @@ export const CHANGE_PASSWORD_INPUTS = [
     fields: [
       {
         label: "Current Password",
-        name: "CurrentPassword",
+        name: "current_password",
         placeholder: "Current Password",
         type: "password",
         isRequired: true,

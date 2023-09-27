@@ -5,5 +5,10 @@ export const apiList = {
   signup: "/user/signup",
   login: "/user/login",
   sendOtp: "/user/send_otp",
-  resetPassword: "/user/reset_password",
+  resetPassword: "/user/forgot_password",
+  getProfile: "/user/get-profile",
+  validateToken: "/user/validate_token",
+  mfaLogin: "/user/mfa_login",
+  verifyOtp: "/user/verify_otp",
+  changePassword: "/user/change_password",
 };

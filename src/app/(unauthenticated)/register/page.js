@@ -7,27 +7,29 @@ import { baseApiServer } from "@/utils/enviroment";
 import { getService, postService } from "@/utils/httpService";
 import { apiList } from "@/utils/apiList";
 import { setAccessToken, redirectToSsoUrl } from "@/utils/commonFn";
+import { setCookie } from "@/utils/cookiesHandler";
 import { useSearchParams, useRouter } from "next/navigation";
 
 export default function Register() {
+  const searchParams = useSearchParams();
+  const getSSOCode = searchParams.get("code");
   const [actionHandler, setActionHandler] = useState({
     error: "",
     success: "",
     isLoading: false,
+    isSsoLoading: getSSOCode ? true : false,
     hidden: {},
     disabled: {},
   });
   const [ssoUrl, setSSOUrl] = useState();
   const { setSnackBarMessage } = useContext(CommonContext);
-  const searchParams = useSearchParams();
   const router = useRouter();
-  const getSSOCode = searchParams.get("code");
 
   const customSignup = async (data) => {
     if (data.password !== data.confirm_password) {
       setActionHandler((val) => ({
         ...val,
-        error: "Password and confirm password are not matched",
+        error: "New password and confirm password are not matched",
       }));
       return;
     }
@@ -45,6 +47,7 @@ export default function Register() {
     setActionHandler((val) => ({
       ...val,
       disabled: { ...val.disabled, google: isDisabled },
+      isSsoLoading: isDisabled,
     }));
   };
 
@@ -65,8 +68,10 @@ export default function Register() {
     setActionHandler((val) => ({
       ...val,
       isLoading: false,
+      isSsoLoading: false,
     }));
     if (response[0]?.data?.access_token) {
+      setCookie("_d", response[0]?.data?.access_token);
       setAccessToken({
         ...response[0]?.data,
         display_name: isCustomSignup
@@ -112,6 +117,7 @@ export default function Register() {
         authorization_code: getSSOCode,
       });
     } else {
+      setCookie("page", "register");
       fetchSSOUrl();
     }
   }, [getSSOCode]);

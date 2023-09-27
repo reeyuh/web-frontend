@@ -30,11 +30,12 @@ export const Sign = ({
     handleSubmit,
     formState: { errors },
   } = useForm({});
-  const { error, success, hidden, disabled, isLoading } = actionHandler;
+  const { error, success, hidden, disabled, isLoading, isSsoLoading } =
+    actionHandler;
 
   return (
-    <Grid container maxWidth="xl" className={formInputs?.className}>
-      <Grid item xs={12} sm={10} md={6} lg={5} xl={5}>
+    <Grid container className={formInputs?.className}>
+      <Grid item xs={12} sm={10} md={8} lg={5} xl={5}>
         <form autoComplete="off" onSubmit={handleSubmit(sendForm)}>
           <Card>
             <CardContent>
@@ -53,70 +54,88 @@ export const Sign = ({
 
               {formInputs.header?.googleSSO?.title && (
                 <>
-                  <div
-                    className="d-flex justify-content-center my-4"
-                    onClick={googleSSO}
-                  >
-                    <PrimaryButton
-                      withIcon
-                      type="button"
-                      class="px-3"
-                      disabled={disabled?.google}
-                    >
-                      <Image
-                        src={GoogleLogo}
-                        alt="Google Logo"
-                        width={24}
-                        height={24}
-                        className="p-1 bg-white rounded-circle"
-                      />
-                      <p className="mb-0 ps-2 text-white">
-                        {formInputs.header?.googleSSO?.title}
-                      </p>
-                    </PrimaryButton>
+                  <div className="d-flex justify-content-center my-4">
+                    {isSsoLoading ? (
+                      <CircularProgress className="text-center" />
+                    ) : (
+                      <div onClick={googleSSO}>
+                        <PrimaryButton
+                          withIcon
+                          type="button"
+                          class="px-3"
+                          disabled={disabled?.google}
+                        >
+                          <Image
+                            src={GoogleLogo}
+                            alt="Google Logo"
+                            width={24}
+                            height={24}
+                            className="p-1 bg-white rounded-circle"
+                          />
+                          <p className="mb-0 ps-2 text-white">
+                            {formInputs.header?.googleSSO?.title}
+                          </p>
+                        </PrimaryButton>
+                      </div>
+                    )}
                   </div>
                   <Divider flexItem>OR</Divider>
                 </>
               )}
+              <Grid container spacing={1} className="mb-4">
+                {formInputs?.data?.map((inputVal, index) => {
+                  if (hidden[inputVal?.name]) {
+                    return false;
+                  }
+                  const inputRegister = register(inputVal?.name, {
+                    required: inputVal?.isRequired,
+                    pattern: inputVal.pattern,
+                    minLength: inputVal?.minLength || 0,
+                    ...(inputVal?.maxLength > 0
+                      ? { maxLength: inputVal?.maxLength }
+                      : {}),
+                  });
+                  return (
+                    <Grid
+                      key={index}
+                      item
+                      xs={inputVal?.xs || 12}
+                      sm={inputVal?.sm || 12}
+                      md={inputVal?.md || 12}
+                      lg={inputVal?.lg || 12}
+                      xl={inputVal?.xl || 12}
+                      className={inputVal?.formControlClass}
+                    >
+                      <OutlinedInputWrapper
+                        className={inputVal?.fieldClass}
+                        type={inputVal?.type}
+                        name={inputVal?.name}
+                        placeholder={inputVal?.placeholder}
+                        {...inputRegister}
+                        onChange={(e) => {
+                          inputRegister.onChange(e);
+                        }}
+                        inputProps={{
+                          ...(inputVal?.maxLength > 0
+                            ? { maxLength: inputVal?.maxLength }
+                            : {}),
+                          disabled: [inputVal?.name]?.disabled,
+                        }}
+                      />
 
-              {formInputs?.data?.map((inputVal, index) => {
-                const inputRegister = register(inputVal?.name, {
-                  required: inputVal?.isRequired,
-                  pattern: inputVal.pattern,
-                  minLength: inputVal?.minLength || 0,
-                  ...(inputVal?.maxLength > 0
-                    ? { maxLength: inputVal?.maxLength }
-                    : {}),
-                });
-                return (
-                  <Box key={index} className={inputVal?.formControlClass}>
-                    <OutlinedInputWrapper
-                      className={inputVal?.fieldClass}
-                      type={inputVal?.type}
-                      name={inputVal?.name}
-                      placeholder={inputVal?.placeholder}
-                      {...inputRegister}
-                      onChange={(e) => {
-                        inputRegister.onChange(e);
-                      }}
-                      inputProps={{
-                        ...(inputVal?.maxLength > 0
-                          ? { maxLength: inputVal?.maxLength }
-                          : {}),
-                        disabled: [inputVal?.name]?.disabled,
-                      }}
-                    />
-
-                    {inputVal?.errors?.map((error, eindex) => (
-                      <span key={eindex}>
-                        {errors[inputVal?.name]?.type === error?.type && (
-                          <span className="error">{error?.message}</span>
-                        )}
-                      </span>
-                    ))}
-                  </Box>
-                );
-              })}
+                      {inputVal?.errors?.map((error, eindex) => (
+                        <span key={eindex}>
+                          {errors[inputVal?.name]?.type === error?.type && (
+                            <span className="error mt-1 d-inline-block">
+                              {error?.message}
+                            </span>
+                          )}
+                        </span>
+                      ))}
+                    </Grid>
+                  );
+                })}
+              </Grid>
 
               {/* response error message */}
               <Box className={formInputs?.header?.className}>
@@ -139,12 +158,17 @@ export const Sign = ({
                         <PrimaryButton
                           type="submit"
                           text={formInputs?.footer?.buttonText?.title}
+                          class="me-3"
                         />
                         {formInputs?.footer?.link?.url && (
                           <Link href={formInputs?.footer?.link?.url}>
                             {formInputs?.footer?.link?.title}
                           </Link>
                         )}
+                        {!formInputs?.footer?.link?.url &&
+                          formInputs?.footer?.link?.title && (
+                            <p>{formInputs?.footer?.link?.title}</p>
+                          )}
                       </Box>
                     )}
                 </>

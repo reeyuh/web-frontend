@@ -1,6 +1,6 @@
 "use client";
 import { CommonProvider } from "@/components";
 
-export default function MainLayout({ children }) {
+export default function UnaunthenticatedLayout({ children }) {
   return <CommonProvider>{children}</CommonProvider>;
 }

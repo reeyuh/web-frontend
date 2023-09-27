@@ -28,4 +28,11 @@
     text-overflow: ellipsis;
     width: inherit;
   }
+
+  &-dropdown-item {
+    cursor: pointer;
+    text-decoration: none;
+    color: $secondary-text;
+    font-family: $nunito--semi;
+  }
 }

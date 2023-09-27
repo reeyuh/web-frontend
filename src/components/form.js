@@ -1,42 +1,68 @@
 "use client";
-import React from "react";
-import { Card, CardContent, Grid, Box, FormGroup } from "@mui/material";
+import React, { useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  Grid,
+  Box,
+  FormGroup,
+  Alert,
+  CircularProgress,
+} from "@mui/material";
 
 import { useForm } from "react-hook-form";
 import { PrimaryButton } from "@/components/primaryButton";
 import { PrimaryOutlinedButton } from "@/components/primaryButton";
 
-export const Btns = ({ list = [] }) => {
+export const Btns = ({ list = [], isLoading }) => {
   return (
-    <>
-      {list?.map((btn, index) => (
-        <Box className="mx-md-2 mx-0 px-md-2 py-3" key={index}>
-          {btn.btnType === "outlined" ? (
-            <PrimaryOutlinedButton
-              class="me-3"
-              text={btn.text}
-              type={btn.type || "submit"}
-            />
-          ) : (
-            <PrimaryButton
-              class="me-3"
-              text={btn.text}
-              type={btn.type || "submit"}
-            />
-          )}
-        </Box>
-      ))}
-    </>
+    <Box className="mx-md-2 mx-0 px-md-2 py-3 d-flex">
+      {isLoading && list?.length > 0 ? (
+        <CircularProgress className="text-center" />
+      ) : (
+        <>
+          {list?.map((btn, index) => (
+            <Box key={`btn_${index}`}>
+              {btn.btnType === "outlined" ? (
+                <PrimaryOutlinedButton
+                  class="me-3"
+                  text={btn.text}
+                  type={btn.type || "submit"}
+                />
+              ) : (
+                <PrimaryButton
+                  class="me-3"
+                  text={btn.text}
+                  type={btn.type || "submit"}
+                />
+              )}
+            </Box>
+          ))}
+        </>
+      )}
+    </Box>
   );
 };
 
-export const Form = ({ list, formSubmit = () => {}, btnList }) => {
+export const Form = ({
+  list,
+  formSubmit = () => {},
+  btnList,
+  values,
+  actionHandler = {},
+}) => {
   const {
     reset,
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({});
+    watch,
+  } = useForm({
+    defaultValues: values,
+  });
+
+  const { error, success, hidden, disabled, isLoading, readonly } =
+    actionHandler;
 
   return (
     <>
@@ -60,12 +86,12 @@ export const Form = ({ list, formSubmit = () => {}, btnList }) => {
                     const otherProps = {
                       className: `form-control ${field?.fieldClass}`,
                       type: field?.type,
-                      name: field?.name,
                       placeholder: field?.placeholder,
                       maxLength: field?.maxLength,
                       onChange: (e) => {
                         inputRegister.onChange(e);
                       },
+                      readOnly: readonly?.[field?.name],
                     };
                     return (
                       <Grid
@@ -83,15 +109,40 @@ export const Form = ({ list, formSubmit = () => {}, btnList }) => {
                             field?.type === "password") && (
                             <input {...inputRegister} {...otherProps} />
                           )}
+
+                          {field?.errors?.map((error, eindex) => (
+                            <span key={eindex}>
+                              {errors[field?.name]?.type === error?.type && (
+                                <span className="error mt-1 d-inline-block">
+                                  {error?.message}
+                                </span>
+                              )}
+                            </span>
+                          ))}
                         </Box>
                       </Grid>
                     );
                   })}
                 </Grid>
-                <Btns list={group?.btnList || []} />
+                {/* response error message */}
+                {(success || error) && (
+                  <Box className="mx-md-2 mx-0 px-md-2 pt-3">
+                    {success && <Alert severity="success">{success}</Alert>}
+                    {error && <Alert severity="error">{error}</Alert>}
+                  </Box>
+                )}
+
+                {!hidden.btnSection && (
+                  <Btns isLoading={isLoading} list={group?.btnList || []} />
+                )}
               </FormGroup>
             ))}
-            <Btns list={btnList} />
+
+            <>
+              {!hidden.btnSection && (
+                <Btns isLoading={isLoading} list={btnList} />
+              )}
+            </>
           </CardContent>
         </Card>
       </form>

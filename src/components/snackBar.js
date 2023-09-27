@@ -22,6 +22,7 @@ export const CustomSnackbar = () => {
   return (
     <div>
       <Snackbar
+        className="mb-4"
         open={message ? true : false}
         autoHideDuration={time}
         onClose={handleClose}

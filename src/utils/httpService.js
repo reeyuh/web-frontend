@@ -1,9 +1,17 @@
 import axios from "axios";
+import { getLocalStore } from "@/utils/commonFn";
+
+const token = getLocalStore("access_token");
+const header = {
+  headers: {
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  },
+};
 
 // GET Request
 export const getService = async (url) => {
   try {
-    const response = await axios.get(url);
+    const response = await axios.get(url, header);
     return [response?.data, null];
   } catch ({ response }) {
     return [null, response?.data];
@@ -13,7 +21,7 @@ export const getService = async (url) => {
 // POST Request
 export const postService = async (url, params) => {
   try {
-    const response = await axios.post(url, params);
+    const response = await axios.post(url, params, header);
     return [response?.data, null];
   } catch ({ response }) {
     return [null, response?.data];

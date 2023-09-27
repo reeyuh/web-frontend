@@ -8,20 +8,23 @@ import { getService, postService } from "@/utils/httpService";
 import { apiList } from "@/utils/apiList";
 import { setAccessToken, redirectToSsoUrl } from "@/utils/commonFn";
 import { useSearchParams, useRouter } from "next/navigation";
+import { setCookie } from "@/utils/cookiesHandler";
 
 export default function SignIn() {
+  const searchParams = useSearchParams();
+  const getSSOCode = searchParams.get("code");
   const [actionHandler, setActionHandler] = useState({
     error: "",
     success: "",
     isLoading: false,
     hidden: {},
     disabled: {},
+    isSsoLoading: getSSOCode ? true : false,
   });
   const [ssoUrl, setSSOUrl] = useState();
   const { setSnackBarMessage } = useContext(CommonContext);
-  const searchParams = useSearchParams();
+
   const router = useRouter();
-  const getSSOCode = searchParams.get("code");
 
   const customSignin = async (data) => {
     setActionHandler((val) => ({
@@ -38,6 +41,7 @@ export default function SignIn() {
     setActionHandler((val) => ({
       ...val,
       disabled: { ...val.disabled, google: isDisabled },
+      isSsoLoading: isDisabled,
     }));
   };
 
@@ -45,7 +49,6 @@ export default function SignIn() {
     const response = await getService(`${baseApiServer}${apiList.ssoUrl}`);
     const result = response[0]?.data;
     if (result) {
-      //.replace("sso", "sign-in")
       setSSOUrl(result);
     } else {
       setActionHandler((val) => ({
@@ -56,20 +59,34 @@ export default function SignIn() {
   };
 
   const onLogin = async (url, data, isCustomSignIn) => {
-    console.log(url, "data");
     const response = await postService(url, data);
-    setActionHandler((val) => ({
-      ...val,
-      isLoading: false,
-    }));
-    if (response[0]?.data?.access_token) {
-      setAccessToken(response[0]?.data);
 
-      setTimeout(() => {
-        router.replace("/dashboard");
-      }, 100);
+    if (response[0]?.data) {
+      if (response[0]?.data.access_token) {
+        setAccessToken(response[0].data);
+        await setCookie("_d", response[0].data.access_token);
+        setTimeout(() => {
+          router.replace("/dashboard");
+        }, 100);
+      } else {
+        const message = "OTP sent successfully, redirecting to mfa page...";
+        setAccessToken(data);
+        setActionHandler((val) => ({
+          ...val,
+          success: message,
+          isLoading: false,
+          hidden: { btnSection: true },
+        }));
+        setTimeout(() => {
+          router.replace("/mfa");
+        }, 3000);
+      }
     } else {
       setDisabledSso(false);
+      setActionHandler((val) => ({
+        ...val,
+        isLoading: false,
+      }));
       if (isCustomSignIn) {
         setActionHandler((val) => ({ ...val, error: response[1]?.message }));
       } else {
@@ -91,6 +108,7 @@ export default function SignIn() {
         authorization_code: getSSOCode,
       });
     } else {
+      setCookie("page", "sign-in");
       fetchSSOUrl();
     }
   }, [getSSOCode]);
