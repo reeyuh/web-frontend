@@ -16,4 +16,5 @@ export const apiList = {
   verifyEmail: `${userApiServer}validate_email`,
   getQRlink: `${userApiServer}generate_mfa_uri`,
   enableMfa: `${userApiServer}enable_mfa`,
+  verifyMfaOtp: `${userApiServer}verify_mfa_otp`,
 };

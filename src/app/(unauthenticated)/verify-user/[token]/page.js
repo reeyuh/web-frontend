@@ -39,12 +39,12 @@ const VerificationPage = ({ params }) => {
           </div>
         ) : success ? (
           <Alert severity="success">
-            Verification successful. Redirecting to sign in page...
+            Verification successful. Redirecting to sign in or dashboard page...
           </Alert>
         ) : (
           <Alert severity="error">
-            Verification failed. Please try again. Redirecting to sign in
-            page...
+            Verification failed. Please try again. Redirecting to sign in or
+            dashboard page...
           </Alert>
         )}
       </Grid>

@@ -10,6 +10,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 export default function Profile() {
   const [formValues, setFormValues] = useState({});
+  const [isMfaLoading, setIsMfaLoading] = useState(false);
   const [profileActionHandler, setProfileActionHandler] = useState({
     error: "",
     success: "",
@@ -34,6 +35,7 @@ export default function Profile() {
   const fetchProfile = async () => {
     const response = await getService(apiList.getProfile);
     const result = response[0]?.data;
+    setIsMfaLoading(false);
     if (result) {
       setProfileActionHandler((val) => ({ ...val, key: val.key + 1 }));
       setFormValues(result);
@@ -119,7 +121,20 @@ export default function Profile() {
                 formSubmit={onChangePassword}
                 actionHandler={passwordActionHandler}
               />
-              <MfaOptions values={formValues} />
+              {isMfaLoading ? (
+                <div className="d-flex align-items-center justify-content-center pt-5">
+                  <CircularProgress />
+                </div>
+              ) : (
+                <MfaOptions
+                  values={formValues}
+                  key={profileActionHandler.key}
+                  fetchProfile={() => {
+                    setIsMfaLoading(true);
+                    fetchProfile();
+                  }}
+                />
+              )}
             </>
           )}
         </>

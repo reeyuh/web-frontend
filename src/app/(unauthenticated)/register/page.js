@@ -70,11 +70,7 @@ export default function Register() {
 
   const onRegister = async (url, data, isCustomSignup) => {
     const response = await postService(url, data);
-    setActionHandler((val) => ({
-      ...val,
-      isLoading: false,
-      isSsoLoading: false,
-    }));
+
     if (response[0]?.data?.access_token) {
       setCookie("_d", response[0]?.data?.access_token);
       setAccessToken({
@@ -83,25 +79,16 @@ export default function Register() {
           ? `${data.first_name} ${data.last_name}`
           : null,
       });
-      const message = "Registered successfully, redirecting to dashboard...";
-      !isCustomSignup &&
-        setSnackBarMessage({
-          message,
-          time: 3000,
-          severity: "success",
-        });
-      isCustomSignup &&
-        setActionHandler((val) => ({
-          ...val,
-          success: message,
-          hidden: { btnSection: true },
-        }));
       setTimeout(() => {
         router.replace("/dashboard");
-      }, 3000);
+      }, 100);
     } else {
       setDisabledSso(false);
-
+      setActionHandler((val) => ({
+        ...val,
+        isLoading: false,
+        isSsoLoading: false,
+      }));
       if (!isCustomSignup) {
         fetchSSOUrl();
         router.replace("/");

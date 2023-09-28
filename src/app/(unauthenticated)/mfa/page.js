@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Sign } from "@/components";
 import { MFA_FORM_INPUTS } from "@/data/SignData";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { postService } from "@/utils/httpService";
 import { apiList } from "@/utils/apiList";
 import { setAccessToken, getLocalStore } from "@/utils/commonFn";
@@ -11,6 +11,9 @@ import { setCookie } from "@/utils/cookiesHandler";
 
 export default function MFA() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const mfaType = searchParams.get("type");
+  const [formInputs, setFormInputs] = useState(MFA_FORM_INPUTS);
   const [actionHandler, setActionHandler] = useState({
     error: "",
     success: "",
@@ -18,6 +21,21 @@ export default function MFA() {
     hidden: {},
     disabled: {},
   });
+
+  useEffect(() => {
+    if (mfaType === "authenticator") {
+      setFormInputs((val) => ({
+        ...val,
+        header: {
+          ...val.header,
+          subheading: {
+            ...val.header.subheading,
+            title: val.header.subheading.titleAuth,
+          },
+        },
+      }));
+    }
+  }, []);
 
   const onMfa = async (data) => {
     setActionHandler((val) => ({
@@ -48,7 +66,7 @@ export default function MFA() {
 
   return (
     <Sign
-      formInputs={MFA_FORM_INPUTS}
+      formInputs={formInputs}
       sendForm={onMfa}
       actionHandler={actionHandler}
     />

@@ -9,7 +9,6 @@ export async function middleware(request, context) {
     token &&
     ["/sign-in", "/register"].indexOf(request.nextUrl.pathname) === -1
   ) {
-    console.log(page);
     if (page && page.value === "register") {
       return NextResponse.redirect(
         new URL(`/register?code=${token}`, request.url)
@@ -37,6 +36,8 @@ export async function middleware(request, context) {
       ).json();
       if (data.code === 200) {
         return NextResponse.redirect(new URL(`/dashboard`, request.url));
+      } else if (["/"].indexOf(request.nextUrl.pathname) > -1) {
+        return NextResponse.redirect(new URL(`/register`, request.url));
       }
     } else {
       if (["/"].indexOf(request.nextUrl.pathname) > -1) {

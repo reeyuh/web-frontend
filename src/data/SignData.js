@@ -229,14 +229,16 @@ export const MFA_FORM_INPUTS = {
       className: "sign-heading my-1",
     },
     subheading: {
-      title: "Enter one time password",
+      title: "Enter the one-time passcode, which is sent to your email address",
+      titleAuth:
+        "Enter the one-time passcode, provided by the mobile authenticator",
       className: "sign-subheading",
     },
   },
   footer: {
     buttonText: {
       className: "",
-      title: "Next",
+      title: "Verify",
     },
   },
   data: [RESET_PASSWORD_FORM_INPUTS.otp],

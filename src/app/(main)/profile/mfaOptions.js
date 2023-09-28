@@ -26,17 +26,17 @@ const LabelWrapper = styled(FormControlLabel)`
   }
 `;
 
-export const MfaOptions = ({ values }) => {
+export const MfaOptions = ({ values, fetchProfile }) => {
   const {
     control: otpControl,
     handleSubmit: otpHandleSubmit,
     formState: { errors: otpErrors },
-    watch: otpWatch,
-    reset: otpReset,
-    setValue: otpSetValue,
+    watch,
+    reset,
+    setValue,
     register,
   } = useForm({
-    defaultValues: { mfa_type: values.mfa_enabled },
+    defaultValues: { mfa_type: values.mfa_type },
     mode: "all",
     reValidateMode: "onChange",
   });
@@ -48,11 +48,27 @@ export const MfaOptions = ({ values }) => {
 
   const onEnabledMfa = async (data) => {
     setIsLoading(true);
+
+    if (data.otp) {
+      const response = await postService(apiList.verifyMfaOtp, data);
+      if (response[1]) {
+        setIsLoading(false);
+        setError(response[1].message);
+        return;
+      }
+    }
+
     const response = await postService(apiList.enableMfa, data);
     setIsLoading(false);
     if (response[0]) {
-      setSuccess("multi-factor authentication has been successfully activated");
+      setSuccess(
+        `multi-factor authentication has been successfully ${
+          values?.mfa_type ? "updated" : "activated"
+        }`
+      );
+
       setTimeout(() => {
+        data.otp && fetchProfile();
         setSuccess("");
       }, 3000);
     } else {
@@ -62,16 +78,16 @@ export const MfaOptions = ({ values }) => {
 
   const generateBarCode = async () => {
     const response = await getService(apiList.getQRlink);
-    if (response[0]) {
-      QRCode.toDataURL(response.data.url).then(setqrCodeUrl);
+    if (response[0]?.data?.uri) {
+      QRCode.toDataURL(response[0].data.uri).then(setqrCodeUrl);
     }
   };
 
   useEffect(() => {
-    if (!qrcodeUrl) {
+    if (!qrcodeUrl && values?.mfa_verified === false) {
       generateBarCode();
     }
-  }, []);
+  }, [values]);
 
   return (
     <form autoComplete="off" onSubmit={otpHandleSubmit(onEnabledMfa)}>
@@ -82,7 +98,7 @@ export const MfaOptions = ({ values }) => {
               Multi-factor authentication setup
             </h5>
             <Box className="px-md-3 px-0 py-2">
-              <RadioGroup value={otpWatch()?.mfa_type} name={"mfa_type"}>
+              <RadioGroup value={watch()?.mfa_type} name={"mfa_type"}>
                 <div>
                   <Controller
                     key={"email"}
@@ -119,70 +135,84 @@ export const MfaOptions = ({ values }) => {
                           onChange(e);
                           setError();
                         }}
-                        label={
-                          "Setup a mobile authenticator for one time passcode"
-                        }
+                        label={`${
+                          values?.mfa_verified ? "Use" : "Setup"
+                        }  a mobile authenticator for one time passcode`}
                         inputRef={ref}
                       />
                     )}
                   />
-                  <Box>
-                    <ul>
-                      <li className="mb-3">
-                        <p>
-                          Install <span className="form-label">Google</span> or{" "}
-                          <span className="form-label">Yubico </span>
-                          Authenticator on your mobile to get your verification
-                          code.
-                        </p>
-                      </li>
-                      <li className="mb-3">
-                        <p>
-                          Open the application and scan the below barcode QR
-                          code.
-                        </p>
-                        <div>
-                          {qrcodeUrl && (
-                            <img
-                              className="mt-1"
-                              src={qrcodeUrl}
-                              alt="qrcode url"
-                            />
-                          )}
-                        </div>
-                      </li>
+                  {!values?.mfa_verified &&
+                    watch()?.mfa_type === "authenticator" && (
+                      <Box>
+                        <ul>
+                          <li className="mb-3">
+                            <p>
+                              Install <span className="form-label">Google</span>{" "}
+                              or <span className="form-label">Yubico </span>
+                              Authenticator on your mobile to get your
+                              verification code.
+                            </p>
+                          </li>
+                          <li className="mb-3">
+                            <p>
+                              Open the application and scan the below barcode QR
+                              code.
+                            </p>
+                            <div>
+                              {qrcodeUrl && (
+                                <img
+                                  className="mt-1"
+                                  src={qrcodeUrl}
+                                  alt="qrcode url"
+                                />
+                              )}
+                            </div>
+                          </li>
 
-                      <li className="mb-3">
-                        <p className="mb-2">
-                          Enter One Time Password(OTP) provided by Authenticator
-                          application and click verify to complete the setup.
-                        </p>
-                        <input
-                          className="form-control w-auto"
-                          placeholder="OTP"
-                          {...register("totp", {
-                            required: "Please enter six digit",
-                            pattern: {
-                              value: VALIDATION.OTP,
-                              message: "One Time Password should be six digit",
-                            },
-                            minLength: 6,
-                          })}
-                          maxLength="6"
-                        />
-                        <div className="error mt-2">
-                          {otpErrors["totp"]?.message}
-                        </div>
-                      </li>
-                    </ul>
-                  </Box>
+                          <li className="mb-3">
+                            <p className="mb-2">
+                              Enter One Time Password(OTP) provided by
+                              Authenticator application and click verify to
+                              complete the setup.
+                            </p>
+                            <input
+                              className="form-control w-auto"
+                              placeholder="OTP"
+                              {...register("otp", {
+                                required: "Please enter six digit",
+                                pattern: {
+                                  value: VALIDATION.OTP,
+                                  message:
+                                    "One Time Password should be six digit",
+                                },
+                                minLength: 6,
+                              })}
+                              maxLength="6"
+                            />
+                            <div className="error mt-2">
+                              {otpErrors["otp"]?.message}
+                            </div>
+                          </li>
+                        </ul>
+                      </Box>
+                    )}
                 </div>
               </RadioGroup>
+              {(success || error) && (
+                <Box className="pt-3">
+                  {success && <Alert severity="success">{success}</Alert>}
+                  {error && <Alert severity="error">{error}</Alert>}
+                </Box>
+              )}
               {!isLoading ? (
                 <>
-                  {!success && (
+                  {!success && (values.mfa_type || watch()?.mfa_type) && (
                     <div className="mt-4">
-                      <PrimaryButton type="submit" text="Verify" />
+                      <PrimaryButton
+                        type="submit"
+                        text={`${!values?.mfa_verified ? "Verify" : "Submit"}`}
+                      />
                     </div>
                   )}
                 </>
@@ -190,14 +220,6 @@ export const MfaOptions = ({ values }) => {
                 <CircularProgress />
               )}
             </Box>
-
-            {/* response error message */}
-            {(success || error) && (
-              <Box className="mx-md-2 mx-0 px-md-2 pt-3">
-                {success && <Alert severity="success">{success}</Alert>}
-                {error && <Alert severity="error">{error}</Alert>}
-              </Box>
-            )}
           </FormGroup>
         </CardContent>
       </Card>

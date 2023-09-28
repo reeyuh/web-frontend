@@ -73,17 +73,10 @@ export default function SignIn() {
           router.replace("/dashboard");
         }, 100);
       } else {
-        const message = "OTP sent successfully, redirecting to mfa page...";
         setAccessToken(data);
-        setActionHandler((val) => ({
-          ...val,
-          success: message,
-          isLoading: false,
-          hidden: { btnSection: true },
-        }));
         setTimeout(() => {
-          router.replace("/mfa");
-        }, 3000);
+          router.push(`/mfa?type=${response[0]?.data}`);
+        }, 100);
       }
     } else {
       setDisabledSso(false);
