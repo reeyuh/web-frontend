@@ -10,7 +10,3 @@ export const setCookie = async (name, value) => {
     path: "/",
   });
 };
-
-export const deleteCookie = async (name) => {
-  await cookies().delete(name);
-};

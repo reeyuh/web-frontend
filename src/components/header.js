@@ -4,8 +4,9 @@ import { useState, useEffect } from "react";
 import "@/styles/header.scss";
 import { getInitials, getLocalStore } from "@/utils/commonFn";
 import Popover from "@mui/material/Popover";
-import { deleteCookie } from "@/utils/cookiesHandler";
 import { useRouter } from "next/navigation";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
 export const Header = () => {
   const router = useRouter();
@@ -35,13 +36,17 @@ export const Header = () => {
     <div className="header d-flex px-md-4 justify-content-between align-items-center flex-row-reverse">
       <div
         className="header-right flex-column text-center"
-        onMouseEnter={handlePopoverOpen}
+        onClick={handlePopoverOpen}
       >
         {profile.initials && (
           <p className="header-icon mb-1 rounded-circle">{profile.initials}</p>
         )}
         {profile.name && (
-          <p className="header-text m-0 mt-1 pb-1">{profile.name}</p>
+          <p className="header-text m-0 mt-1 pb-1">
+            {profile.name}
+            {!anchorPopOver && <ArrowDropDownIcon />}{" "}
+            {anchorPopOver && <ArrowDropUpIcon />}
+          </p>
         )}
       </div>
       <Popover

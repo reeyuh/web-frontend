@@ -11,12 +11,16 @@ import CloseIcon from "@mui/icons-material/Close";
 import Drawer from "@mui/material/Drawer";
 import "@/styles/sidebar.scss";
 
-const MenuList = ({ isMobile, isOpen }) => {
+const MenuList = ({ isMobile, setIsOpen = () => {}, isOpen }) => {
   const pathname = usePathname();
   return (
     <>
       <div className="ps-md-3 ps-1 d-flex align-items-center sidebar-logo">
-        <div onClick={() => toggleDrawer(!isOpen)}>
+        <div
+          onClick={() => {
+            setIsOpen(!isOpen);
+          }}
+        >
           {!isOpen && (
             <MenuIcon className="sidebar-mobile-icon me-md-3 m-1 d-lg-none" />
           )}
@@ -35,6 +39,7 @@ const MenuList = ({ isMobile, isOpen }) => {
         {SIDEBAR_MENU_LIST?.map((option, index) => {
           return (
             <Link
+              onClick={() => (isMobile ? setIsOpen(!isOpen) : null)}
               key={index}
               href={option.route}
               className={`d-flex py-3 pe-2 ps-3 text-decoration-none align-items-center sidebar-list ${
@@ -58,16 +63,13 @@ const MenuList = ({ isMobile, isOpen }) => {
 };
 
 export const Sidebar = () => {
-  const [isOpen, setItOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const toggleDrawer = (value) => {
-    setItOpen(() => value);
-  };
   return (
     <div className={`sidebar d-flex flex-column`}>
-      <MenuList isOpen={isOpen} />
-      <Drawer anchor={"left"} open={isOpen} onClose={() => toggleDrawer(false)}>
-        <MenuList isMobile isOpen={isOpen} />
+      <MenuList isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Drawer anchor={"left"} open={isOpen} onClose={() => setIsOpen(false)}>
+        <MenuList isMobile isOpen={isOpen} setIsOpen={setIsOpen} />
       </Drawer>
     </div>
   );
