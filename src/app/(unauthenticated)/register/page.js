@@ -77,7 +77,7 @@ export default function Register() {
         ...response[0]?.data,
         display_name: isCustomSignup
           ? `${data.first_name} ${data.last_name}`
-          : null,
+          : response[0]?.data?.display_name,
       });
       setTimeout(() => {
         router.replace("/dashboard");

@@ -59,6 +59,10 @@ export async function middleware(request, context) {
     } else {
       return NextResponse.redirect(new URL(`/sign-in`, request.url));
     }
+  } else if (["/logout"].indexOf(request.nextUrl.pathname) > -1) {
+    const response = NextResponse.redirect(new URL(`/sign-in`, request.url));
+    response.cookies.delete("_d");
+    return response;
   }
 }
 

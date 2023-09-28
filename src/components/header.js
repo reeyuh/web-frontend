@@ -27,9 +27,8 @@ export const Header = () => {
   }, []);
 
   const onLogout = async () => {
-    //localStorage.clear();
-    await deleteCookie("_id");
-    router.push("/sign-in");
+    localStorage.clear();
+    router.push("/logout");
   };
 
   return (
@@ -67,10 +66,8 @@ export const Header = () => {
               Update Profile
             </a>
           </li>
-          <li className="py-2 px-4">
-            <a href="/logout" className="header-dropdown-item">
-              Logout
-            </a>
+          <li className="py-2 px-4 header-dropdown-item" onClick={onLogout}>
+            Logout
           </li>
         </ul>
       </Popover>
