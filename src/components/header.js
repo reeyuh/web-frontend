@@ -39,14 +39,16 @@ export const Header = () => {
         onClick={handlePopoverOpen}
       >
         {profile.initials && (
-          <p className="header-icon mb-1 rounded-circle">{profile.initials}</p>
+          <p className="header-icon mb-1 mt-1 rounded-circle">
+            {profile.initials}
+          </p>
         )}
         {profile.name && (
-          <p className="header-text m-0 mt-1 pb-1">
-            {profile.name}
+          <div className="d-flex">
+            <p className="header-text m-0 mb-1">{profile.name}</p>
             {!anchorPopOver && <ArrowDropDownIcon />}{" "}
             {anchorPopOver && <ArrowDropUpIcon />}
-          </p>
+          </div>
         )}
       </div>
       <Popover
