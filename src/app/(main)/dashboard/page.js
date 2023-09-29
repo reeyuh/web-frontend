@@ -3,50 +3,52 @@
 import Table from "@/components/table";
 import React, { useEffect, useState } from "react";
 import Logo from "@/assets/images/logo.png";
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Modal, Button, Box, Typography, Divider, Select, MenuItem } from "@mui/material";
+import { useSearchParams } from 'next/navigation';
+import { Modal, Button, Box, Typography, Select, MenuItem } from "@mui/material";
+import SampleData from './sample/sample.json';
 
-export default function Dashboard() {
-  const [data, setData] = useState(
-    [
-      { name: 'user1', id: '1', link: 'https://www.google.co.in/', logo: Logo, isActive: 'Yes' },
-      { name: 'user2', id: '2', link: 'https://mail.google.com/mail', logo: Logo, isActive: 'No' }
-    ]
-  );
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [selectedActionItem, setSelectedActionItem] = useState({});
+const RenderActiveColumn = ({ row, cell, key, onUpdate }) => {
+  const [activeValue, setActiveValue] = useState(cell);
+  const options = [
+    { label: 'Yes', value: 'Yes' },
+    { label: 'No', value: 'No' },
+  ];
 
-  const RenderActiveColumn = ({ row, cell }) => {
-    const options = [
-      { label: 'Yes', value: 'Yes' },
-      { label: 'No', value: 'No' },
-    ];
-
-    const [activeValue, setActiveValue] = useState(cell);
-
-    const handleChange = (event) => {
-      const updatedValue = event.target.value;
-      setActiveValue(updatedValue);
-      const updatedRow = { ...row, active: updatedValue };
-    };
-
-    return (
-      <Select
-        value={activeValue}
-        onChange={handleChange}
-      >
-        {options.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </Select>
-    );
+  const handleChange = (event) => {
+    const updatedValue = event.target.value;
+    setActiveValue(updatedValue);
+    onUpdate('id', row.id, key, updatedValue);
   };
 
+  return (
+    <Select
+      value={activeValue}
+      onChange={handleChange}
+    >
+      {options.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuItem>
+      ))}
+    </Select>
+  );
+};
+
+export default function Dashboard() {
+  const search = useSearchParams();
+
+  const [data, setData] = useState([]);
+  const [tableData, setTableData] = useState([]);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedActionItem, setSelectedActionItem] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   const renderer = {
-    activeRenderer: RenderActiveColumn,
+    activeRenderer: ({ row, cell, trowIndex, key }) => (
+      <RenderActiveColumn row={row} key={key} cell={cell} trowIndex={trowIndex} onUpdate={handleActiveChange} />
+    ),
   };
 
   const columns = [
@@ -62,6 +64,7 @@ export default function Dashboard() {
     {
       key: 'name',
       label: 'Name',
+      filterType: 'text',
     },
     {
       key: 'link',
@@ -73,18 +76,23 @@ export default function Dashboard() {
       label: 'Active',
       type: 'renderer',
       rendererKey: 'activeRenderer',
+      filterType: 'select',
+      options: [
+        {
+          label: "Yes",
+          value: "Yes"
+        },
+        {
+          label: "No",
+          value: "No"
+        }
+      ]
     },
     {
       key: 'actions',
       label: 'Actions',
       type: 'actions',
       actions: [
-        {
-          type: 'edit',
-          actionClass: 'edit-action',
-          icon: EditIcon,
-          onClickAction: () => { }
-        },
         {
           type: 'delete',
           actionClass: 'delete-action',
@@ -97,6 +105,50 @@ export default function Dashboard() {
       ],
     },
   ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://api.example.com/users');
+        const jsonData = await response.json();
+        setData(jsonData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setData(SampleData.map(item => ({ ...item, logo: Logo })));
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handlePaginationChange = (event, page) => {
+    console.log('>>', page);
+    setCurrentPage(page);
+  };
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedData = data.slice(startIndex, endIndex);
+
+  useEffect(() => {
+    setTableData(paginatedData);
+  }, [paginatedData]);
+
+
+  const handleActiveChange = (primaryKey, value, key = 'isActive', updatedValue) => {
+    const updatedData = paginatedData.map((item) => {
+      if (item[primaryKey] === value) {
+        return {
+          ...item,
+          [key]: updatedValue,
+        };
+      }
+      return item;
+    });
+
+    console.log(`[After Row Update with ${primaryKey}:${value}]`, updatedData);
+    setTableData(updatedData);
+  };
 
   const style = {
     position: 'absolute',
@@ -116,11 +168,15 @@ export default function Dashboard() {
 
   return (
     <div>
-      Dashboard
       <Table
-        count={2}
+        count={data.length}
+        pagination={{
+          numberOfPages: Math.ceil(SampleData.length / itemsPerPage),
+          currentPage: currentPage,
+          handleChange: handlePaginationChange,
+        }}
         columns={columns}
-        data={data}
+        data={tableData}
         renderer={renderer}
       />
       {isDeleteModalOpen && (

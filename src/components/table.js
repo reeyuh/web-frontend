@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Paper,
@@ -13,24 +13,31 @@ import {
   Pagination,
   Tooltip,
 } from "@mui/material";
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import FilterComponent from './FilterComponent';
+import "@/styles/table.scss";
 
 const Table = ({
-  data,
-  columns,
-  renderer,
-  errorMessage,
-  pagination,
-  skip,
-  count,
+  data = [],
+  columns = [],
+  renderer = {},
+  errorMessage = "No data found",
+  pagination = {},
+  count = 0,
 }) => {
+  const router = useRouter();
   const {
     isShowFirstButton = true,
     isShowLastButton = true,
     numberOfPages = 0,
     currentPage = 0,
+    itemsPerPage = 10,
     handleChange = () => { },
   } = pagination;
+
+  const startIndex = (currentPage - 1) * itemsPerPage + 1;
+  const endIndex = Math.min(startIndex + itemsPerPage - 1, count);
 
   const renderCell = (row, column, trowIndex, tcolIndex) => {
     const {
@@ -77,8 +84,11 @@ const Table = ({
         </Box>,
       renderer:
         renderer?.[column?.rendererKey]?.({
+          trowIndex,
+          tcolIndex,
           row,
           cell,
+          key: key,
           value: cell,
         }),
       array:
@@ -116,8 +126,18 @@ const Table = ({
     );
   }
 
+  const handleFilterSubmit = (filterValues) => {
+    console.log('[Filter Values]', filterValues);
+  };
+
+  const onPageChange = (event, newPage) => {
+    router.push(`?page=${newPage}`);
+    handleChange(event, newPage);
+  }
+
   return (
     <>
+      <FilterComponent columns={columns} onFilterSubmit={handleFilterSubmit} />
       <TableContainer
         component={Paper}
         style={{ width: "100%", marginTop: "15px", marginBottom: "15px" }}
@@ -168,18 +188,17 @@ const Table = ({
       <div className="bottom-pagination">
         <div className="table-rows-counter">
           <p>
-            Showing {count > 0 ? skip + 1 : skip} to{" "}
-            {skip + (data && data.length)} of {count} entries
+            Showing {startIndex} to {endIndex} of {count} entries
           </p>
         </div>
         <div className="table-pagination">
-          {numberOfPages > 0 && (
+          {(
             <Pagination
               count={numberOfPages}
               showFirstButton={isShowFirstButton}
               showLastButton={isShowLastButton}
               page={currentPage}
-              onChange={handleChange}
+              onChange={onPageChange}
             />
           )}
         </div>
@@ -187,22 +206,5 @@ const Table = ({
     </>
   );
 }
-
-Table.defaultProps = {
-  data: [],
-  columns: [],
-  key: "key",
-  onClick: () => { },
-  errorMessage: "No data found",
-  pagination: {},
-  hiddenKeys: [],
-  aliasObject: {},
-  count: 0,
-  skip: 0,
-  hiddenAction: {},
-  toolTipKey: [],
-  tableClass: "",
-  renderer: {},
-};
 
 export default Table;
