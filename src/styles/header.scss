@@ -7,7 +7,7 @@
   z-index: 1;
 
   &-right {
-    width: 120px;
+    width: 140px;
     @include flex-center;
     margin-top: 2px;
     cursor: pointer;
@@ -26,6 +26,13 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: inherit;
+    max-width: 110px;
+  }
+
+  &-dropdown-item {
+    cursor: pointer;
+    text-decoration: none;
+    color: $secondary-text;
+    font-family: $nunito--semi;
   }
 }

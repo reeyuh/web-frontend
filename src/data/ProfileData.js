@@ -22,7 +22,7 @@ export const CHANGE_PASSWORD_INPUTS = [
     fields: [
       {
         label: "Current Password",
-        name: "CurrentPassword",
+        name: "current_password",
         placeholder: "Current Password",
         type: "password",
         isRequired: true,
@@ -52,3 +52,44 @@ export const CHANGE_PASSWORD_INPUTS = [
     btnList: [{ text: "Update Password" }],
   },
 ];
+
+export const MFA_FORM_INPUTS = {
+  header: {
+    heading: {
+      title: "One Time Password Setup",
+      className: "heading",
+    },
+    subheading: {
+      title: "",
+      className: "subheading",
+    },
+  },
+  errors: {
+    required: "Please enter six digit",
+  },
+  controls: [
+    {
+      controlType: "Radio",
+      labelGroup: [
+        {
+          label: "Send a one time password to the registered email address",
+          value: "email",
+        },
+        {
+          label: "Setup a mobile authenticator for one time password",
+          labelTwo: "Use the mobile authenticator to get a one time password",
+          value: "totp",
+        },
+      ],
+      xs: 12,
+      sm: 12,
+      md: 12,
+      lg: 12,
+      xl: 12,
+      key: "otp_type",
+      name: "otp_type",
+      hide: false,
+      boxSxProps: { py: 1 },
+    },
+  ],
+};

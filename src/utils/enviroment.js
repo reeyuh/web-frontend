@@ -24,6 +24,9 @@ export const host = () => {
   return get("HOST");
 };
 
-export const baseApiServer = (params) => {
+export const apiServer = (params) => {
   return get("API_SERVER")[params];
 };
+
+export const baseApiServer = get("API_SERVER")["PLAIN"];
+export const userApiServer = get("API_SERVER")["USER"];

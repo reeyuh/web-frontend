@@ -1,77 +1,49 @@
 import axios from "axios";
+import { getLocalStore } from "@/utils/commonFn";
 
-axios.defaults.withCredentials = true;
-
-const headers = { headers: {}, withCredentials: true };
-
-const goToHome = (baseUrl) => {
-  const login = window.location.origin + "/login";
-  if (window.location.href !== login && baseUrl.indexOf("/is-auth") === -1) {
-    window.location.href = window.location.origin + "/login";
-  }
+const token = getLocalStore("access_token");
+const header = {
+  headers: {
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  },
 };
 
 // GET Request
-export const getService = async (baseUrl) => {
+export const getService = async (url, customerHeader) => {
   try {
-    const response = await axios.get(baseUrl, headers);
+    const response = await axios.get(url, customerHeader || header);
     return [response?.data, null];
   } catch ({ response }) {
-    if (response?.status === 401) {
-      goToHome(baseUrl);
-    }
-    return [null, response && response.data];
+    return [null, response?.data];
   }
 };
 
 // POST Request
-export const postService = async (baseUrl, params) => {
+export const postService = async (url, params) => {
   try {
-    const response = await axios.post(baseUrl, request(params), headers);
+    const response = await axios.post(url, params, header);
     return [response?.data, null];
   } catch ({ response }) {
-    if (response?.status === 401) {
-      goToHome(baseUrl);
-    }
-    return [null, response && response.data];
-  }
-};
-
-// POST Request
-export const postFileService = async (baseUrl, params) => {
-  try {
-    const response = await axios.post(baseUrl, params, headers);
-    return [response?.data, null];
-  } catch ({ response }) {
-    if (response?.status === 401) {
-      goToHome(baseUrl);
-    }
-    return [null, response && response.data && response?.data];
+    return [null, response?.data];
   }
 };
 
 // PUT Request
-export const putService = async (baseUrl, params) => {
+export const putService = async (url, params) => {
   try {
-    const response = await axios.put(baseUrl, request(params), headers);
+    const response = await axios.put(url, params);
     return [response?.data, null];
   } catch ({ response }) {
-    if (response?.status === 401) {
-      goToHome(baseUrl);
-    }
-    return [null, response && response.data && response?.data];
+    return [null, response?.data];
   }
 };
 
 // DELETE Request
-export const deleteService = async (baseUrl) => {
+export const deleteService = async (url) => {
   try {
-    const response = await axios.delete(baseUrl, headers);
+    const response = await axios.delete(url);
     return [response?.data, null];
   } catch ({ response }) {
-    if (response?.status === 401) {
-      goToHome(baseUrl);
-    }
-    return [null, response && response.data];
+    return [null, response?.data];
   }
 };

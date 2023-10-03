@@ -22,9 +22,9 @@ export const MAX_FILE_UPLOAD_SIZE = 5242880;
 
 export const FIRST_NAME = {
   label: "First Name",
-  name: "firstName",
+  name: "first_name",
   placeholder: "First Name",
-  formControlClass: "my-4",
+  formControlClass: "mt-4 pt-0",
   fieldClass: "w-100",
   type: "text",
   isRequired: true,
@@ -39,9 +39,9 @@ export const FIRST_NAME = {
 
 export const LAST_NAME = {
   label: "Last Name",
-  name: "lastName",
+  name: "last_name",
   placeholder: "Last Name",
-  formControlClass: "my-4",
+  formControlClass: "mt-4 pt-0",
   fieldClass: "w-100",
   type: "text",
   isRequired: true,
@@ -56,9 +56,9 @@ export const LAST_NAME = {
 
 export const COMPANY = {
   label: "Company Name",
-  name: "company",
+  name: "organization",
   placeholder: "Company Name",
-  formControlClass: "my-4",
+  formControlClass: "mt-4 pt-0",
   fieldClass: "w-100",
   type: "text",
   isRequired: true,
@@ -75,7 +75,7 @@ export const EMAIL = {
   label: "Email",
   name: "email",
   placeholder: "Email Address",
-  formControlClass: "my-4",
+  formControlClass: "mt-4 pt-0",
   fieldClass: "w-100",
   type: "text",
   isRequired: true,
@@ -90,9 +90,9 @@ export const EMAIL = {
 
 export const NEW_PASSWORD = {
   label: "New Password",
-  name: "newPassword",
+  name: "new_password",
   placeholder: "New Password",
-  formControlClass: "my-4",
+  formControlClass: "mt-4 pt-0",
   fieldClass: "w-100",
   type: "password",
   isRequired: true,
@@ -116,9 +116,9 @@ export const NEW_PASSWORD = {
 
 export const CONFIRM_PASSWORD = {
   label: "Confirm New Password",
-  name: "confirmNewPassword",
+  name: "confirm_password",
   placeholder: "Confirm New Password",
-  formControlClass: "my-4",
+  formControlClass: "mt-4 pt-0",
   fieldClass: "w-100",
   type: "password",
   isRequired: true,
