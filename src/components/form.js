@@ -8,6 +8,10 @@ import {
   FormGroup,
   Alert,
   CircularProgress,
+  TextField,
+  FormControl,
+  Select,
+  MenuItem,
 } from "@mui/material";
 
 import { useForm } from "react-hook-form";
@@ -67,7 +71,7 @@ export const Form = ({
   return (
     <>
       <form autoComplete="off" onSubmit={handleSubmit(formSubmit)}>
-        <Card sx={{ overflow: "visible" }} className="form-card">
+        <Card sx={{ overflow: "visible" }} className="common-card">
           <CardContent className="p-md-3 p-0">
             {list?.map((group, index) => (
               <FormGroup className="form-group mb-md-3 mb-0" key={index}>
@@ -106,8 +110,26 @@ export const Form = ({
                         <Box className="px-md-3 px-0 py-2">
                           <label className="form-label">{field?.label}</label>
                           {(field?.type === "text" ||
-                            field?.type === "password") && (
+                            field?.type === "password" ||
+                            field?.type === "number" ||
+                            field?.type === "date") && (
                             <input {...inputRegister} {...otherProps} />
+                          )}
+
+                          {field?.type == "select" && (
+                            <FormControl fullWidth>
+                              <Select {...inputRegister} {...otherProps}>
+                                <MenuItem value="">Select</MenuItem>
+                                {field?.options.map((option, index) => (
+                                  <MenuItem
+                                    key={`option_${index}`}
+                                    value={option.value}
+                                  >
+                                    {option.label}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </FormControl>
                           )}
 
                           {field?.errors?.map((error, eindex) => (
@@ -132,14 +154,14 @@ export const Form = ({
                   </Box>
                 )}
 
-                {!hidden.btnSection && (
+                {!hidden?.btnSection && (
                   <Btns isLoading={isLoading} list={group?.btnList || []} />
                 )}
               </FormGroup>
             ))}
 
             <>
-              {!hidden.btnSection && (
+              {!hidden?.btnSection && (
                 <Btns isLoading={isLoading} list={btnList} />
               )}
             </>

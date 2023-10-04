@@ -2,13 +2,11 @@ import {
   Box,
   CircularProgress,
   FormControlLabel,
-  TextField,
   RadioGroup,
   Radio,
   Card,
   CardContent,
   FormGroup,
-  Grid,
   Alert,
 } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -91,7 +89,7 @@ export const MfaOptions = ({ values, fetchProfile }) => {
 
   return (
     <form autoComplete="off" onSubmit={otpHandleSubmit(onEnabledMfa)}>
-      <Card sx={{ overflow: "visible" }} className="form-card">
+      <Card sx={{ overflow: "visible" }} className="common-card">
         <CardContent className="p-md-3 p-0">
           <FormGroup className="form-group mb-md-3 mb-0">
             <h5 className="form-group-name mb-3">
