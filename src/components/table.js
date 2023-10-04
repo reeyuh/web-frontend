@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React from "react";
 import {
   Box,
   Paper,
@@ -13,30 +13,28 @@ import {
   Pagination,
   Tooltip,
 } from "@mui/material";
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import FilterComponent from './FilterComponent';
+import Image from "next/image";
 import "@/styles/table.scss";
 
 const Table = ({
   data = [],
   columns = [],
-  renderer = {},
+  renderers = {},
   errorMessage = "No data found",
   pagination = {},
-  count = 0,
+  onClickFns = {},
 }) => {
-  const router = useRouter();
   const {
     isShowFirstButton = true,
     isShowLastButton = true,
     numberOfPages = 0,
     currentPage = 0,
     itemsPerPage = 10,
-    handleChange = () => { },
+    handleChange = () => {},
+    count = 0,
   } = pagination;
 
-  const startIndex = (currentPage - 1) * itemsPerPage + 1;
+  const startIndex = count > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0;
   const endIndex = Math.min(startIndex + itemsPerPage - 1, count);
 
   const renderCell = (row, column, trowIndex, tcolIndex) => {
@@ -44,140 +42,147 @@ const Table = ({
       hide,
       key,
       actions,
-      onClick,
+      clickFnName,
       target,
       showToolTip,
-      toolTipKey
+      toolTipKey,
+      componentName,
+      componentProps,
     } = column;
+
+    if (hide) {
+      return null;
+    }
+
     const type = column.type || "text";
     const cell = row[key];
 
+    const Component = renderers?.[componentName];
+
     const content = {
-      file: <Image src={cell} alt="img" height={40} />,
-      innerHTML: <span dangerouslySetInnerHTML={{ __html: cell, }}></span>,
-      text: <span>{showToolTip ? row[toolTipKey] : cell}</span>,
-      link: <a href={cell} target={target || '_blank'}>{cell}</a>,
-      actions:
+      image: <Image src={cell} alt="img" height={40} />,
+      innerHTML: <span dangerouslySetInnerHTML={{ __html: cell }}></span>,
+      text: cell,
+      link: (
+        <a href={cell} target={target || "_blank"}>
+          {cell}
+        </a>
+      ),
+      actions: (
         <Box>
           {actions?.map((action, actionIndex) => (
             <React.Fragment key={`action_${actionIndex}`}>
               <span
-                style={{ cursor: 'pointer' }}
+                style={{ cursor: "pointer" }}
                 className={action.actionClass}
                 onClick={(event) => {
                   event.stopPropagation();
-                  action.onClickAction(
-                    {
-                      action,
-                      row,
-                      actionIndex,
-                      cell
-                    },
-                    event
-                  )
-                }
-                }
+                  action?.clickFnName &&
+                    onClickFns?.[action.clickFnName]?.(
+                      {
+                        row,
+                        column,
+                        trowIndex,
+                        tcolIndex,
+                        action,
+                        actionIndex,
+                        cell,
+                      },
+                      event
+                    );
+                }}
               >
-                <action.icon />
+                {action.icon && <action.icon />}
+                {action.text && (
+                  <span className={action.className}> {action.text}</span>
+                )}
               </span>
             </React.Fragment>
           ))}
-        </Box>,
-      renderer:
-        renderer?.[column?.rendererKey]?.({
-          trowIndex,
-          tcolIndex,
-          row,
-          cell,
-          key: key,
-          value: cell,
-        }),
-      array:
-        <span>
-          {cell?.multiValue?.map(
-            (multiVal, multiIndex) => (
-              <span
-                hidden={hide}
-                key={`mutli_${multiIndex}`}
-              >
+        </Box>
+      ),
+      renderer: Component && (
+        <Component
+          {...cell}
+          {...componentProps}
+          cell={cell}
+          row={row}
+          column={column}
+          trowIndex={trowIndex}
+          tcolIndex={tcolIndex}
+        />
+      ),
+      array: (
+        <>
+          {!hide &&
+            cell?.multiValue?.map((multiVal, multiIndex) => (
+              <span key={`mutli_${trowIndex}${tcolIndex}${multiIndex}`}>
                 {multiVal?.value}
               </span>
-            )
-          )}
-        </span>
+            ))}
+        </>
+      ),
     }[type];
 
     return (
       <TableCell
-        hidden={hide}
-        onClick={(event) => onClick && onClick(
-          {
-            action: { key },
-            row,
-            trowIndex
-          },
-          event
-        )}
-      >
-        {showToolTip
-          ? <Tooltip enterDelay={500} leaveDelay={200} title={cell.toolTipText}>{content}</Tooltip>
-          : content
+        key={`tdata_cell_${trowIndex}${tcolIndex}`}
+        onClick={(event) =>
+          clickFnName &&
+          onClickFns?.[clickFnName]?.(
+            {
+              row,
+              column,
+              trowIndex,
+              tcolIndex,
+              cell,
+            },
+            event
+          )
         }
+      >
+        {showToolTip ? (
+          <Tooltip enterDelay={500} leaveDelay={200} title={row[toolTipKey]}>
+            {content}
+          </Tooltip>
+        ) : (
+          content
+        )}
       </TableCell>
     );
-  }
-
-  const handleFilterSubmit = (filterValues) => {
-    console.log('[Filter Values]', filterValues);
   };
-
-  const onPageChange = (event, newPage) => {
-    router.push(`?page=${newPage}`);
-    handleChange(event, newPage);
-  }
 
   return (
     <>
-      <FilterComponent columns={columns} onFilterSubmit={handleFilterSubmit} />
-      <TableContainer
-        component={Paper}
-        style={{ width: "100%", marginTop: "15px", marginBottom: "15px" }}
-      >
-        <DataTable className={"common-table"}>
+      <TableContainer component={Paper} className="common-card">
+        <DataTable>
           <TableHead>
-            <TableRow key={"thead-key"}>
-              {
-                columns.map((column, index) => {
-                  const {
-                    hide,
-                    headClass,
-                    label,
-                  } = column;
-                  return (
-                    <TableCell
-                      hidden={hide}
-                      key={`thead_${index}`}
-                      className={headClass}
-                    >
-                      {label}
-                    </TableCell>
-                  );
-                })
-              }
+            <TableRow>
+              {columns.map((column, index) => {
+                const { hide, headClass, label } = column;
+                if (hide) {
+                  return null;
+                }
+                return (
+                  <TableCell key={`thead_${index}`} className={headClass}>
+                    {label}
+                  </TableCell>
+                );
+              })}
             </TableRow>
           </TableHead>
           <TableBody>
-            {data && data.map((row, trowIndex) => (
-              <TableRow key={`tdatarow_${trowIndex}`}>
-                {columns.map((column, tcolIndex) => renderCell(row, column, trowIndex, tcolIndex))}
-              </TableRow>
-            ))}
+            {data &&
+              data.map((row, trowIndex) => (
+                <TableRow key={`tdatarow_${trowIndex}`}>
+                  {columns.map((column, tcolIndex) =>
+                    renderCell(row, column, trowIndex, tcolIndex)
+                  )}
+                </TableRow>
+              ))}
             {data?.length === 0 && (
               <TableRow key={"error-message"}>
-                <TableCell
-                  colSpan={columns?.length}
-                  align="center"
-                >
+                <TableCell colSpan={columns?.length} align="center">
                   {data?.length === 0 && errorMessage}
                 </TableCell>
               </TableRow>
@@ -186,26 +191,22 @@ const Table = ({
         </DataTable>
       </TableContainer>
 
-      <div className="bottom-pagination">
-        <div className="table-rows-counter">
-          <p>
-            Showing {startIndex} to {endIndex} of {count} entries
-          </p>
-        </div>
-        <div className="table-pagination">
-          {(
-            <Pagination
-              count={numberOfPages}
-              showFirstButton={isShowFirstButton}
-              showLastButton={isShowLastButton}
-              page={currentPage}
-              onChange={onPageChange}
-            />
-          )}
+      <div className="d-flex align-items-center justify-content-between my-4">
+        <p className="m-0">
+          Showing {startIndex} to {endIndex} of {count} entries
+        </p>
+        <div>
+          <Pagination
+            count={numberOfPages}
+            showFirstButton={isShowFirstButton}
+            showLastButton={isShowLastButton}
+            page={currentPage}
+            onChange={handleChange}
+          />
         </div>
       </div>
     </>
   );
-}
+};
 
 export default Table;

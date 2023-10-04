@@ -139,3 +139,41 @@ export const CONFIRM_PASSWORD = {
     },
   ],
 };
+
+export const SAMPLE_COLUMNS = [
+  {
+    key: "title",
+    label: "title",
+    type: "text",
+  },
+  {
+    key: "id",
+    label: "User Id",
+    hide: true,
+  },
+  {
+    key: "ebook_access",
+    label: "Ebook Access",
+    type: "text",
+  },
+  {
+    key: "isActive",
+    label: "Active",
+    type: "renderer",
+    componentName: "SelectList",
+    componentProps: {},
+  },
+  {
+    key: "id",
+    label: "Actions",
+    type: "actions",
+    actions: [
+      {
+        type: "delete",
+        actionClass: "delete-action",
+        text: "Delete",
+        clickFnName: "deleteData",
+      },
+    ],
+  },
+];
