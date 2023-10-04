@@ -8,6 +8,10 @@ import {
   FormGroup,
   Alert,
   CircularProgress,
+  TextField,
+  FormControl,
+  Select,
+  MenuItem,
 } from "@mui/material";
 
 import { useForm } from "react-hook-form";
@@ -46,7 +50,7 @@ export const Btns = ({ list = [], isLoading }) => {
 
 export const Form = ({
   list,
-  formSubmit = () => {},
+  formSubmit = () => { },
   btnList,
   values,
   actionHandler = {},
@@ -105,9 +109,24 @@ export const Form = ({
                       >
                         <Box className="px-md-3 px-0 py-2">
                           <label className="form-label">{field?.label}</label>
-                          {(field?.type === "text" ||
-                            field?.type === "password") && (
-                            <input {...inputRegister} {...otherProps} />
+                          {(
+                            field?.type === "text" ||
+                            field?.type === "password" ||
+                            field?.type === "number" ||
+                            field?.type === "date") && (
+                              <input {...inputRegister} {...otherProps} />
+                            )}
+                          {field?.type == 'select' && (
+                            <FormControl fullWidth>
+                              <Select {...inputRegister} {...otherProps}>
+                                <MenuItem value="">Select</MenuItem>
+                                {field?.options.map((option, index) => (
+                                  <MenuItem key={`option_${index}`} value={option.value}>
+                                    {option.label}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </FormControl>
                           )}
 
                           {field?.errors?.map((error, eindex) => (
