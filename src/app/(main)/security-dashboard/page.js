@@ -6,7 +6,6 @@ import { useSearchParams } from "next/navigation";
 import { SECURITY_COLUMNS } from "@/data/securityData";
 import { apiList } from "@/utils";
 import { useRouter } from "next/navigation";
-import sample from './SampleData.json';
 import { getPaginationProps } from "@/utils/commonFn";
 
 export default function SecurityTable() {
@@ -38,9 +37,6 @@ export default function SecurityTable() {
                     setTotalCount(result.numFound);
                 }
             } catch (error) {
-                const { startIndex, lastIndex } = calculateIndices(currentPage);
-                setData(sample.slice(startIndex, lastIndex));
-                setTotalCount(sample.length);
                 console.error("Error fetching security data:", error);
             }
         };
@@ -49,8 +45,6 @@ export default function SecurityTable() {
     }, [currentPage]);
 
     const handlePaginationChange = (event, page) => {
-        const { startIndex } = calculateIndices(page);
-        setData(sample.slice(startIndex));
         router.push(`?page=${page}`);
     };
 
