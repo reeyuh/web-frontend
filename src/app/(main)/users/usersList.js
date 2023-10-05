@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { USER_COLUMNS } from "@/data/userData";
 import { apiList } from "@/utils";
 import { useRouter } from "next/navigation";
+import { getPaginationProps } from "@/utils/commonFn";
 
 export default function UserList() {
   const router = useRouter();
@@ -42,12 +43,7 @@ export default function UserList() {
 
   return (
     <Table
-      pagination={{
-        numberOfPages: Math.ceil(totalCount / itemsPerPage),
-        currentPage: totalCount > 0 ? currentPage : 0,
-        count: totalCount,
-        handleChange: handlePaginationChange,
-      }}
+      pagination={getPaginationProps(totalCount, currentPage, itemsPerPage, handlePaginationChange)}
       columns={USER_COLUMNS}
       data={data}
     />

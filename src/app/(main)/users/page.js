@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { UsersList } from "./usersList";
+import UsersList from "./usersList";
 
 function Users() {
   return <UsersList />;

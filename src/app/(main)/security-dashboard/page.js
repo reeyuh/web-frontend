@@ -7,6 +7,7 @@ import { SECURITY_COLUMNS } from "@/data/securityData";
 import { apiList } from "@/utils";
 import { useRouter } from "next/navigation";
 import sample from './SampleData.json';
+import { getPaginationProps } from "@/utils/commonFn";
 
 export default function SecurityTable() {
     const router = useRouter();
@@ -55,12 +56,7 @@ export default function SecurityTable() {
 
     return (
         <Table
-            pagination={{
-                numberOfPages: Math.ceil(totalCount / itemsPerPage),
-                currentPage: totalCount > 0 ? currentPage : 0,
-                count: totalCount,
-                handleChange: handlePaginationChange,
-            }}
+            pagination={getPaginationProps(totalCount, currentPage, itemsPerPage, handlePaginationChange)}
             columns={SECURITY_COLUMNS}
             data={data}
         />
