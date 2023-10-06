@@ -18,22 +18,23 @@ export default function UserList() {
   const [currentPage, setCurrentPage] = useState(parseInt(page));
   const itemsPerPage = 10;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${apiList.userData}&offset=${(currentPage - 1) * itemsPerPage}&limit=${itemsPerPage}`
-        );
-        const result = await response.json();
-        if (result.docs) {
-          setData(result.docs);
-          setTotalCount(result.numFound);
-        }
-      } catch (error) {
-        console.error("Error fetching security data:", error);
+  const fetchData = async () => {
+    try {
+      const response = await fetch(
+        `${apiList.userData}&offset=${(currentPage - 1) * itemsPerPage}&limit=${itemsPerPage}`
+      );
+      const result = await response.json();
+      if (result.docs) {
+        setData(result.docs);
+        setTotalCount(result.numFound);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching security data:", error);
+    }
+  };
 
+  useEffect(() => {
+    setCurrentPage(parseInt(page));
     fetchData();
   }, [currentPage]);
 

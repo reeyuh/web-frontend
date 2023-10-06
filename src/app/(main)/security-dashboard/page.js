@@ -17,30 +17,24 @@ export default function SecurityTable() {
     const [totalCount, setTotalCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(parseInt(page));
     const itemsPerPage = 10;
-    const totalRecords = 12;
 
-    function calculateIndices(pageNumber) {
-        const startIndex = (pageNumber - 1) * itemsPerPage;
-        const lastIndex = Math.min(startIndex + itemsPerPage - 1, totalRecords - 1);
-        return { startIndex, lastIndex };
-    }
+    const fetchData = async () => {
+        try {
+            const response = await fetch(
+                `${apiList.securityTable}&offset=${(currentPage - 1) * itemsPerPage}&limit=${itemsPerPage}`
+            );
+            const result = await response.json();
+            if (result.docs) {
+                setData(result.docs);
+                setTotalCount(result.numFound);
+            }
+        } catch (error) {
+            console.error("Error fetching security data:", error);
+        }
+    };
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(
-                    `${apiList.securityTable}&offset=${(currentPage - 1) * itemsPerPage}&limit=${itemsPerPage}`
-                );
-                const result = await response.json();
-                if (result.docs) {
-                    setData(result.docs);
-                    setTotalCount(result.numFound);
-                }
-            } catch (error) {
-                console.error("Error fetching security data:", error);
-            }
-        };
-
+        setCurrentPage(parseInt(page));
         fetchData();
     }, [currentPage]);
 
