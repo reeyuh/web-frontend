@@ -1,20 +1,19 @@
 export const PAGE_HEADER = {
   "/agent-status": {
     title: "Agent Status",
-    summary: "Agent status summary",
+    summary: "List of agents and their status summary",
   },
   "/users": {
     title: "Users List",
-    summary: "Users list summary",
-    btnList: [{ text: "Create" }],
-  },
-  "/users/create": {
-    title: "Create User",
-    summary: "Create user summary",
+    summary: "List of all the users",
   },
   "/profile": {
     title: "Profile",
     summary:
       "Update your personal data, change password, setup multi-factor authentication mode",
+  },
+  "/security-dashboard": {
+    title: "Security Dashboard",
+    summary: "List of data and their security status",
   },
 };

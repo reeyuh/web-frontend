@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { AGENT_COLUMNS } from "@/data/agentStatusData";
 import { getService, apiList } from "@/utils";
 import { useRouter } from "next/navigation";
+import { getPaginationProps } from "@/utils/commonFn";
 
 export default function AgentStatus() {
   const router = useRouter();
@@ -43,13 +44,7 @@ export default function AgentStatus() {
 
   return (
     <Table
-      pagination={{
-        numberOfPages: Math.ceil(totalCount / itemsPerPage),
-        currentPage: totalCount > 0 ? currentPage : 0,
-        count: totalCount,
-        itemsPerPage,
-        handleChange: handlePaginationChange,
-      }}
+      pagination={getPaginationProps(totalCount, currentPage, itemsPerPage, handlePaginationChange)}
       columns={AGENT_COLUMNS}
       data={data}
       isLoading={isLoading}

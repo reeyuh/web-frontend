@@ -7,6 +7,7 @@ import { Select, MenuItem } from "@mui/material";
 import { SAMPLE_COLUMNS } from "@/data/commonData";
 import { getService, apiList } from "@/utils";
 import { useRouter } from "next/navigation";
+import { getPaginationProps } from "@/utils/commonFn";
 
 const RenderActiveColumn = ({ row, cell, key, onUpdate }) => {
   const [activeValue, setActiveValue] = useState(cell);
@@ -89,12 +90,7 @@ export default function Dashboard() {
 
   return (
     <Table
-      pagination={{
-        numberOfPages: Math.ceil(totalCount / itemsPerPage),
-        currentPage: totalCount > 0 ? currentPage : 0,
-        count: totalCount,
-        handleChange: handlePaginationChange,
-      }}
+      pagination={getPaginationProps(totalCount, currentPage, itemsPerPage, handlePaginationChange)}
       columns={SAMPLE_COLUMNS}
       data={data}
       renderers={renderer}
