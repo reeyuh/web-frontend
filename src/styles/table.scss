@@ -1,8 +1,9 @@
-// .bottom-pagination {
-//     text-align: center;
+.table {
+  &-head {
+    font-family: $nunito--bold;
+  }
 
-//     & nav {
-//         display: flex;
-//         justify-content: center;
-//     }
-// }
+  &-body {
+    font-family: $nunito;
+  }
+}

@@ -85,9 +85,7 @@ export default function Dashboard() {
     updatedValue
   ) => {};
 
-  const deleteData = (data, e) => {
-    console.log(data, e);
-  };
+  const deleteData = (data, e) => {};
 
   return (
     <Table

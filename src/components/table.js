@@ -12,6 +12,7 @@ import {
   TableRow,
   Pagination,
   Tooltip,
+  CircularProgress,
 } from "@mui/material";
 import Image from "next/image";
 import "@/styles/table.scss";
@@ -23,6 +24,7 @@ const Table = ({
   errorMessage = "No data found",
   pagination = {},
   onClickFns = {},
+  isLoading = false,
 }) => {
   const {
     isShowFirstButton = true,
@@ -48,6 +50,7 @@ const Table = ({
       toolTipKey,
       componentName,
       componentProps,
+      bodyClass,
     } = column;
 
     if (hide) {
@@ -126,6 +129,7 @@ const Table = ({
 
     return (
       <TableCell
+        className={`table-body ${bodyClass}`}
         key={`tdata_cell_${trowIndex}${tcolIndex}`}
         onClick={(event) =>
           clickFnName &&
@@ -164,7 +168,10 @@ const Table = ({
                   return null;
                 }
                 return (
-                  <TableCell key={`thead_${index}`} className={headClass}>
+                  <TableCell
+                    key={`thead_${index}`}
+                    className={`table-head ${headClass}`}
+                  >
                     {label}
                   </TableCell>
                 );
@@ -173,6 +180,7 @@ const Table = ({
           </TableHead>
           <TableBody>
             {data &&
+              !isLoading &&
               data.map((row, trowIndex) => (
                 <TableRow key={`tdatarow_${trowIndex}`}>
                   {columns.map((column, tcolIndex) =>
@@ -180,10 +188,25 @@ const Table = ({
                   )}
                 </TableRow>
               ))}
-            {data?.length === 0 && (
-              <TableRow key={"error-message"}>
-                <TableCell colSpan={columns?.length} align="center">
-                  {data?.length === 0 && errorMessage}
+            {data?.length === 0 && !isLoading && (
+              <TableRow>
+                <TableCell
+                  colSpan={columns?.length}
+                  align="center"
+                  className="table-body"
+                >
+                  {errorMessage}
+                </TableCell>
+              </TableRow>
+            )}
+            {data?.length === 0 && isLoading && (
+              <TableRow>
+                <TableCell
+                  colSpan={columns?.length}
+                  align="center"
+                  className="table-body"
+                >
+                  <CircularProgress />
                 </TableCell>
               </TableRow>
             )}
@@ -191,20 +214,23 @@ const Table = ({
         </DataTable>
       </TableContainer>
 
-      <div className="d-flex align-items-center justify-content-between my-4">
-        <p className="m-0">
-          Showing {startIndex} to {endIndex} of {count} entries
-        </p>
-        <div>
-          <Pagination
-            count={numberOfPages}
-            showFirstButton={isShowFirstButton}
-            showLastButton={isShowLastButton}
-            page={currentPage}
-            onChange={handleChange}
-          />
+      {count > 0 && (
+        <div className="d-flex align-items-center justify-content-between my-4">
+          <p className="m-0">
+            Showing {startIndex} to {endIndex} of {count}{" "}
+            {count == 1 ? "entry" : "entries"}
+          </p>
+          <div>
+            <Pagination
+              count={numberOfPages}
+              showFirstButton={isShowFirstButton}
+              showLastButton={isShowLastButton}
+              page={currentPage}
+              onChange={handleChange}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
