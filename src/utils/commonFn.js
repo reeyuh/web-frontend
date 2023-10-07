@@ -30,4 +30,13 @@ const getLocalStore = (value) => {
   return null;
 };
 
-export { getInitials, setAccessToken, redirectToSsoUrl, getLocalStore };
+const getPaginationProps = (totalCount, currentPage, itemsPerPage, handlePaginationChange) => {
+  return {
+    numberOfPages: Math.ceil(totalCount / itemsPerPage),
+    currentPage: totalCount > 0 ? currentPage : 0,
+    count: totalCount,
+    handleChange: handlePaginationChange,
+  };
+};
+
+export { getInitials, setAccessToken, redirectToSsoUrl, getPaginationProps, getLocalStore };

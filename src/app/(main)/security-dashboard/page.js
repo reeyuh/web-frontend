@@ -3,12 +3,12 @@
 import Table from "@/components/table";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { USER_COLUMNS } from "@/data/userData";
+import { SECURITY_COLUMNS } from "@/data/securityData";
 import { apiList, getService } from "@/utils";
 import { useRouter } from "next/navigation";
 import { getPaginationProps } from "@/utils/commonFn";
 
-export default function UserList() {
+export default function SecurityTable() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = searchParams.get("page") || 1;
@@ -20,7 +20,7 @@ export default function UserList() {
 
   const fetchData = async () => {
     const result = await getService(
-      `${apiList.userData}&offset=${
+      `${apiList.securityData}&offset=${
         (currentPage - 1) * itemsPerPage
       }&limit=${itemsPerPage}`
     );
@@ -29,6 +29,7 @@ export default function UserList() {
       setTotalCount(result[0].numFound);
     }
   };
+
   useEffect(() => {
     setCurrentPage(parseInt(page));
     fetchData();
@@ -46,7 +47,7 @@ export default function UserList() {
         itemsPerPage,
         handlePaginationChange
       )}
-      columns={USER_COLUMNS}
+      columns={SECURITY_COLUMNS}
       data={data}
     />
   );
