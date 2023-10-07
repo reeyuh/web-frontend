@@ -18,6 +18,6 @@ export const apiList = {
   enableMfa: `${userApiServer}enable_mfa`,
   verifyMfaOtp: `${userApiServer}verify_mfa_otp`,
   agentStatus: "https://openlibrary.org/search.json?q=the+lord+of+the+rings",
-  securityData: "https://openlibrary.org/search.json?q=the+lord+of+the+rings",
-  userData: "https://openlibrary.org/search.json?q=the+lord+of+the+rings",
+  securityData: "http://openlibrary.org/search.json?q=the+lord+of+the+rings",
+  userData: "http://openlibrary.org/search.json?q=the+lord+of+the+rings",
 };

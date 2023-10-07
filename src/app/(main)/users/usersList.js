@@ -4,7 +4,7 @@ import Table from "@/components/table";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { USER_COLUMNS } from "@/data/userData";
-import { apiList } from "@/utils";
+import { apiList, getService } from "@/utils";
 import { useRouter } from "next/navigation";
 import { getPaginationProps } from "@/utils/commonFn";
 
@@ -19,20 +19,16 @@ export default function UserList() {
   const itemsPerPage = 10;
 
   const fetchData = async () => {
-    try {
-      const response = await fetch(
-        `${apiList.userData}&offset=${(currentPage - 1) * itemsPerPage}&limit=${itemsPerPage}`
-      );
-      const result = await response.json();
-      if (result.docs) {
-        setData(result.docs);
-        setTotalCount(result.numFound);
-      }
-    } catch (error) {
-      console.error("Error fetching security data:", error);
+    const result = await getService(
+      `${apiList.userData}&offset=${
+        (currentPage - 1) * itemsPerPage
+      }&limit=${itemsPerPage}`
+    );
+    if (result[0]?.docs) {
+      setData(result[0].docs);
+      setTotalCount(result[0].numFound);
     }
   };
-
   useEffect(() => {
     setCurrentPage(parseInt(page));
     fetchData();
@@ -44,7 +40,12 @@ export default function UserList() {
 
   return (
     <Table
-      pagination={getPaginationProps(totalCount, currentPage, itemsPerPage, handlePaginationChange)}
+      pagination={getPaginationProps(
+        totalCount,
+        currentPage,
+        itemsPerPage,
+        handlePaginationChange
+      )}
       columns={USER_COLUMNS}
       data={data}
     />
