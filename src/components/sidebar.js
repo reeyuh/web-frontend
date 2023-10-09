@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SIDEBAR_MENU_LIST } from "@/data/SidebarData";
+import { SIDEBAR_MENU_LIST } from "@/data/sidebarData";
 import Image from "next/image";
 import Logo from "@/assets/images/logo.png";
 import MenuIcon from "@mui/icons-material/Menu";

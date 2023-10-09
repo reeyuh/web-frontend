@@ -8,7 +8,7 @@ import {
   EMAIL,
   NEW_PASSWORD,
   CONFIRM_PASSWORD,
-} from "./CommonData";
+} from "./commonData";
 
 const PASSWORD = {
   label: "Password",

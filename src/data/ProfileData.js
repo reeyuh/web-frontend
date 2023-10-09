@@ -6,7 +6,7 @@ import {
   EMAIL,
   NEW_PASSWORD,
   CONFIRM_PASSWORD,
-} from "./CommonData";
+} from "./commonData";
 
 export const PROFILE_INPUTS = [
   {

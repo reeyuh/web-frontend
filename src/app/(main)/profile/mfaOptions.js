@@ -14,7 +14,7 @@ import { Controller, useForm } from "react-hook-form";
 import { getService, postService } from "@/utils/httpService";
 import { apiList } from "@/utils/apiList";
 import { PrimaryButton } from "@/components";
-import { VALIDATION } from "@/data/CommonData";
+import { VALIDATION } from "@/data/commonData";
 import QRCode from "qrcode";
 import styled from "@emotion/styled";
 
