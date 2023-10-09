@@ -28,11 +28,11 @@ const HealthStatus = ({ row }) => {
       <div className={`mb-1 common-circle-${row.cpu_usage}`}>
         CPU Status: {row.cpu_usage}
       </div>
+      <div className={`common-circle-${row.ram_usage}`}>
+        RAM Status: {row.ram_usage}
+      </div>
       <div className={`mb-1 common-circle-${row.disk_usage}`}>
         Disk Status: {row.disk_usage}
-      </div>
-      <div className={`common-circle-${row.ram_usage}`}>
-        Ram Status: {row.ram_usage}
       </div>
     </>
   );
