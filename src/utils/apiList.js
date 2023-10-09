@@ -20,4 +20,6 @@ export const apiList = {
   agentStatus: "https://openlibrary.org/search.json?q=the+lord+of+the+rings",
   securityData: "http://openlibrary.org/search.json?q=the+lord+of+the+rings",
   userData: "http://openlibrary.org/search.json?q=the+lord+of+the+rings",
+  policyMgmtData: "http://openlibrary.org/search.json?q=the+lord+of+the+rings",
+  auditData: "http://openlibrary.org/search.json?q=the+lord+of+the+rings",
 };
