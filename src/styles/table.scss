@@ -1,8 +1,22 @@
-// .bottom-pagination {
-//     text-align: center;
+.table {
+  &-head {
+    font-family: $nunito--bold;
+    background: var(--bs-light);
+  }
 
-//     & nav {
-//         display: flex;
-//         justify-content: center;
-//     }
-// }
+  &-body {
+    font-family: $nunito;
+  }
+
+  &-min-145 {
+    min-width: 145px;
+  }
+
+  &-min-117 {
+    min-width: 117px;
+  }
+
+  &-min-125 {
+    min-width: 125px;
+  }
+}

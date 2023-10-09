@@ -2,6 +2,7 @@
   "APP_ENV": "development",
   "API_SERVER": {
     "PLAIN": "https://dev-api.truenil.io/",
-    "USER": "https://dev-api.truenil.io/user/"
+    "USER": "https://dev-api.truenil.io/user/",
+    "AGENT": "https://dev-api.truenil.io/agent/"
   }
 }

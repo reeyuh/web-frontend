@@ -1,4 +1,4 @@
-import { userApiServer } from "./enviroment";
+import { userApiServer, agentApiServer } from "./enviroment";
 
 export const apiList = {
   ssoUrl: `${userApiServer}get_sso_url`,
@@ -17,7 +17,7 @@ export const apiList = {
   getQRlink: `${userApiServer}generate_mfa_uri`,
   enableMfa: `${userApiServer}enable_mfa`,
   verifyMfaOtp: `${userApiServer}verify_mfa_otp`,
-  agentStatus: "https://openlibrary.org/search.json?q=the+lord+of+the+rings",
-  securityData: "http://openlibrary.org/search.json?q=the+lord+of+the+rings",
-  userData: "http://openlibrary.org/search.json?q=the+lord+of+the+rings",
+  agentStatus: `${agentApiServer}agent_status_list`,
+  securityData: `${agentApiServer}agent_status_list`,
+  userData: `${agentApiServer}agent_status_list`,
 };
