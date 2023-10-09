@@ -129,7 +129,7 @@ const Table = ({
 
     return (
       <TableCell
-        className={`table-body ${bodyClass}`}
+        className={`table-body py-2 ${bodyClass}`}
         key={`tdata_cell_${trowIndex}${tcolIndex}`}
         onClick={(event) =>
           clickFnName &&
@@ -170,7 +170,7 @@ const Table = ({
                 return (
                   <TableCell
                     key={`thead_${index}`}
-                    className={`table-head ${headClass}`}
+                    className={`table-head py-2 ${headClass}`}
                   >
                     {label}
                   </TableCell>
@@ -215,12 +215,12 @@ const Table = ({
       </TableContainer>
 
       {count > 0 && (
-        <div className="d-flex align-items-center justify-content-between my-4">
-          <p className="m-0">
+        <div className="d-block d-md-flex align-items-center justify-content-between my-4">
+          <p className="m-md-0 text-center mb-3">
             Showing {startIndex} to {endIndex} of {count}{" "}
             {count == 1 ? "entry" : "entries"}
           </p>
-          <div>
+          <div className="d-flex justify-content-center">
             <Pagination
               count={numberOfPages}
               showFirstButton={isShowFirstButton}

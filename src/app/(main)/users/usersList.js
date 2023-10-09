@@ -14,25 +14,29 @@ export default function UserList() {
   const page = searchParams.get("page") || 1;
 
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(parseInt(page));
   const itemsPerPage = 10;
 
-  const fetchData = async () => {
+  const fetchData = async (pageCount) => {
     const result = await getService(
-      `${apiList.userData}&offset=${
-        (currentPage - 1) * itemsPerPage
+      `${apiList.userData}?offset=${
+        (pageCount - 1) * itemsPerPage
       }&limit=${itemsPerPage}`
     );
-    if (result[0]?.docs) {
-      setData(result[0].docs);
-      setTotalCount(result[0].numFound);
+    if (result[0]?.data) {
+      setData(result[0].data.list);
+      setTotalCount(result[0].data.total_count);
+      setIsLoading(false);
     }
   };
+
   useEffect(() => {
-    setCurrentPage(parseInt(page));
-    fetchData();
-  }, [currentPage]);
+    const pageCount = parseInt(page);
+    setCurrentPage(pageCount);
+    fetchData(pageCount);
+  }, [page]);
 
   const handlePaginationChange = (event, page) => {
     router.push(`?page=${page}`);
@@ -48,6 +52,7 @@ export default function UserList() {
       )}
       columns={USER_COLUMNS}
       data={data}
+      isLoading={isLoading}
     />
   );
 }

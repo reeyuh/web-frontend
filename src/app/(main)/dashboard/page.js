@@ -56,7 +56,7 @@ export default function Dashboard() {
   };
   const fetchData = async () => {
     const result = await getService(
-      `${apiList.agentStatus}&offset=${
+      `${apiList.agentStatus}?offset=${
         (currentPage - 1) * itemsPerPage
       }&limit=${itemsPerPage}`
     );
@@ -90,7 +90,12 @@ export default function Dashboard() {
 
   return (
     <Table
-      pagination={getPaginationProps(totalCount, currentPage, itemsPerPage, handlePaginationChange)}
+      pagination={getPaginationProps(
+        totalCount,
+        currentPage,
+        itemsPerPage,
+        handlePaginationChange
+      )}
       columns={SAMPLE_COLUMNS}
       data={data}
       renderers={renderer}

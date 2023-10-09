@@ -70,7 +70,7 @@ export default function SignIn() {
         setAccessToken(response[0].data);
         await setCookie("_d", response[0].data.access_token);
         setTimeout(() => {
-          router.replace("/dashboard");
+          router.replace("/agent-status");
         }, 100);
       } else {
         setAccessToken(data);

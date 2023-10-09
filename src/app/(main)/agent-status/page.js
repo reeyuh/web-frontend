@@ -8,6 +8,36 @@ import { getService, apiList } from "@/utils";
 import { useRouter } from "next/navigation";
 import { getPaginationProps } from "@/utils/commonFn";
 
+const LiveOffline = ({ row }) => (
+  <>
+    {row.cpu_usage === "offline" ? (
+      <div className={`common-${row.cpu_usage}`}>
+        <span className="common-offline-dot d-inline-block me-2"></span>Offline
+      </div>
+    ) : (
+      <div className={`common-live`}>
+        <span className="common-live-dot d-inline-block me-2"></span>Live
+      </div>
+    )}
+  </>
+);
+
+const HealthStatus = ({ row }) => {
+  return (
+    <>
+      <div className={`mb-1 common-circle-${row.cpu_usage}`}>
+        CPU Status: {row.cpu_usage}
+      </div>
+      <div className={`mb-1 common-circle-${row.disk_usage}`}>
+        Disk Status: {row.disk_usage}
+      </div>
+      <div className={`common-circle-${row.ram_usage}`}>
+        Ram Status: {row.ram_usage}
+      </div>
+    </>
+  );
+};
+
 export default function AgentStatus() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -20,6 +50,8 @@ export default function AgentStatus() {
   const itemsPerPage = 2;
 
   const fetchData = async (pageCount) => {
+    setData([]);
+    setIsLoading(true);
     const result = await getService(
       `${apiList.agentStatus}?offset=${
         (pageCount - 1) * itemsPerPage
@@ -42,12 +74,23 @@ export default function AgentStatus() {
     router.push(`?page=${page}`);
   };
 
+  const renderer = {
+    LiveOffline: ({ row, key }) => <LiveOffline row={row} key={key} />,
+    HealthStatus: ({ row, key }) => <HealthStatus row={row} key={key} />,
+  };
+
   return (
     <Table
-      pagination={getPaginationProps(totalCount, currentPage, itemsPerPage, handlePaginationChange)}
+      pagination={getPaginationProps(
+        totalCount,
+        currentPage,
+        itemsPerPage,
+        handlePaginationChange
+      )}
       columns={AGENT_COLUMNS}
       data={data}
       isLoading={isLoading}
+      renderers={renderer}
     />
   );
 }

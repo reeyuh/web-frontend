@@ -80,7 +80,7 @@ export default function Register() {
           : response[0]?.data?.display_name,
       });
       setTimeout(() => {
-        router.replace("/dashboard");
+        router.replace("/agent-status");
       }, 100);
     } else {
       setDisabledSso(false);
