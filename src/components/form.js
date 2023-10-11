@@ -31,13 +31,13 @@ export const Btns = ({ list = [], isLoading }) => {
                 <PrimaryOutlinedButton
                   class="me-3"
                   text={btn.text}
-                  type={btn.type || "submit"}
+                  type={btn.btnType || "submit"}
                 />
               ) : (
                 <PrimaryButton
                   class="me-3"
                   text={btn.text}
-                  type={btn.type || "submit"}
+                  type={btn.btnType || "submit"}
                 />
               )}
             </Box>
@@ -50,7 +50,7 @@ export const Btns = ({ list = [], isLoading }) => {
 
 export const Form = ({
   list,
-  formSubmit = () => {},
+  formSubmit = () => { },
   btnList,
   values,
   actionHandler = {},
@@ -61,12 +61,17 @@ export const Form = ({
     handleSubmit,
     formState: { errors },
     watch,
+    setValue,
   } = useForm({
     defaultValues: values,
   });
 
   const { error, success, hidden, disabled, isLoading, readonly } =
     actionHandler;
+
+  const handleSelectChange = (fieldName, e) => {
+    setValue(fieldName, e.target.value);
+  };
 
   return (
     <>
@@ -113,13 +118,26 @@ export const Form = ({
                             field?.type === "password" ||
                             field?.type === "number" ||
                             field?.type === "date") && (
-                            <input {...inputRegister} {...otherProps} />
-                          )}
+                              <input {...inputRegister} {...otherProps} />
+                            )}
 
                           {field?.type == "select" && (
                             <FormControl fullWidth>
-                              <Select {...inputRegister} {...otherProps}>
-                                <MenuItem value="">Select</MenuItem>
+                              <Select
+                                {...inputRegister}
+                                {...otherProps}
+                                value={watch(field?.name) || "select"}
+                                onChange={(e) => handleSelectChange(field?.name, e)}
+                                sx={{
+                                  "& .MuiSelect-root": {
+                                    padding: 0,
+                                  },
+                                  "& .MuiOutlinedInput-input": {
+                                    padding: "1px 12px",
+                                  }
+                                }}
+                              >
+                                <MenuItem value="select">Select</MenuItem>
                                 {field?.options.map((option, index) => (
                                   <MenuItem
                                     key={`option_${index}`}

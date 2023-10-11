@@ -7,6 +7,7 @@ import { USER_COLUMNS } from "@/data/userData";
 import { apiList, getService } from "@/utils";
 import { useRouter } from "next/navigation";
 import { getPaginationProps } from "@/utils/commonFn";
+import UserFilters from "@/components/Filters/UserFilters";
 
 export default function UserList() {
   const router = useRouter();
@@ -20,8 +21,7 @@ export default function UserList() {
 
   const fetchData = async () => {
     const result = await getService(
-      `${apiList.userData}&offset=${
-        (currentPage - 1) * itemsPerPage
+      `${apiList.userData}&offset=${(currentPage - 1) * itemsPerPage
       }&limit=${itemsPerPage}`
     );
     if (result[0]?.docs) {
@@ -39,15 +39,18 @@ export default function UserList() {
   };
 
   return (
-    <Table
-      pagination={getPaginationProps(
-        totalCount,
-        currentPage,
-        itemsPerPage,
-        handlePaginationChange
-      )}
-      columns={USER_COLUMNS}
-      data={data}
-    />
+    <>
+      <UserFilters />
+      <Table
+        pagination={getPaginationProps(
+          totalCount,
+          currentPage,
+          itemsPerPage,
+          handlePaginationChange
+        )}
+        columns={USER_COLUMNS}
+        data={data}
+      />
+    </>
   );
 }
