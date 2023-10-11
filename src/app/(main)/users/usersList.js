@@ -38,17 +38,15 @@ export default function UserList() {
   };
 
   return (
-    <>
-      <Table
-        pagination={getPaginationProps(
-          totalCount,
-          currentPage,
-          itemsPerPage,
-          handlePaginationChange
-        )}
-        columns={USER_COLUMNS}
-        data={data}
-      />
-    </>
+    <Table
+      pagination={getPaginationProps(
+        totalCount,
+        currentPage,
+        itemsPerPage,
+        handlePaginationChange
+      )}
+      columns={USER_COLUMNS}
+      data={data}
+    />
   );
 }
