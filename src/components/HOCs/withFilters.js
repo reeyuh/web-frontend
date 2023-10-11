@@ -5,32 +5,24 @@ const withFilters = (WrappedComponent) => {
         const [filters, setFilters] = useState({});
         const [page, setPage] = useState(1);
 
-        const handleFilter = (key, e) => {
-            const newFilters = Object.assign({}, filters);
-
-            const applyFilters = (key, e) => {
-                const value = e && e.target ? e.target.value : e;
-                newFilters[key] = value;
-            }
-
-            if (typeof key === 'object') {
-                for (const k in key) {
-                    applyFilters(k, key[k]);
-                }
-            } else {
-                applyFilters(key, e);
-            }
-
-            setFilters(newFilters);
+        const formSubmit = (data) => {
             setPage(1);
-        }
+            setFilters(data);
+        };
 
         const clearFilters = () => setFilters({});
 
+        const btnList = [
+            { text: "Filter" },
+          ];
+
         const extra = {
-            handleFilter,
+            btnList,
+            clearFilters,
             filters,
-            setPage, // can be used to control the currentPage prop for Table component
+            formSubmit,
+            page,
+            setPage,
         };
 
         return <WrappedComponent {...props} {...extra} />
