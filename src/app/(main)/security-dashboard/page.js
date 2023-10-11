@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { getPaginationProps } from "@/utils/commonFn";
 import withFilters from "@/components/HOCs/withFilters";
 import { Form } from "@/components";
+import { USER_FILTERS } from "@/data/filters/userFilters";
 
 function SecurityTable({
   formSubmit,
@@ -19,8 +20,6 @@ function SecurityTable({
   const searchParams = useSearchParams();
   const page = searchParams.get("page") || 1;
   const initialValues = {};
-
-  console.log('[Filters]', filters);
 
   const [data, setData] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
