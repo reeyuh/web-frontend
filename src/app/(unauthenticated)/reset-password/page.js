@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Sign } from "@/components";
-import { RESET_PASSWORD_FORM } from "@/data/SignData";
+import { RESET_PASSWORD_FORM } from "@/data/signData";
 import { useRouter } from "next/navigation";
 import { postService } from "@/utils/httpService";
 import { apiList } from "@/utils/apiList";

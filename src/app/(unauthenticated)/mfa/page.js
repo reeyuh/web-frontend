@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Sign } from "@/components";
-import { MFA_FORM_INPUTS } from "@/data/SignData";
+import { MFA_FORM_INPUTS } from "@/data/signData";
 import { useRouter, useSearchParams } from "next/navigation";
 import { postService } from "@/utils/httpService";
 import { apiList } from "@/utils/apiList";
