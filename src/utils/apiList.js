@@ -20,4 +20,6 @@ export const apiList = {
   agentStatus: `${agentApiServer}agent_status_list`,
   securityData: `${agentApiServer}agent_status_list`,
   userData: `${agentApiServer}agent_status_list`,
+  policyMgmtData: `${agentApiServer}agent_status_list`,
+  auditData: `${agentApiServer}agent_status_list`,
 };
