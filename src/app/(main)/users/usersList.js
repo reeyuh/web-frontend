@@ -7,7 +7,6 @@ import { USER_COLUMNS } from "@/data/userData";
 import { apiList, getService } from "@/utils";
 import { useRouter } from "next/navigation";
 import { getPaginationProps } from "@/utils/commonFn";
-import UserFilters from "@/components/Filters/UserFilters";
 
 export default function UserList() {
   const router = useRouter();
@@ -40,7 +39,6 @@ export default function UserList() {
 
   return (
     <>
-      <UserFilters />
       <Table
         pagination={getPaginationProps(
           totalCount,
