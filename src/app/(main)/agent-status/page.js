@@ -10,8 +10,8 @@ import { getPaginationProps } from "@/utils/commonFn";
 
 const LiveOffline = ({ row }) => (
   <>
-    {row.cpu_usage === "offline" ? (
-      <div className={`common-${row.cpu_usage}`}>
+    {row.alive_status === "off" ? (
+      <div className={`common-offline`}>
         <span className="common-offline-dot d-inline-block me-2"></span>Offline
       </div>
     ) : (
@@ -23,17 +23,36 @@ const LiveOffline = ({ row }) => (
 );
 
 const HealthStatus = ({ row }) => {
+  const getClass = (value) => {
+    if (value >= 90) {
+      return "critical";
+    } else if (value > 80 && value < 90) {
+      return "unhealthy";
+    } else if (value <= 80) {
+      return "healthy";
+    }
+  };
   return (
     <>
-      <div className={`mb-1 common-circle-${row.cpu_usage}`}>
-        CPU Status: {row.cpu_usage}
-      </div>
-      <div className={`mb-1 common-circle-${row.ram_usage}`}>
-        RAM Status: {row.ram_usage}
-      </div>
-      <div className={`common-circle-${row.disk_usage}`}>
-        Disk Status: {row.disk_usage}
-      </div>
+      {row.cpu_percentage >= 0 && (
+        <div
+          className={`mb-1 me-1 common-circle-${getClass(row.cpu_percentage)}`}
+        >
+          CPU: {row.cpu_percentage}%
+        </div>
+      )}
+      {row.ram_percentage >= 0 && (
+        <div
+          className={`mb-1 me-1 common-circle-${getClass(row.ram_percentage)}`}
+        >
+          RAM: {row.ram_percentage}%
+        </div>
+      )}
+      {row.disk_percentage >= 0 && (
+        <div className={`common-circle-${getClass(row.disk_percentage)}`}>
+          Disk: {row.disk_percentage}%
+        </div>
+      )}
     </>
   );
 };
@@ -47,7 +66,7 @@ export default function AgentStatus() {
   const [isLoading, setIsLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(parseInt(page));
-  const itemsPerPage = 2;
+  const itemsPerPage = 10;
 
   const fetchData = async (pageCount) => {
     setData([]);

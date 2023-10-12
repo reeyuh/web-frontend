@@ -116,14 +116,6 @@
   }
 
   &-circle-unhealthy {
-    border: 1px solid var(--bs-info);
-    display: inline-block;
-    padding: 2px 4px;
-    border-radius: 5px;
-    color: var(--bs-info);
-  }
-
-  &-circle-critical {
     border: 1px solid var(--bs-warning);
     display: inline-block;
     padding: 2px 4px;
@@ -131,7 +123,7 @@
     color: var(--bs-warning);
   }
 
-  &-circle-offline {
+  &-circle-critical {
     border: 1px solid var(--bs-danger);
     display: inline-block;
     padding: 2px 4px;

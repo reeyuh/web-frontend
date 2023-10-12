@@ -11,7 +11,7 @@ export const AGENT_COLUMNS = [
     headClass: "w-25",
   },
   {
-    label: "Live / Offline",
+    label: "Agent State",
     type: "renderer",
     componentName: "LiveOffline",
     componentProps: {},
