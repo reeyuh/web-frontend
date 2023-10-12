@@ -56,7 +56,7 @@ export default function Dashboard() {
   };
   const fetchData = async () => {
     const result = await getService(
-      `${apiList.agentStatus}&offset=${
+      `${apiList.agentStatus}?offset=${
         (currentPage - 1) * itemsPerPage
       }&limit=${itemsPerPage}`
     );
@@ -86,13 +86,16 @@ export default function Dashboard() {
     updatedValue
   ) => {};
 
-  const deleteData = (data, e) => {
-    console.log(data, e);
-  };
+  const deleteData = (data, e) => {};
 
   return (
     <Table
-      pagination={getPaginationProps(totalCount, currentPage, itemsPerPage, handlePaginationChange)}
+      pagination={getPaginationProps(
+        totalCount,
+        currentPage,
+        itemsPerPage,
+        handlePaginationChange
+      )}
       columns={SAMPLE_COLUMNS}
       data={data}
       renderers={renderer}

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useContext } from "react";
 import { Form, CommonContext } from "@/components";
-import { PROFILE_INPUTS, CHANGE_PASSWORD_INPUTS } from "@/data/ProfileData";
+import { PROFILE_INPUTS, CHANGE_PASSWORD_INPUTS } from "@/data/profileData";
 import { getService, postService } from "@/utils/httpService";
 import { apiList } from "@/utils/apiList";
 import { MfaOptions } from "./mfaOptions";

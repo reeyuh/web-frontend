@@ -44,7 +44,9 @@ export async function middleware(request, context) {
         return NextResponse.redirect(new URL(`/register`, request.url));
       }
     }
-  } else if (["/profile"].indexOf(request.nextUrl.pathname) > -1) {
+  } else if (
+    ["/profile", "/agent-status"].indexOf(request.nextUrl.pathname) > -1
+  ) {
     if (storedToken && storedToken.value) {
       const data = await (
         await fetch(apiList.validateToken, {
@@ -76,5 +78,6 @@ export const config = {
     "/profile",
     "/dashboard",
     "/logout",
+    "/agent-status",
   ],
 };

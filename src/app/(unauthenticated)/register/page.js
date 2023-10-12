@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useContext } from "react";
 import { Sign, CommonContext, Modal } from "@/components";
-import { REGISTER_FORM_INPUTS } from "@/data/SignData";
+import { REGISTER_FORM_INPUTS } from "@/data/signData";
 import { getService, postService } from "@/utils/httpService";
 import { apiList } from "@/utils/apiList";
 import { setAccessToken, redirectToSsoUrl } from "@/utils/commonFn";
@@ -80,7 +80,7 @@ export default function Register() {
           : response[0]?.data?.display_name,
       });
       setTimeout(() => {
-        router.replace("/dashboard");
+        router.replace("/agent-status");
       }, 100);
     } else {
       setDisabledSso(false);

@@ -8,38 +8,33 @@ import {
   EMAIL,
   NEW_PASSWORD,
   CONFIRM_PASSWORD,
-} from "./CommonData";
+} from "./commonData";
 
-export const FORM_INPUTS = {
-  email: EMAIL,
-  password: {
-    label: "Password",
-    name: "password",
-    placeholder: "Password",
-    formControlClass: "mt-4 pt-0",
-    fieldClass: "w-100",
-    type: "password",
-    isRequired: true,
-    pattern: VALIDATION.PASSWORD,
-    maxLength: 50,
-    minLength: 8,
-    errors: [
-      { type: "required", message: "Please enter your password" },
-      {
-        type: "minLength",
-        message:
-          "Password must be more than 7 characters including uppercase, lowercase, numbers and special characters",
-      },
-      {
-        type: "pattern",
-        message:
-          "Password must be more than 7 characters including uppercase, lowercase, numbers and special characters",
-      },
-    ],
-  },
+const PASSWORD = {
+  label: "Password",
+  name: "password",
+  placeholder: "Password",
+  formControlClass: "mt-4 pt-0",
+  fieldClass: "w-100",
+  type: "password",
+  isRequired: true,
+  pattern: VALIDATION.PASSWORD,
+  maxLength: 50,
+  minLength: 8,
+  errors: [
+    { type: "required", message: "Please enter your password" },
+    {
+      type: "minLength",
+      message:
+        "Password must be more than 7 characters including uppercase, lowercase, numbers and special characters",
+    },
+    {
+      type: "pattern",
+      message:
+        "Password must be more than 7 characters including uppercase, lowercase, numbers and special characters",
+    },
+  ],
 };
-
-const { email, password } = FORM_INPUTS;
 
 // Login
 export const LOGIN_FORM_INPUTS = {
@@ -72,7 +67,7 @@ export const LOGIN_FORM_INPUTS = {
       title: "Login",
     },
   },
-  data: [email, password],
+  data: [EMAIL, PASSWORD],
 };
 
 // register
@@ -119,10 +114,10 @@ export const REGISTER_FORM_INPUTS = {
       lg: 6,
       xl: 6,
     },
-    email,
-    password,
+    EMAIL,
+    PASSWORD,
     {
-      ...password,
+      ...PASSWORD,
       name: "confirm_password",
       label: "Confirm Password",
       placeholder: "Confirm Password",
@@ -167,7 +162,7 @@ export const FORGOT_FORM_INPUTS = {
       title: "Submit",
     },
   },
-  data: [email],
+  data: [EMAIL],
 };
 
 export const RESET_PASSWORD_FORM_INPUTS = {
@@ -218,7 +213,7 @@ export const RESET_PASSWORD_FORM = {
       title: "Step 1 of 2",
     },
   },
-  data: [email, RESET_PASSWORD_FORM_INPUTS.otp, NEW_PASSWORD, CONFIRM_PASSWORD],
+  data: [EMAIL, RESET_PASSWORD_FORM_INPUTS.otp, NEW_PASSWORD, CONFIRM_PASSWORD],
 };
 
 export const MFA_FORM_INPUTS = {
