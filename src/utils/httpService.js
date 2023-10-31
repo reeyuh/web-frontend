@@ -1,17 +1,20 @@
 import axios from "axios";
 import { getLocalStore } from "@/utils/commonFn";
 
-const token = getLocalStore("access_token");
-const header = {
-  headers: {
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-  },
+const getHeader = () => {
+  const token = getLocalStore("access_token");
+
+  return {
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  };
 };
 
 // GET Request
 export const getService = async (url, customerHeader) => {
   try {
-    const response = await axios.get(url, customerHeader || header);
+    const response = await axios.get(url, customerHeader || getHeader());
     return [response?.data, null];
   } catch ({ response }) {
     return [null, response?.data];
@@ -21,7 +24,7 @@ export const getService = async (url, customerHeader) => {
 // POST Request
 export const postService = async (url, params) => {
   try {
-    const response = await axios.post(url, params, header);
+    const response = await axios.post(url, params, getHeader());
     return [response?.data, null];
   } catch ({ response }) {
     return [null, response?.data];

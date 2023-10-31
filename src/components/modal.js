@@ -13,11 +13,11 @@ const ModalContent = styled.div`
 `;
 
 export const Modal = ({
-  open,
+  open = false,
   closeModal = () => {},
   children,
   title,
-  width,
+  width = 250,
 }) => {
   return (
     <MuiModal open={open} onClose={closeModal} disableAutoFocus>

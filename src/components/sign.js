@@ -1,5 +1,5 @@
 "use client";
-
+import { useEffect } from "react";
 import {
   Grid,
   Card,
@@ -32,6 +32,10 @@ export const Sign = ({
   } = useForm({});
   const { error, success, hidden, disabled, isLoading, isSsoLoading } =
     actionHandler;
+
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
 
   return (
     <Grid container className={formInputs?.className}>

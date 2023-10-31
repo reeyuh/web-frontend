@@ -26,8 +26,8 @@ export default function UserList() {
       }&limit=${itemsPerPage}`
     );
     if (result[0]?.data) {
-      setData(result[0].data.list);
-      setTotalCount(result[0].data.total_count);
+      // setData(result[0].data.list);
+      // setTotalCount(result[0].data.total_count);
       setIsLoading(false);
     }
   };

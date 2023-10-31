@@ -118,7 +118,8 @@ const Table = ({
       array: (
         <>
           {!hide &&
-            cell?.multiValue?.map((multiVal, multiIndex) => (
+            Array.isArray(cell) &&
+            cell?.map((multiVal, multiIndex) => (
               <span key={`mutli_${trowIndex}${tcolIndex}${multiIndex}`}>
                 {multiVal?.value}
               </span>
@@ -236,3 +237,4 @@ const Table = ({
 };
 
 export default Table;
+export { Table };
