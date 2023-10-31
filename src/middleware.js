@@ -35,9 +35,13 @@ export async function middleware(request, context) {
         })
       ).json();
       if (data.code === 200) {
-        return NextResponse.redirect(new URL(`/dashboard`, request.url));
+        return NextResponse.redirect(new URL(`/agent-status`, request.url));
       } else if (["/"].indexOf(request.nextUrl.pathname) > -1) {
-        return NextResponse.redirect(new URL(`/register`, request.url));
+        const response = NextResponse.redirect(
+          new URL(`/register`, request.url)
+        );
+        response.cookies.delete("_d");
+        return response;
       }
     } else {
       if (["/"].indexOf(request.nextUrl.pathname) > -1) {
@@ -45,7 +49,14 @@ export async function middleware(request, context) {
       }
     }
   } else if (
-    ["/profile", "/agent-status"].indexOf(request.nextUrl.pathname) > -1
+    [
+      "/profile",
+      "/agent-status",
+      "/users",
+      "/security-dashboard",
+      "/policy-management",
+      "/audit-trail",
+    ].indexOf(request.nextUrl.pathname) > -1
   ) {
     if (storedToken && storedToken.value) {
       const data = await (
@@ -53,8 +64,12 @@ export async function middleware(request, context) {
           headers: { Authorization: `Bearer ${storedToken.value}` },
         })
       ).json();
-      if (data.code === 400) {
-        return NextResponse.redirect(new URL(`/sign-in`, request.url));
+      if (data.code === 400 || data.code === 401) {
+        const response = NextResponse.redirect(
+          new URL(`/sign-in`, request.url)
+        );
+        response.cookies.delete("_d");
+        return response;
       }
     } else {
       return NextResponse.redirect(new URL(`/sign-in`, request.url));
@@ -79,5 +94,9 @@ export const config = {
     "/dashboard",
     "/logout",
     "/agent-status",
+    "/users",
+    "/security-dashboard",
+    "/policy-management",
+    "/audit-trail",
   ],
 };

@@ -18,7 +18,7 @@ export const apiList = {
   enableMfa: `${userApiServer}enable_mfa`,
   verifyMfaOtp: `${userApiServer}verify_mfa_otp`,
   agentStatus: `${agentApiServer}agent_status_list`,
-  securityData: `${agentApiServer}agent_status_list`,
+  securityData: `${agentApiServer}file_list`,
   userData: `${agentApiServer}agent_status_list`,
   policyMgmtData: `${agentApiServer}agent_status_list`,
   auditData: `${agentApiServer}agent_status_list`,

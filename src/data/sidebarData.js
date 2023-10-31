@@ -36,7 +36,7 @@ export const SIDEBAR_MENU_LIST = [
   },
   {
     label: "Audit Trail",
-    route: "/audit-trai",
+    route: "/audit-trail",
     icon: WorkHistoryIcon,
     key: "audit-trail",
     hiddenKey: "view-audit-trail",

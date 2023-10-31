@@ -9,3 +9,4 @@ export { PageTabs } from "./pageTabs";
 export { CommonContext, CommonProvider } from "./commonProvider";
 export { CustomSnackbar } from "./snackBar";
 export { Modal } from "./modal";
+export { Table } from "./table";
