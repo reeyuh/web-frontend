@@ -139,4 +139,12 @@
     color: var(--bs-danger);
     font-size: 13px;
   }
+
+  &-pointer {
+    cursor: pointer;
+  }
+
+  &-more {
+    color: $primary-bg;
+  }
 }

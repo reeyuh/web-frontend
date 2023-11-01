@@ -4,20 +4,30 @@ import { Table, Modal } from "@/components";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { SECURITY_COLUMNS } from "@/data/securityData";
-import { apiList, getService } from "@/utils";
+import { apiList, getService, postService } from "@/utils";
 import { useRouter } from "next/navigation";
 import { getPaginationProps } from "@/utils/commonFn";
+import { Tooltip } from "@mui/material";
+
+const UserAccessItem = ({ access }) =>
+  access.user && (
+    <span className="common-pointer common-circle-user me-1 mb-1">
+      <Tooltip enterDelay={500} leaveDelay={200} title={access.permission}>
+        {access.user}
+      </Tooltip>
+    </span>
+  );
 
 const Access = ({ row, clickOnMore }) => (
   <div>
     {row.access.map((access, index) => (
-      <span key={index} className="common-circle-user me-1 mb-1">
-        {access}
-      </span>
+      <UserAccessItem key={index} access={access} />
     ))}
-    <span onClick={() => clickOnMore(row.filename)}>
-      <u role="button">More...</u>
-    </span>
+    {row.user_count > 3 && (
+      <span onClick={() => clickOnMore(row.location)}>
+        <u className="common-pointer common-more">More...</u>
+      </span>
+    )}
   </div>
 );
 
@@ -37,24 +47,41 @@ export default function SecurityTable() {
 
   const fetchData = async (pageCount) => {
     const result = await getService(
-      `${apiList.securityData}?offset=${
+      `${apiList.securityDashboard}?offset=${
         (pageCount - 1) * itemsPerPage
       }&limit=${itemsPerPage}`
     );
-    if (result[0]?.data) {
-      setData(result[0].data.list);
-      setTotalCount(result[0].data.total_count);
+    const response = result[0]?.data;
+    if (response) {
+      const list = response.list.map((item, index) => ({
+        ...item,
+        access: mapUserAccessList(item.access),
+      }));
+      setData(list);
+      setTotalCount(response.total_count);
       setIsLoading(false);
     }
   };
 
-  const fetchAccessUserData = async (filename) => {
-    const result = await getService(
-      `${apiList.securityData}?offset=0&limit=2`,
-      { filename }
-    );
+  const mapUserAccessList = (userList) => {
+    return userList.map((user) => ({
+      user: user[0],
+      permission:
+        user[1].length > 0
+          ? user[1].map((permission) => permission).join(",")
+          : "permission is not found",
+    }));
+  };
+
+  const fetchAccessUserData = async (path) => {
+    const result = await postService(apiList.accessUserList, {
+      path,
+    });
     if (result[0]?.data) {
-      setLisOfAccess(result[0].data.list);
+      const userList = result[0].data?.users_list || [];
+      if (userList.length > 0) {
+        setLisOfAccess(mapUserAccessList(userList));
+      }
     } else {
       setAccessUserErr("Something went wrong, please try again!");
     }
@@ -78,7 +105,7 @@ export default function SecurityTable() {
   }, [page]);
 
   const handlePaginationChange = (event, page) => {
-    router.push(`?page=${page}`);
+    router.push(`?page=${page}`, { scroll: true });
   };
 
   const closeModal = () => {
@@ -109,12 +136,7 @@ export default function SecurityTable() {
       >
         {!accessUserErr && lisOfAccess.length === 0 && <div>Loading..</div>}
         {lisOfAccess.map((access, index) => (
-          <span
-            key={`${index}_access_list`}
-            className="common-circle-user me-1 mb-1"
-          >
-            {access}
-          </span>
+          <UserAccessItem key={index} access={access} />
         ))}
         {accessUserErr && <div className="error">{accessUserErr}</div>}
       </Modal>

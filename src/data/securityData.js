@@ -6,7 +6,7 @@ export const SECURITY_COLUMNS = [
   },
   {
     key: "filename",
-    label: "Data",
+    label: "Filename",
     type: "text",
     bodyClass: "table-max-250 text-break",
   },
