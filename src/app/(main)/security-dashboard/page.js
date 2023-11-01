@@ -11,11 +11,11 @@ import { Tooltip } from "@mui/material";
 
 const UserAccessItem = ({ access }) =>
   access.user && (
-    <span className="common-pointer common-circle-user me-1 mb-1">
-      <Tooltip enterDelay={500} leaveDelay={200} title={access.permission}>
+    <Tooltip title={access.permission}>
+      <span className="common-pointer common-circle-user me-1 mb-1">
         {access.user}
-      </Tooltip>
-    </span>
+      </span>
+    </Tooltip>
   );
 
 const Access = ({ row, clickOnMore }) => (
