@@ -1,11 +1,11 @@
 .table {
   &-head {
-    font-family: $nunito--bold;
+    font-family: $nunito--bold !important;
     background: var(--bs-light);
   }
 
   &-body {
-    font-family: $nunito;
+    font-family: $nunito !important;
   }
 
   &-min-145 {

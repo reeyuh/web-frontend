@@ -16,4 +16,10 @@
     font-size: 30px;
     cursor: pointer;
   }
+
+  &-main {
+    @include media-breakpoint-down(lg) {
+      min-width: 300px;
+    }
+  }
 }

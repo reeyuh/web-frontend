@@ -131,7 +131,8 @@ export default function SecurityTable() {
       <Modal
         open={openModal}
         closeModal={closeModal}
-        width="400"
+        maxWidth={500}
+        minWidth={500}
         title="List of access user"
       >
         {!accessUserErr && lisOfAccess.length === 0 && <div>Loading..</div>}

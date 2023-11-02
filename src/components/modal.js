@@ -1,15 +1,13 @@
 import MuiModal from "@mui/material/Modal";
 import styled from "@emotion/styled";
-import "@/styles/modal.scss";
 
 const ModalContent = styled.div`
-  width: ${(prop) => `${prop.width}px` || "100vw"};
+  max-width: ${(prop) => `${prop.maxWidth ? `${prop.maxWidth}px` : "100vw"}`};
+  min-width: ${(prop) => `${prop.minWidth ? `${prop.minWidth}px` : "100vw"}`};
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
+  top: 150px;
 `;
 
 export const Modal = ({
@@ -17,11 +15,21 @@ export const Modal = ({
   closeModal = () => {},
   children,
   title,
-  width = 250,
+  minWidth = 300,
+  maxWidth = 300,
 }) => {
   return (
-    <MuiModal open={open} onClose={closeModal} disableAutoFocus>
-      <ModalContent className="py-3  bg-white" width={width}>
+    <MuiModal
+      open={open}
+      onClose={closeModal}
+      disableAutoFocus
+      className="overflow-auto d-flex justify-content-center mb-3"
+    >
+      <ModalContent
+        className="py-3 bg-white modal-main"
+        maxWidth={maxWidth}
+        minWidth={minWidth}
+      >
         <div className="modal-close" onClick={closeModal}>
           &times;
         </div>
