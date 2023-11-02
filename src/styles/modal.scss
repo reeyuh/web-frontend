@@ -19,7 +19,7 @@
 
   &-main {
     @include media-breakpoint-down(lg) {
-      min-width: 300px;
+      min-width: 300px !important;
     }
   }
 }
