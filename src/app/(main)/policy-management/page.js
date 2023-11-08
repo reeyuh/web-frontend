@@ -36,7 +36,7 @@ export default function PolicyTable() {
   }, [page]);
 
   const handlePaginationChange = (event, page) => {
-    router.push(`?page=${page}`);
+    router.push(`?page=${page}`, { scroll: true });
   };
 
   return (

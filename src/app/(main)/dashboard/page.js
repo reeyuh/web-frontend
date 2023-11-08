@@ -72,7 +72,7 @@ export default function Dashboard() {
   }, [page]);
 
   const handlePaginationChange = (event, page) => {
-    router.push(`?page=${page}`);
+    router.push(`?page=${page}`, { scroll: true });
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
