@@ -21,6 +21,7 @@ export default function UserList() {
   const page = searchParams.get("page") || 1;
 
   const [data, setData] = useState([]);
+  const [errMessage, setErrMessage] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(parseInt(page));
@@ -63,6 +64,7 @@ export default function UserList() {
     );
 
     const response = result[0]?.data;
+    setIsLoading(false);
     if (response) {
       response.user_list.forEach((item, index) => {
         response.user_list[index].name = `${item.first_name} ${
@@ -72,7 +74,8 @@ export default function UserList() {
       });
       setData(response.user_list);
       setTotalCount(response.total_count);
-      setIsLoading(false);
+    } else {
+      setErrMessage(result[1].message);
     }
   };
 
@@ -155,6 +158,7 @@ export default function UserList() {
         )}
         columns={USER_COLUMNS}
         data={data}
+        errorMessage={errMessage}
         isLoading={isLoading}
         onClickFns={{ editUser }}
         hidden={hiddenCols}

@@ -37,6 +37,7 @@ export default function SecurityTable() {
   const page = searchParams.get("page") || 1;
 
   const [data, setData] = useState([]);
+  const [errMessage, setErrMessage] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(parseInt(page));
@@ -52,6 +53,7 @@ export default function SecurityTable() {
       }&limit=${itemsPerPage}`
     );
     const response = result[0]?.data;
+    setIsLoading(false);
     if (response) {
       const list = response.list.map((item, index) => ({
         ...item,
@@ -59,7 +61,8 @@ export default function SecurityTable() {
       }));
       setData(list);
       setTotalCount(response.total_count);
-      setIsLoading(false);
+    } else {
+      setErrMessage(result[1].message);
     }
   };
 
@@ -125,6 +128,7 @@ export default function SecurityTable() {
         )}
         columns={SECURITY_COLUMNS}
         data={data}
+        errorMessage={errMessage}
         isLoading={isLoading}
         renderers={renderer}
       />

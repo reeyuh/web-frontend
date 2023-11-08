@@ -63,6 +63,7 @@ export default function AgentStatus() {
   const page = searchParams.get("page") || 1;
 
   const [data, setData] = useState([]);
+  const [errMessage, setErrMessage] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(parseInt(page));
@@ -76,10 +77,13 @@ export default function AgentStatus() {
         (pageCount - 1) * itemsPerPage
       }&limit=${itemsPerPage}`
     );
+
+    setIsLoading(false);
     if (result[0]?.data) {
       setData(result[0].data.list);
       setTotalCount(result[0].data.total_count);
-      setIsLoading(false);
+    } else {
+      setErrMessage(result[1].message);
     }
   };
 
@@ -90,7 +94,7 @@ export default function AgentStatus() {
   }, [page]);
 
   const handlePaginationChange = (event, page) => {
-    router.push(`?page=${page}`);
+    router.push(`?page=${page}`, { scroll: true });
   };
 
   const renderer = {
@@ -108,6 +112,7 @@ export default function AgentStatus() {
       )}
       columns={AGENT_COLUMNS}
       data={data}
+      errorMessage={errMessage}
       isLoading={isLoading}
       renderers={renderer}
     />
