@@ -7,9 +7,9 @@ export const VALIDATION = {
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
   NUMBER_ONLY: /^[0-9]+$/,
   FLOAT_NUMBER: /^[0-9.]+$/,
-  ALPHABET_ONLY: /^[A-Za-z]+$/,
+  ALPHABET_ONLY: /^[A-Za-z\s]+$/,
   CUSTOM_CLIENT_EMAIL: /^(?!.*@(gmail\.com|yahoo\.com)).+@.+/,
-  ALPHABET_NUMBER: /^[0-9a-zA-Z]+$/,
+  ALPHABET_NUMBER: /^[0-9a-zA-Z\s]+$/,
   NUMBER_SPECIAL: /^[0-9-+()<>{}\"/|;:.,~!?@#$%^=&*\\\[\]_]*$/,
   NUMBER_PLUE: /^[0-9-+]*$/,
   WEBSITE:

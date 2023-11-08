@@ -8,6 +8,10 @@
     font-family: $nunito !important;
   }
 
+  &-edit-action {
+    color: $primary-bg;
+  }
+
   &-min-145 {
     min-width: 145px;
   }

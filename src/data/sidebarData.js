@@ -3,6 +3,7 @@ import TimerIcon from "@mui/icons-material/Timer";
 import PolicyIcon from "@mui/icons-material/Policy";
 import SecurityIcon from "@mui/icons-material/Security";
 import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
+import CorporateFareIcon from "@mui/icons-material/CorporateFare";
 
 export const SIDEBAR_MENU_LIST = [
   {
@@ -19,6 +20,14 @@ export const SIDEBAR_MENU_LIST = [
     icon: PeopleIcon,
     key: "user",
     hiddenKey: "view-user",
+  },
+  {
+    label: "Organization",
+    route: "/organization",
+    routeGroups: ["/organization/create"],
+    icon: CorporateFareIcon,
+    key: "organization",
+    hiddenKey: "view-organization",
   },
   {
     label: "Security Dashboard",

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useContext } from "react";
-import { Sign, CommonContext, Modal } from "@/components";
+import { useState, useEffect } from "react";
+import { Sign, Modal } from "@/components";
 import { LOGIN_FORM_INPUTS } from "@/data/signData";
 import { getService, postService } from "@/utils/httpService";
 import { apiList } from "@/utils/apiList";
@@ -26,7 +26,6 @@ export default function SignIn() {
     isSsoLoading: getSSOCode ? true : false,
   });
   const [ssoUrl, setSSOUrl] = useState();
-  const { setSnackBarMessage } = useContext(CommonContext);
 
   const router = useRouter();
 

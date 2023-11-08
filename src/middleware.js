@@ -64,7 +64,7 @@ export async function middleware(request, context) {
           headers: { Authorization: `Bearer ${storedToken.value}` },
         })
       ).json();
-      if (data.code === 400 || data.code === 401) {
+      if (data.code === 401) {
         const response = NextResponse.redirect(
           new URL(`/sign-in`, request.url)
         );
