@@ -8,15 +8,15 @@ import {
   FormGroup,
   Alert,
   CircularProgress,
-  TextField,
-  FormControl,
-  Select,
   MenuItem,
 } from "@mui/material";
 
-import { useForm } from "react-hook-form";
-import { PrimaryButton } from "@/components/primaryButton";
-import { PrimaryOutlinedButton } from "@/components/primaryButton";
+import { useForm, Controller } from "react-hook-form";
+import {
+  PrimaryButton,
+  PrimaryOutlinedButton,
+  SelectWrapper,
+} from "@/components";
 
 export const Btns = ({ list = [], isLoading }) => {
   return (
@@ -54,6 +54,7 @@ export const Form = ({
   btnList,
   values,
   actionHandler = {},
+  options = {},
 }) => {
   const {
     reset,
@@ -61,21 +62,31 @@ export const Form = ({
     handleSubmit,
     formState: { errors },
     watch,
+    control,
   } = useForm({
     defaultValues: values,
   });
 
   const { error, success, hidden, disabled, isLoading, readonly } =
     actionHandler;
-
   return (
     <>
       <form autoComplete="off" onSubmit={handleSubmit(formSubmit)}>
-        <Card sx={{ overflow: "visible" }} className="common-card">
-          <CardContent className="p-md-3 p-0">
-            {list?.map((group, index) => (
-              <FormGroup className="form-group mb-md-3 mb-0" key={index}>
-                <h5 className="form-group-name mb-3">{group.name}</h5>
+        <Card
+          sx={{ overflow: "visible" }}
+          className={`${list?.cardClass ? list.cardClass : ""}`}
+        >
+          <CardContent
+            className={`${list?.contentClass ? list.contentClass : ""}`}
+          >
+            {list?.groups?.map((group, index) => (
+              <FormGroup
+                className={`${list?.formGroup ? list.fromGroup : ""}`}
+                key={index}
+              >
+                {group.name && (
+                  <h5 className="form-group-name mb-3">{group.name}</h5>
+                )}
                 <Grid container spacing={1}>
                   {group.fields.map((field, childIndex) => {
                     const inputRegister = register(field?.name, {
@@ -116,31 +127,57 @@ export const Form = ({
                             <input {...inputRegister} {...otherProps} />
                           )}
 
-                          {field?.type == "select" && (
-                            <FormControl fullWidth>
-                              <Select {...inputRegister} {...otherProps}>
-                                <MenuItem value="">Select</MenuItem>
-                                {field?.options.map((option, index) => (
-                                  <MenuItem
-                                    key={`option_${index}`}
-                                    value={option.value}
-                                  >
-                                    {option.label}
-                                  </MenuItem>
-                                ))}
-                              </Select>
-                            </FormControl>
+                          {field?.type === "textarea" && (
+                            <textarea {...inputRegister} {...otherProps} />
                           )}
 
-                          {field?.errors?.map((error, eindex) => (
-                            <span key={eindex}>
-                              {errors[field?.name]?.type === error?.type && (
-                                <span className="error mt-1 d-inline-block">
+                          {field?.type == "select" && (
+                            <Controller
+                              name={field?.name}
+                              rules={{
+                                required: field?.isRequired,
+                              }}
+                              control={control}
+                              render={(controlField) => (
+                                <SelectWrapper
+                                  readOnly={readonly?.[field?.name]}
+                                  variant="standard"
+                                  className={`form-control ${
+                                    readonly?.[field?.name] ? "read-only" : ""
+                                  }`}
+                                  {...controlField.field}
+                                >
+                                  {field.defaultValue && (
+                                    <MenuItem value="">
+                                      {field.defaultValue}
+                                    </MenuItem>
+                                  )}
+                                  {options?.[field.name]?.map(
+                                    (option, index) => (
+                                      <MenuItem
+                                        key={`option_${index}`}
+                                        value={option.value}
+                                      >
+                                        {option.label}
+                                      </MenuItem>
+                                    )
+                                  )}
+                                </SelectWrapper>
+                              )}
+                            />
+                          )}
+
+                          {field?.errors?.map(
+                            (error, eindex) =>
+                              errors[field?.name]?.type === error?.type && (
+                                <span
+                                  key={eindex}
+                                  className="error mt-1 d-inline-block"
+                                >
                                   {error?.message}
                                 </span>
-                              )}
-                            </span>
-                          ))}
+                              )
+                          )}
                         </Box>
                       </Grid>
                     );
@@ -148,20 +185,20 @@ export const Form = ({
                 </Grid>
                 {/* response error message */}
                 {(success || error) && (
-                  <Box className="mx-md-2 mx-0 px-md-2 pt-3">
+                  <Box className="mx-md-2 mx-0 px-md-2 py-3">
                     {success && <Alert severity="success">{success}</Alert>}
                     {error && <Alert severity="error">{error}</Alert>}
                   </Box>
                 )}
 
-                {!hidden?.btnSection && (
+                {!hidden?.btnSection && group?.btnList?.length > 0 && (
                   <Btns isLoading={isLoading} list={group?.btnList || []} />
                 )}
               </FormGroup>
             ))}
 
             <>
-              {!hidden?.btnSection && (
+              {!hidden?.btnSection && btnList?.length > 0 && (
                 <Btns isLoading={isLoading} list={btnList} />
               )}
             </>

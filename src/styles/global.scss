@@ -37,6 +37,7 @@
 }
 
 .form-control {
+  font-family: inherit;
   color: $secondary-text;
   border: 1px solid var(--bs-gray-400);
   border-radius: 3px;
@@ -46,12 +47,13 @@
     box-shadow: 0 10px 10px 0 $secondary-bg !important;
     border-color: inherit;
   }
+}
 
-  &:read-only {
-    background: var(--bs-gray-100);
-    box-shadow: none;
-    border-color: var(--bs-gray-400);
-  }
+input.form-control:read-only,
+.form-control.read-only {
+  background: var(--bs-gray-100);
+  box-shadow: none;
+  border-color: var(--bs-gray-400);
 }
 
 @-webkit-keyframes live {

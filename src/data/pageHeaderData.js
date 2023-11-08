@@ -7,6 +7,11 @@ export const PAGE_HEADER = {
     title: "Users List",
     summary: "List of all the users",
   },
+  "/organization": {
+    title: "Organization List",
+    summary: "List of all the organization",
+    btnList: [{ text: "Create", clickFn: "createOrg" }],
+  },
   "/profile": {
     title: "Profile",
     summary:

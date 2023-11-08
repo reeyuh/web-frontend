@@ -25,6 +25,7 @@ const Table = ({
   pagination = {},
   onClickFns = {},
   isLoading = false,
+  hidden = {},
 }) => {
   const {
     isShowFirstButton = true,
@@ -51,13 +52,13 @@ const Table = ({
       componentName,
       componentProps,
       bodyClass,
+      type = "text",
     } = column;
 
-    if (hide) {
+    if (hide || (key && hidden[key])) {
       return null;
     }
 
-    const type = column.type || "text";
     const cell = row[key];
 
     const Component = renderers?.[componentName];
@@ -164,8 +165,8 @@ const Table = ({
           <TableHead>
             <TableRow>
               {columns.map((column, index) => {
-                const { hide, headClass, label } = column;
-                if (hide) {
+                const { hide, headClass, label, key } = column;
+                if (hide || (key && hidden[key])) {
                   return null;
                 }
                 return (

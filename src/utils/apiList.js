@@ -20,7 +20,10 @@ export const apiList = {
   agentStatus: `${agentApiServer}agent_status_list`,
   securityDashboard: `${agentApiServer}file_list`,
   accessUserList: `${agentApiServer}file_user_list`,
-  userData: `${agentApiServer}agent_status_list`,
+  userList: `${userApiServer}get_user_management`,
+  editUser: `${userApiServer}edit_user`,
+  orgList: `${userApiServer}get_all_org`,
+  createOrg: `${userApiServer}add_org`,
   policyMgmtData: `${agentApiServer}agent_status_list`,
   auditData: `${agentApiServer}agent_status_list`,
 };

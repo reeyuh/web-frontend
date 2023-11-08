@@ -1,16 +1,21 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 import "@/styles/page-header.scss";
 import { PrimaryButton } from "./primaryButton";
+import { CommonContext } from "./commonProvider";
 import { usePathname } from "next/navigation";
 import { PAGE_HEADER } from "@/data/pageHeaderData";
 
 const PageHeader = () => {
   const pathname = usePathname();
+  const { fns } = useContext(CommonContext);
 
-  const btnAction = () => {};
   const { btnList, title, summary } = PAGE_HEADER?.[pathname] || {};
+
+  const btnAction = (clickFn) => {
+    fns?.[clickFn]?.();
+  };
 
   return (
     title && (
@@ -20,11 +25,9 @@ const PageHeader = () => {
           <p>{summary}</p>
         </div>
         {btnList?.map((btnItem, index) => (
-          <PrimaryButton
-            key={index}
-            text={btnItem.text}
-            onClick={() => btnAction(btnItem)}
-          />
+          <div key={index} onClick={() => btnAction(btnItem.clickFn)}>
+            <PrimaryButton text={btnItem.text} />
+          </div>
         ))}
       </div>
     )

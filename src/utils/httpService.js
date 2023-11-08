@@ -11,12 +11,19 @@ const getHeader = () => {
   };
 };
 
+const redirectToLogin = () => {
+  window.location.href = `${window.location.origin}/sign-in`;
+};
+
 // GET Request
 export const getService = async (url, customerHeader) => {
   try {
     const response = await axios.get(url, customerHeader || getHeader());
     return [response?.data, null];
   } catch ({ response }) {
+    if (response?.data?.code === 401) {
+      redirectToLogin();
+    }
     return [null, response?.data];
   }
 };
@@ -27,6 +34,9 @@ export const postService = async (url, params) => {
     const response = await axios.post(url, params, getHeader());
     return [response?.data, null];
   } catch ({ response }) {
+    if (response?.data?.code === 401) {
+      redirectToLogin();
+    }
     return [null, response?.data];
   }
 };
@@ -37,6 +47,9 @@ export const putService = async (url, params) => {
     const response = await axios.put(url, params);
     return [response?.data, null];
   } catch ({ response }) {
+    if (response?.data?.code === 401) {
+      redirectToLogin();
+    }
     return [null, response?.data];
   }
 };
@@ -47,6 +60,9 @@ export const deleteService = async (url) => {
     const response = await axios.delete(url);
     return [response?.data, null];
   } catch ({ response }) {
+    if (response?.data?.code === 401) {
+      redirectToLogin();
+    }
     return [null, response?.data];
   }
 };

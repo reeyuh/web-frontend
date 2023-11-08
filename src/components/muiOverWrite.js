@@ -1,6 +1,6 @@
 "use client";
 
-import { OutlinedInput, TextField } from "@mui/material";
+import { OutlinedInput, Select } from "@mui/material";
 import styled from "@emotion/styled";
 
 export const OutlinedInputWrapper = styled(OutlinedInput)`
@@ -11,8 +11,19 @@ export const OutlinedInputWrapper = styled(OutlinedInput)`
   }
 `;
 
-export const TextFieldWrapper = styled(TextField)`
-  height: ${(props) => (props.height ? props.height : "48px")};
-  padding: 0px;
-  background: red;
+export const SelectWrapper = styled(Select)`
+  font-family: inherit;
+  & .MuiInputBase-input {
+    padding: 0px !important;
+
+    &:focus {
+      background: none !important;
+    }
+  }
+  &:after {
+    content: none;
+  }
+  &:before {
+    content: none;
+  }
 `;
