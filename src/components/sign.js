@@ -33,10 +33,6 @@ export const Sign = ({
   const { error, success, hidden, disabled, isLoading, isSsoLoading } =
     actionHandler;
 
-  useEffect(() => {
-    localStorage.clear();
-  }, []);
-
   return (
     <Grid container className={formInputs?.className}>
       <Grid item xs={12} sm={10} md={8} lg={5} xl={5}>

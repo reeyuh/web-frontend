@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SIDEBAR_MENU_LIST } from "@/data/sidebarData";
@@ -10,9 +10,21 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import Drawer from "@mui/material/Drawer";
 import "@/styles/sidebar.scss";
+import { getLocalStore } from "@/utils";
+import { SUPER_ADMIN_KEY } from "@/data/userData";
 
 const MenuList = ({ isMobile, setIsOpen = () => {}, isOpen }) => {
   const pathname = usePathname();
+  const [hidden, setHidden] = useState(["list-organization"]);
+
+  const isSuperAdmin = getLocalStore("role") === SUPER_ADMIN_KEY;
+
+  useEffect(() => {
+    if (isSuperAdmin) {
+      setHidden(() => []);
+    }
+  }, []);
+
   return (
     <>
       <div className="ps-md-3 ps-1 d-flex align-items-center sidebar-logo">
@@ -37,6 +49,9 @@ const MenuList = ({ isMobile, setIsOpen = () => {}, isOpen }) => {
         }`}
       >
         {SIDEBAR_MENU_LIST?.map((option, index) => {
+          if (hidden.indexOf(option.hiddenKey) > -1) {
+            return null;
+          }
           return (
             <Link
               onClick={() => (isMobile ? setIsOpen(!isOpen) : null)}

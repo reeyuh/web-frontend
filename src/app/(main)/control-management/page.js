@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { getService, apiList } from "@/utils";
 import { useRouter } from "next/navigation";
 import { getPaginationProps } from "@/utils/commonFn";
-import { POLICY_COLUMNS } from "@/data/policyManagementData";
+import { CONTROL_COLUMNS } from "@/data/controlManagementData";
 
 export default function PolicyTable() {
   const router = useRouter();
@@ -47,7 +47,7 @@ export default function PolicyTable() {
         itemsPerPage,
         handlePaginationChange
       )}
-      columns={POLICY_COLUMNS}
+      columns={CONTROL_COLUMNS}
       data={data}
     />
   );

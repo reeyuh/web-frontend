@@ -21,4 +21,12 @@ export const PAGE_HEADER = {
     title: "Security Dashboard",
     summary: "List of data and their security status",
   },
+  "/control-management": {
+    title: "Control Management",
+    summary: "List of data and their control status",
+  },
+  "/audit-trail": {
+    title: "Audit Trail",
+    summary: "List of data and their logs",
+  },
 };

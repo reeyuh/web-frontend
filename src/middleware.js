@@ -54,7 +54,7 @@ export async function middleware(request, context) {
       "/agent-status",
       "/users",
       "/security-dashboard",
-      "/policy-management",
+      "/control-management",
       "/audit-trail",
     ].indexOf(request.nextUrl.pathname) > -1
   ) {
@@ -96,7 +96,7 @@ export const config = {
     "/agent-status",
     "/users",
     "/security-dashboard",
-    "/policy-management",
+    "/control-management",
     "/audit-trail",
   ],
 };

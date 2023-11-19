@@ -27,7 +27,7 @@ export default function Profile() {
     isLoading: false,
     hidden: {},
     disabled: {},
-    readonly: { organization: true, email: true },
+    readonly: {},
     key: "password",
   });
 
@@ -51,6 +51,41 @@ export default function Profile() {
   useEffect(() => {
     fetchProfile();
   }, []);
+
+  const onUpdateProfile = async (data) => {
+    setProfileActionHandler((val) => ({
+      ...val,
+      error: "",
+      success: "",
+      isLoading: true,
+    }));
+
+    const response = await postService(apiList.updateProfile, {
+      first_name: data.first_name,
+      last_name: data.last_name,
+    });
+    if (response[0]) {
+      setProfileActionHandler((val) => ({
+        ...val,
+        success: "Profile has been updated successfully",
+        hidden: { ...val.hidden, btnSection: true },
+        isLoading: false,
+      }));
+      setTimeout(() => {
+        setProfileActionHandler((val) => ({
+          ...val,
+          success: "",
+          hidden: {},
+        }));
+      }, 3000);
+    } else {
+      setProfileActionHandler((val) => ({
+        ...val,
+        isLoading: false,
+        error: response[1].message,
+      }));
+    }
+  };
 
   const onChangePassword = async (data) => {
     setPasswordActionHandler((val) => ({
@@ -111,6 +146,7 @@ export default function Profile() {
             key={profileActionHandler.key}
             list={PROFILE_INPUTS}
             values={formValues}
+            formSubmit={onUpdateProfile}
             actionHandler={profileActionHandler}
           />
           {formValues.set_password && (

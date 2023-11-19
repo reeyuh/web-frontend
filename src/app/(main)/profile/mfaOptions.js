@@ -205,14 +205,21 @@ export const MfaOptions = ({ values, fetchProfile }) => {
               )}
               {!isLoading ? (
                 <>
-                  {!success && (values.mfa_type || watch()?.mfa_type) && (
-                    <div className="mt-4">
-                      <PrimaryButton
-                        type="submit"
-                        text={`${!values?.mfa_verified ? "Verify" : "Submit"}`}
-                      />
-                    </div>
-                  )}
+                  {!success &&
+                    watch().mfa_type &&
+                    values.mfa_type !== watch()?.mfa_type && (
+                      <div className="mt-4">
+                        <PrimaryButton
+                          type="submit"
+                          text={`${
+                            watch()?.mfa_type === "email" ||
+                            values?.mfa_verified
+                              ? "Submit"
+                              : "Verify"
+                          }`}
+                        />
+                      </div>
+                    )}
                 </>
               ) : (
                 <CircularProgress />

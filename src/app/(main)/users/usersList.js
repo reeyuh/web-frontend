@@ -11,7 +11,7 @@ import {
   ADMIN_KEY,
   ROLE_OPTIONS,
 } from "@/data/userData";
-import { apiList, getService, postService } from "@/utils";
+import { apiList, getService, postService, getLocalStore } from "@/utils";
 import { useRouter } from "next/navigation";
 import { getPaginationProps } from "@/utils/commonFn";
 
@@ -26,7 +26,6 @@ export default function UserList() {
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(parseInt(page));
   const [hiddenCols, setHiddenCols] = useState({ actions: true });
-  const [currentUser, setCurrentUser] = useState();
   const [openModal, setOpenModal] = useState(false);
   const itemsPerPage = 10;
   const [formValues, setFormValues] = useState({ role: "" });
@@ -41,22 +40,14 @@ export default function UserList() {
   });
   const [options, setOptions] = useState({});
 
-  const getProfile = async () => {
-    const result = await getService(apiList.getProfile);
-    if (result[0]?.data) {
-      setCurrentUser(result[0]?.data);
-      return result[0].data;
-    }
-    return null;
-  };
+  useEffect(() => {
+    setHiddenCols(() => ({
+      actions:
+        [SUPER_ADMIN_KEY, ADMIN_KEY].indexOf(getLocalStore("role")) === -1,
+    }));
+  }, []);
 
   const fetchData = async (pageCount) => {
-    const currentUser = await getProfile();
-    if (currentUser) {
-      setHiddenCols(() => ({
-        actions: [SUPER_ADMIN_KEY, ADMIN_KEY].indexOf(currentUser.role) === -1,
-      }));
-    }
     const result = await getService(
       `${apiList.userList}?offset=${
         (pageCount - 1) * itemsPerPage
@@ -69,7 +60,7 @@ export default function UserList() {
       response.user_list.forEach((item, index) => {
         response.user_list[index].name = `${item.first_name} ${
           item.last_name
-        } ${currentUser.email === item.email ? "(You)" : ""}`;
+        } ${getLocalStore("email") === item.email ? "(You)" : ""}`;
         response.user_list[index].roleAlias = ROLE_ALIAS[item.role];
       });
       setData(response.user_list);
@@ -94,13 +85,15 @@ export default function UserList() {
       ...val,
       success: "",
       hidden: {},
-      readonly: { role: currentUser.email === data.row.email ? true : false },
+      readonly: {
+        role: getLocalStore("email") === data.row.email ? true : false,
+      },
       error: "",
     }));
 
     const options = [...ROLE_OPTIONS];
-    if (data.row.role === "superadmin") {
-      options.unshift({ label: "Super Admin", value: "superadmin" });
+    if (data.row.role === SUPER_ADMIN_KEY) {
+      options.unshift({ label: "Super Admin", value: SUPER_ADMIN_KEY });
     }
 
     setOptions(() => ({ role: options }));
