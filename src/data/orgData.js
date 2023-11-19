@@ -12,7 +12,18 @@ export const ORG_COLUMNS = [
     type: "text",
     bodyClass: "table-max-250 text-break",
   },
-
+  {
+    key: "website",
+    label: "Website",
+    type: "text",
+    bodyClass: "text-break",
+  },
+  {
+    key: "details",
+    label: "Details",
+    type: "text",
+    bodyClass: "text-break table-max-250",
+  },
   {
     key: "created_at",
     label: "Creation Date",

@@ -6,7 +6,7 @@ import { MFA_FORM_INPUTS } from "@/data/signData";
 import { useRouter, useSearchParams } from "next/navigation";
 import { postService } from "@/utils/httpService";
 import { apiList } from "@/utils/apiList";
-import { setAccessToken, getLocalStore } from "@/utils/commonFn";
+import { setInitialValues, getLocalStore } from "@/utils/commonFn";
 import { setCookie } from "@/utils/cookiesHandler";
 
 export default function MFA() {
@@ -50,10 +50,10 @@ export default function MFA() {
     });
 
     if (response[0]?.data.access_token) {
-      setAccessToken(response[0].data);
+      setInitialValues(response[0].data);
       await setCookie("_d", response[0].data.access_token);
       setTimeout(() => {
-        router.replace("/dashboard");
+        router.replace("/agent-status");
       }, 100);
     } else {
       setActionHandler((val) => ({

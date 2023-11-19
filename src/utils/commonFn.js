@@ -10,13 +10,11 @@ const getInitials = (name) => {
   return null;
 };
 
-const setAccessToken = (data) => {
-  data?.access_token &&
-    localStorage.setItem("access_token", data?.access_token);
-  data?.display_name &&
-    localStorage.setItem("display_name", data?.display_name);
-
-  data?.email && localStorage.setItem("email", data?.email);
+const setInitialValues = (data) => {
+  data?.access_token && localStorage.setItem("access_token", data.access_token);
+  data?.display_name && localStorage.setItem("display_name", data.display_name);
+  data?.email && localStorage.setItem("email", data.email);
+  data?.role && localStorage.setItem("role", data.role);
 };
 
 const redirectToSsoUrl = (ssoUrl) => {
@@ -47,7 +45,7 @@ const getPaginationProps = (
 
 export {
   getInitials,
-  setAccessToken,
+  setInitialValues,
   redirectToSsoUrl,
   getPaginationProps,
   getLocalStore,

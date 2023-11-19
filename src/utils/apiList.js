@@ -9,6 +9,7 @@ export const apiList = {
   sendOtp: `${userApiServer}send_otp`,
   resetPassword: `${userApiServer}forgot_password`,
   getProfile: `${userApiServer}get-profile`,
+  updateProfile: `${userApiServer}update_user_profile`,
   validateToken: `${userApiServer}validate_token`,
   mfaLogin: `${userApiServer}mfa_login`,
   verifyOtp: `${userApiServer}verify_otp`,

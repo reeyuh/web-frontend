@@ -5,7 +5,7 @@ import { Sign, Modal } from "@/components";
 import { REGISTER_FORM_INPUTS } from "@/data/signData";
 import { getService, postService } from "@/utils/httpService";
 import { apiList } from "@/utils/apiList";
-import { setAccessToken, redirectToSsoUrl } from "@/utils/commonFn";
+import { setInitialValues, redirectToSsoUrl } from "@/utils/commonFn";
 import { setCookie } from "@/utils/cookiesHandler";
 import { useSearchParams, useRouter } from "next/navigation";
 
@@ -72,7 +72,7 @@ export default function Register() {
 
     if (response[0]?.data?.access_token) {
       setCookie("_d", response[0]?.data?.access_token);
-      setAccessToken({
+      setInitialValues({
         ...response[0]?.data,
         display_name: isCustomSignup
           ? `${data.first_name} ${data.last_name}`
@@ -113,6 +113,10 @@ export default function Register() {
       fetchSSOUrl();
     }
   }, [getSSOCode]);
+
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
 
   return (
     <>
