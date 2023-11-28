@@ -4,6 +4,7 @@
 @import "partials/fonts";
 @import "form";
 @import "modal.scss";
+@import "dashboard.scss";
 
 .error {
   color: $error;
@@ -109,6 +110,17 @@ input.form-control:read-only,
       animation: live 1.4s infinite ease-in-out;
     }
   }
+  &-success {
+    color: var(--bs-success);
+  }
+
+  &-danger {
+    color: var(--bs-danger);
+  }
+
+  &-warning {
+    color: var(--bs-warning);
+  }
 
   &-circle-user {
     border: 1px solid $primary-text;
@@ -149,5 +161,9 @@ input.form-control:read-only,
 
   &-more {
     color: $primary-bg;
+  }
+
+  &-fill {
+    flex: 1;
   }
 }

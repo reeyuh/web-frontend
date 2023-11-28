@@ -1,0 +1,51 @@
+.dashboard {
+  &-head {
+    font-family: $nunito--bold;
+    color: $primary-text;
+  }
+
+  &-title {
+    font-family: $nunito--semi;
+  }
+
+  &-card-item {
+    min-width: 300px;
+  }
+
+  &-box {
+    flex: 1;
+    border-radius: 4px;
+    box-shadow: 0px 0px 6px 1px #ddd;
+  }
+
+  &-box-count {
+    font-family: $nunito--semi;
+    font-size: 54px;
+    text-align: center;
+    color: $primary-text;
+    @include media-breakpoint-down(lg) {
+      font-size: 34px !important;
+    }
+  }
+
+  &-inner-count {
+    font-family: $nunito--semi;
+    font-size: 34px;
+    text-align: center;
+    color: $primary-text;
+    @include media-breakpoint-down(lg) {
+      font-size: 24px !important;
+    }
+  }
+
+  &-inner-text {
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  &-inner-box {
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    flex: 1;
+  }
+}
