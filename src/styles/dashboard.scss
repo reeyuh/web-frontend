@@ -48,4 +48,12 @@
     border: 1px solid #ddd;
     flex: 1;
   }
+
+  &-min-height {
+    min-height: 170px;
+  }
+
+  &-user-min-height {
+    min-height: 148px;
+  }
 }

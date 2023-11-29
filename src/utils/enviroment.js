@@ -31,3 +31,4 @@ export const apiServer = (params) => {
 export const baseApiServer = get("API_SERVER")["PLAIN"];
 export const userApiServer = get("API_SERVER")["USER"];
 export const agentApiServer = get("API_SERVER")["AGENT"];
+export const dashboardApiServer = get("API_SERVER")["DASHBOARD"];
