@@ -3,6 +3,7 @@
   "API_SERVER": {
     "PLAIN": "https://dev-api.truenil.io/",
     "USER": "https://dev-api.truenil.io/user/",
-    "AGENT": "https://dev-api.truenil.io/agent/"
+    "AGENT": "https://dev-api.truenil.io/agent/",
+    "DASHBOARD": "https://dev-api.truenil.io/dashboard/"
   }
 }

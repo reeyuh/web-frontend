@@ -4,8 +4,16 @@ import PolicyIcon from "@mui/icons-material/Policy";
 import SecurityIcon from "@mui/icons-material/Security";
 import WorkHistoryIcon from "@mui/icons-material/WorkHistory";
 import CorporateFareIcon from "@mui/icons-material/CorporateFare";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 
 export const SIDEBAR_MENU_LIST = [
+  {
+    label: "Dashboard",
+    route: "/dashboard",
+    icon: DashboardIcon,
+    key: "dashboard",
+    hiddenKey: "dashboard",
+  },
   {
     label: "Agent status",
     route: "/agent-status",

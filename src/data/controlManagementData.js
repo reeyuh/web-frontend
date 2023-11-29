@@ -26,6 +26,6 @@ export const CONTROL_COLUMNS = [
   },
   {
     key: "security_status",
-    label: "Security Status",
+    label: "Security Policy",
   },
 ];

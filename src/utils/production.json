@@ -3,6 +3,7 @@
   "API_SERVER": {
     "PLAIN": "https://test.com/api",
     "AUTH": "https://test.com/api/auth",
-    "USER": "https:/test.com/api/User"
+    "USER": "https:/test.com/api/user",
+    "DASHBOARD": "https:/test.com/api/dashboard"
   }
 }

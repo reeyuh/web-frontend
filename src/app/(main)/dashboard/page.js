@@ -1,105 +1,210 @@
 "use client";
 
-import Table from "@/components/table";
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import { Select, MenuItem } from "@mui/material";
+import { Card, CardContent, CircularProgress } from "@mui/material";
 import { SAMPLE_COLUMNS } from "@/data/commonData";
 import { getService, apiList } from "@/utils";
-import { useRouter } from "next/navigation";
-import { getPaginationProps } from "@/utils/commonFn";
-
-const RenderActiveColumn = ({ row, cell, key, onUpdate }) => {
-  const [activeValue, setActiveValue] = useState(cell);
-  const options = [
-    { label: "Yes", value: "Yes" },
-    { label: "No", value: "No" },
-  ];
-
-  const handleChange = (event) => {
-    const updatedValue = event.target.value;
-    setActiveValue(updatedValue);
-    onUpdate("id", row.id, key, updatedValue);
-  };
-
-  return (
-    <Select value={activeValue} onChange={handleChange}>
-      {options.map((option) => (
-        <MenuItem key={option.value} value={option.value}>
-          {option.label}
-        </MenuItem>
-      ))}
-    </Select>
-  );
-};
 
 export default function Dashboard() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const page = searchParams.get("page") || 1;
+  const [agentCount, setAgentCount] = useState();
+  const [agentError, setAgentError] = useState();
+  const [fileTypeCount, setFileTypeCount] = useState();
+  const [fileTypeError, setFileTypeError] = useState();
+  const [userCount, setUserCount] = useState();
+  const [userError, setUserError] = useState();
 
-  const [data, setData] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
-  const [currentPage, setCurrentPage] = useState(parseInt(page));
-  const itemsPerPage = 10;
-
-  const renderer = {
-    SelectList: ({ row, cell, trowIndex, key }) => (
-      <RenderActiveColumn
-        row={row}
-        key={key}
-        cell={cell}
-        trowIndex={trowIndex}
-        onUpdate={handleActiveChange}
-      />
-    ),
-  };
-  const fetchData = async () => {
-    const result = await getService(
-      `${apiList.agentStatus}?offset=${
-        (currentPage - 1) * itemsPerPage
-      }&limit=${itemsPerPage}`
-    );
-    if (result[0].docs) {
-      setData(result[0].docs);
-      setTotalCount(result[0].numFound);
+  const fetchData = async (api, setCounts, setError) => {
+    const result = await getService(api);
+    if (result[0]?.data) {
+      setCounts(result[0]?.data);
+    } else {
+      setError(result[0]?.message || "Something went wrong");
     }
   };
 
   useEffect(() => {
-    setCurrentPage(parseInt(page));
-    fetchData();
-  }, [page]);
-
-  const handlePaginationChange = (event, page) => {
-    router.push(`?page=${page}`, { scroll: true });
-  };
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const paginatedData = data.slice(startIndex, endIndex);
-
-  const handleActiveChange = (
-    primaryKey,
-    value,
-    key = "isActive",
-    updatedValue
-  ) => {};
-
-  const deleteData = (data, e) => {};
+    fetchData(apiList.dashboardFileType, setFileTypeCount, setFileTypeError);
+    fetchData(apiList.dashboardAgentStatus, setAgentCount, setAgentError);
+    fetchData(apiList.dashboardUserManagement, setUserCount, setUserError);
+  }, []);
 
   return (
-    <Table
-      pagination={getPaginationProps(
-        totalCount,
-        currentPage,
-        itemsPerPage,
-        handlePaginationChange
-      )}
-      columns={SAMPLE_COLUMNS}
-      data={data}
-      renderers={renderer}
-      onClickFns={{ deleteData }}
-    />
+    <>
+      <div className="mt-4 pt-2 ">
+        <h4 className="dashboard-head mb-4">Welcome to TrueNil!</h4>
+        <div className="d-flex gap-2 flex-wrap">
+          <div className="common-fill dashboard-card-item d-flex flex-column pb-4">
+            <h5 className="dashboard-title">Security Dashboard</h5>
+            <Card
+              sx={{ overflow: "visible" }}
+              className="common-card mt-0 text-center common-fill"
+            >
+              {fileTypeCount ? (
+                <CardContent className="d-flex gap-2 p-md-3 p-2 flex-wrap">
+                  <div className="dashboard-box d-flex flex-column">
+                    <div className="d-flex m-1 m-md-2 gap-1 common-fill justify-content-evenly">
+                      <div className="dashboard-inner-box px-1">
+                        <p className="dashboard-inner-count pt-3">10</p>
+                        <p className="dashboard-inner-text">PII</p>
+                      </div>
+                      <div className="dashboard-inner-box px-1">
+                        <p className="dashboard-inner-count pt-3">
+                          {fileTypeCount.PHI || 0}
+                        </p>
+                        <p className="dashboard-inner-text">PHI</p>
+                      </div>
+                      <div className="dashboard-inner-box px-1">
+                        <p className="dashboard-inner-count pt-3">40</p>
+                        <p className="dashboard-inner-text">PCI</p>
+                      </div>
+                      <div className="dashboard-inner-box px-1">
+                        <p className="dashboard-inner-count pt-3">60</p>
+                        <p className="dashboard-inner-text">Genomics</p>
+                      </div>
+                    </div>
+                    <p className="mb-2 mt-1">Sensitive Data Type</p>
+                  </div>
+                  <div className="dashboard-box d-flex flex-column">
+                    <div className="d-flex m-1 m-md-2 gap-1 common-fill justify-content-evenly">
+                      <div className="dashboard-inner-box px-1">
+                        <p className="dashboard-inner-count pt-3 common-danger">
+                          {fileTypeCount.without_encryption_count || 0}
+                        </p>
+                        <p className="dashboard-inner-text">
+                          Without Encryption
+                        </p>
+                      </div>
+                      <div className="dashboard-inner-box px-1">
+                        <p className=" dashboard-inner-count pt-3 common-warning">
+                          {fileTypeCount.without_access_control_count || 0}
+                        </p>
+                        <p className="dashboard-inner-text">
+                          Without Access Control
+                        </p>
+                      </div>
+                    </div>
+                    <p className="mt-1 mb-2">Open risks</p>
+                  </div>
+                </CardContent>
+              ) : (
+                <div className="dashboard-min-height d-flex align-items-center justify-content-center">
+                  {fileTypeError ? (
+                    <span className="error">{fileTypeError}</span>
+                  ) : (
+                    <CircularProgress />
+                  )}
+                </div>
+              )}
+            </Card>
+          </div>
+          <div className="common-fill dashboard-card-item  d-flex flex-column pb-4">
+            <h5 className="dashboard-title">Agent Status</h5>
+            <Card
+              sx={{ overflow: "visible" }}
+              className="common-card mt-0 text-center common-fill"
+            >
+              {agentCount ? (
+                <CardContent className="d-flex gap-2 p-md-3 p-2 flex-wrap">
+                  <div className="dashboard-box d-flex align-items-center flex-column px-2">
+                    <p className="dashboard-box-count my-4 pt-2 common-success">
+                      {agentCount.online_agents || 0}
+                    </p>
+                    <p className="mb-3">Online</p>
+                  </div>
+                  <div className="dashboard-box d-flex align-items-center flex-column px-2">
+                    <p className="dashboard-box-count my-4 pt-2 common-danger">
+                      {agentCount.offile_agents || 0}
+                    </p>
+                    <p className="mb-3">Offline</p>
+                  </div>
+                  <div className="dashboard-box d-flex align-items-center flex-column px-2">
+                    <p className="dashboard-box-count my-4 pt-2 common-success">
+                      {agentCount.healthy_status || 0}
+                    </p>
+                    <p className="mb-3">Healthy Agents</p>
+                  </div>
+                  <div className="dashboard-box d-flex align-items-center flex-column px-2">
+                    <p className="dashboard-box-count my-4 pt-2 common-warning">
+                      {agentCount.unhealthy_status || 0}
+                    </p>
+                    <p className="mb-3">Compromised Agents</p>
+                  </div>
+                </CardContent>
+              ) : (
+                <div className="dashboard-min-height d-flex align-items-center justify-content-center">
+                  {agentError ? (
+                    <span className="error">{agentError}</span>
+                  ) : (
+                    <CircularProgress />
+                  )}
+                </div>
+              )}
+            </Card>
+          </div>
+        </div>
+        <div className="d-flex gap-2 flex-wrap">
+          <div className="common-fill dashboard-card-item  d-flex flex-column mb-4">
+            <h5 className="dashboard-title">User Management</h5>
+            <Card
+              sx={{ overflow: "visible" }}
+              className="common-card mt-0 common-fill text-center"
+            >
+              {userCount ? (
+                <CardContent className="d-flex gap-2 p-md-3 p-2 flex-wrap">
+                  <div className="dashboard-box d-flex flex-column px-2">
+                    <p className="dashboard-box-count my-4 pt-2">
+                      {userCount.admin_count || 0}
+                    </p>
+                    <p className="mb-3">Admin</p>
+                  </div>
+                  <div className="dashboard-box d-flex flex-column px-2">
+                    <p className="dashboard-box-count my-4 pt-2">
+                      {userCount.researcher_count || 0}
+                    </p>
+                    <p className="mb-3">Researcher</p>
+                  </div>
+                  <div className="dashboard-box d-flex flex-column px-2">
+                    <p className="dashboard-box-count my-4 pt-2">
+                      {userCount.operator_count || 0}
+                    </p>
+                    <p className="mb-3">Operator</p>
+                  </div>
+                </CardContent>
+              ) : (
+                <div className="dashboard-user-min-height d-flex align-items-center justify-content-center">
+                  {userError ? (
+                    <span className="error">{userError}</span>
+                  ) : (
+                    <CircularProgress />
+                  )}
+                </div>
+              )}
+            </Card>
+          </div>
+          <div className="common-fill dashboard-card-item  d-flex flex-column mb-4">
+            <h5 className="dashboard-title">Control Management</h5>
+            <Card
+              sx={{ overflow: "visible" }}
+              className="common-card mt-0 common-fill text-center"
+            >
+              <CardContent className="d-flex gap-2 p-md-3 p-2 flex-wrap">
+                <div className="dashboard-box d-flex flex-column px-2">
+                  <p className="dashboard-box-count my-4 pt-2 common-success">
+                    34
+                  </p>
+                  <p className="mb-3">Security Controls in Place</p>
+                </div>
+                <div className="dashboard-box d-flex flex-column px-2">
+                  <p className="dashboard-box-count my-4 pt-2 common-warning">
+                    0
+                  </p>
+                  <p className="mb-3">Security Controls Missing</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }

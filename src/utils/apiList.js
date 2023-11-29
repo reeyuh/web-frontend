@@ -1,4 +1,8 @@
-import { userApiServer, agentApiServer } from "./enviroment";
+import {
+  userApiServer,
+  agentApiServer,
+  dashboardApiServer,
+} from "./enviroment";
 
 export const apiList = {
   ssoUrl: `${userApiServer}get_sso_url`,
@@ -27,4 +31,7 @@ export const apiList = {
   createOrg: `${userApiServer}add_org`,
   policyMgmtData: `${agentApiServer}agent_status_list`,
   auditData: `${agentApiServer}agent_status_list`,
+  dashboardAgentStatus: `${dashboardApiServer}agent_status_count`,
+  dashboardFileType: `${dashboardApiServer}file_type_count`,
+  dashboardUserManagement: `${dashboardApiServer}user_management`,
 };
