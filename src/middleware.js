@@ -35,7 +35,7 @@ export async function middleware(request, context) {
         })
       ).json();
       if (data.code === 200) {
-        return NextResponse.redirect(new URL(`/agent-status`, request.url));
+        return NextResponse.redirect(new URL(`/dashboard`, request.url));
       } else if (["/"].indexOf(request.nextUrl.pathname) > -1) {
         const response = NextResponse.redirect(
           new URL(`/register`, request.url)
@@ -56,6 +56,7 @@ export async function middleware(request, context) {
       "/security-dashboard",
       "/control-management",
       "/audit-trail",
+      "/dashboard",
     ].indexOf(request.nextUrl.pathname) > -1
   ) {
     if (storedToken && storedToken.value) {

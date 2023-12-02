@@ -53,7 +53,7 @@ export default function MFA() {
       setInitialValues(response[0].data);
       await setCookie("_d", response[0].data.access_token);
       setTimeout(() => {
-        router.replace("/agent-status");
+        router.replace("/dashboard");
       }, 100);
     } else {
       setActionHandler((val) => ({

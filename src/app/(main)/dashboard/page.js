@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, CircularProgress } from "@mui/material";
-import { SAMPLE_COLUMNS } from "@/data/commonData";
 import { getService, apiList } from "@/utils";
 
 export default function Dashboard() {
@@ -34,7 +33,9 @@ export default function Dashboard() {
         <h4 className="dashboard-head mb-4">Welcome to TrueNil!</h4>
         <div className="d-flex gap-2 flex-wrap">
           <div className="common-fill dashboard-card-item d-flex flex-column pb-4">
-            <h5 className="dashboard-title">Security Dashboard</h5>
+            <h5 className="dashboard-title">
+              <a href="/security-dashboard">Security Dashboard</a>
+            </h5>
             <Card
               sx={{ overflow: "visible" }}
               className="common-card mt-0 text-center common-fill"
@@ -44,7 +45,10 @@ export default function Dashboard() {
                   <div className="dashboard-box d-flex flex-column">
                     <div className="d-flex m-1 m-md-2 gap-1 common-fill justify-content-evenly">
                       <div className="dashboard-inner-box px-1">
-                        <p className="dashboard-inner-count pt-3">10</p>
+                        <p className="dashboard-inner-count pt-3">
+                          {" "}
+                          {fileTypeCount.PII || 0}
+                        </p>
                         <p className="dashboard-inner-text">PII</p>
                       </div>
                       <div className="dashboard-inner-box px-1">
@@ -54,11 +58,17 @@ export default function Dashboard() {
                         <p className="dashboard-inner-text">PHI</p>
                       </div>
                       <div className="dashboard-inner-box px-1">
-                        <p className="dashboard-inner-count pt-3">40</p>
+                        <p className="dashboard-inner-count pt-3">
+                          {" "}
+                          {fileTypeCount.PCI || 0}
+                        </p>
                         <p className="dashboard-inner-text">PCI</p>
                       </div>
                       <div className="dashboard-inner-box px-1">
-                        <p className="dashboard-inner-count pt-3">60</p>
+                        <p className="dashboard-inner-count pt-3">
+                          {" "}
+                          {fileTypeCount.Genomic || 0}
+                        </p>
                         <p className="dashboard-inner-text">Genomics</p>
                       </div>
                     </div>
@@ -98,7 +108,9 @@ export default function Dashboard() {
             </Card>
           </div>
           <div className="common-fill dashboard-card-item  d-flex flex-column pb-4">
-            <h5 className="dashboard-title">Agent Status</h5>
+            <h5 className="dashboard-title">
+              <a href="/agent-status"> Agent Status</a>
+            </h5>
             <Card
               sx={{ overflow: "visible" }}
               className="common-card mt-0 text-center common-fill"
@@ -144,7 +156,9 @@ export default function Dashboard() {
         </div>
         <div className="d-flex gap-2 flex-wrap">
           <div className="common-fill dashboard-card-item  d-flex flex-column mb-4">
-            <h5 className="dashboard-title">User Management</h5>
+            <h5 className="dashboard-title">
+              <a href="/users"> User Management</a>
+            </h5>
             <Card
               sx={{ overflow: "visible" }}
               className="common-card mt-0 common-fill text-center"
@@ -182,7 +196,9 @@ export default function Dashboard() {
             </Card>
           </div>
           <div className="common-fill dashboard-card-item  d-flex flex-column mb-4">
-            <h5 className="dashboard-title">Control Management</h5>
+            <h5 className="dashboard-title">
+              <a href="/control-management">Control Management</a>
+            </h5>
             <Card
               sx={{ overflow: "visible" }}
               className="common-card mt-0 common-fill text-center"

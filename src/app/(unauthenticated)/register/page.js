@@ -79,7 +79,7 @@ export default function Register() {
           : response[0]?.data?.display_name,
       });
       setTimeout(() => {
-        router.replace("/agent-status");
+        router.replace("/dashboard");
       }, 100);
     } else {
       setDisabledSso(false);
