@@ -1,38 +1,45 @@
 "use client";
 
-import Table from "@/components/table";
+import { Table } from "@/components";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { getService, apiList } from "@/utils";
+import { AUDIT_COLUMNS } from "@/data/auditData";
+import { apiList, getService } from "@/utils";
 import { useRouter } from "next/navigation";
 import { getPaginationProps } from "@/utils/commonFn";
-import { AUDIT_COLUMNS } from "@/data/auditData";
 
-export default function PolicyTable() {
+export default function SecurityTable() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = searchParams.get("page") || 1;
 
   const [data, setData] = useState([]);
+  const [errMessage, setErrMessage] = useState();
+  const [isLoading, setIsLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(parseInt(page));
   const itemsPerPage = 10;
 
-  const fetchData = async () => {
+  const fetchData = async (pageCount) => {
     const result = await getService(
-      `${apiList.auditData}&offset=${
-        (currentPage - 1) * itemsPerPage
+      `${apiList.securityDashboard}?offset=${
+        (pageCount - 1) * itemsPerPage
       }&limit=${itemsPerPage}`
     );
-    if (result[0].docs) {
-      setData(result[0].docs);
-      setTotalCount(result[0].numFound);
+    const response = result[0]?.data;
+    setIsLoading(false);
+    if (response) {
+      //setData(response.list);
+      // setTotalCount(response.total_count);
+    } else {
+      setErrMessage(result[1].message);
     }
   };
 
   useEffect(() => {
-    setCurrentPage(parseInt(page));
-    fetchData();
+    const pageCount = parseInt(page);
+    setCurrentPage(pageCount);
+    fetchData(pageCount);
   }, [page]);
 
   const handlePaginationChange = (event, page) => {
@@ -40,15 +47,19 @@ export default function PolicyTable() {
   };
 
   return (
-    <Table
-      pagination={getPaginationProps(
-        totalCount,
-        currentPage,
-        itemsPerPage,
-        handlePaginationChange
-      )}
-      columns={AUDIT_COLUMNS}
-      data={data}
-    />
+    <>
+      <Table
+        pagination={getPaginationProps(
+          totalCount,
+          currentPage,
+          itemsPerPage,
+          handlePaginationChange
+        )}
+        columns={AUDIT_COLUMNS}
+        data={data}
+        errorMessage={errMessage}
+        isLoading={isLoading}
+      />
+    </>
   );
 }

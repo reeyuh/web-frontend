@@ -5,27 +5,36 @@ export const CONTROL_COLUMNS = [
     hide: true,
   },
   {
-    key: "data",
-    label: "Data",
+    key: "filename",
+    label: "Filename",
+    type: "text",
+    bodyClass: "table-max-250 text-break",
   },
   {
     key: "sensitivity_type",
     label: "Sensitivity Type",
+    type: "text",
   },
   {
-    key: "access",
     label: "Access",
+    type: "renderer",
+    componentName: "Access",
+    componentProps: {},
   },
   {
     key: "encryption_status",
     label: "Encryption Status",
+    type: "text",
   },
   {
     key: "location",
     label: "Location",
+    type: "text",
+    bodyClass: "table-max-250 text-break",
   },
   {
-    key: "security_status",
+    key: "control_status",
     label: "Security Policy",
+    type: "text",
   },
 ];
