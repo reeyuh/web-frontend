@@ -78,7 +78,7 @@ export default function SecurityTable() {
 
   const fetchAccessUserData = async (path) => {
     const result = await postService(apiList.accessUserList, {
-      path,
+      path: path.replace("Dynamodb - ", ""),
     });
     if (result[0]?.data) {
       const userList = result[0].data?.users_list || [];
