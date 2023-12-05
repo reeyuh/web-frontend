@@ -81,8 +81,8 @@ input.form-control:read-only,
 .common {
   &-card {
     border: 1px solid rgba(0, 0, 0, 0.12);
-    box-shadow: none;
-    margin-top: 16px;
+    box-shadow: none !important;
+    margin-top: 16px !important;
   }
 
   &-offline {
