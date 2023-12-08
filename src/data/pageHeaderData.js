@@ -19,7 +19,7 @@ export const PAGE_HEADER = {
   },
   "/security-dashboard": {
     title: "Security Dashboard",
-    summary: "List of data and their security status",
+    summary: "Inventory of data and security posture",
   },
   "/control-management": {
     title: "Control Management",

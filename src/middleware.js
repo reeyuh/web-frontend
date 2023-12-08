@@ -57,6 +57,7 @@ export async function middleware(request, context) {
       "/control-management",
       "/audit-trail",
       "/dashboard",
+      "/organization",
     ].indexOf(request.nextUrl.pathname) > -1
   ) {
     if (storedToken && storedToken.value) {
@@ -99,5 +100,6 @@ export const config = {
     "/security-dashboard",
     "/control-management",
     "/audit-trail",
+    "/organization",
   ],
 };
