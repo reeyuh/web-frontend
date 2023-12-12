@@ -31,10 +31,11 @@ export const CONTROL_COLUMNS = [
     label: "Location",
     type: "text",
     bodyClass: "table-max-250 text-break",
+    hide: true,
   },
   {
     key: "control_status",
-    label: "Security Alert",
+    label: "Security Control",
     type: "text",
   },
 ];

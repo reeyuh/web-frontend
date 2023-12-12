@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, CircularProgress } from "@mui/material";
-import { getService, apiList } from "@/utils";
+import { getService, apiList, getLocalStore } from "@/utils";
 
 export default function Dashboard() {
   const [agentCount, setAgentCount] = useState();
@@ -11,6 +11,7 @@ export default function Dashboard() {
   const [fileTypeError, setFileTypeError] = useState();
   const [userCount, setUserCount] = useState();
   const [userError, setUserError] = useState();
+  const organization = getLocalStore("organization");
 
   const fetchData = async (api, setCounts, setError) => {
     const result = await getService(api);
@@ -30,7 +31,11 @@ export default function Dashboard() {
   return (
     <>
       <div className="mt-4 pt-2 ">
-        <h4 className="dashboard-head mb-4">Welcome to TrueNil!</h4>
+        {organization && (
+          <h4 className="dashboard-head mb-4">
+            Welcome to the {organization} dashboard
+          </h4>
+        )}
         <div className="d-xxl-flex gap-2 flex-wrap">
           <div className="common-fill dashboard-card-item d-flex flex-column pb-4">
             <h5 className="dashboard-title">
