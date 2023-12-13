@@ -5,13 +5,13 @@ import { Card, CardContent, CircularProgress } from "@mui/material";
 import { getService, apiList, getLocalStore } from "@/utils";
 
 export default function Dashboard() {
+  const [organization, setOrganization] = useState();
   const [agentCount, setAgentCount] = useState();
   const [agentError, setAgentError] = useState();
   const [fileTypeCount, setFileTypeCount] = useState();
   const [fileTypeError, setFileTypeError] = useState();
   const [userCount, setUserCount] = useState();
   const [userError, setUserError] = useState();
-  const organization = getLocalStore("organization");
 
   const fetchData = async (api, setCounts, setError) => {
     const result = await getService(api);
@@ -23,6 +23,7 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
+    setOrganization(getLocalStore("organization"));
     fetchData(apiList.dashboardFileType, setFileTypeCount, setFileTypeError);
     fetchData(apiList.dashboardAgentStatus, setAgentCount, setAgentError);
     fetchData(apiList.dashboardUserManagement, setUserCount, setUserError);
@@ -31,12 +32,11 @@ export default function Dashboard() {
   return (
     <>
       <div className="mt-4 pt-2 ">
-        {organization && (
-          <h4 className="dashboard-head mb-4">
-            Welcome to the {organization} dashboard
-          </h4>
-        )}
-        <div className="d-xxl-flex gap-2 flex-wrap">
+        <h4 className="dashboard-head mb-4">
+          {organization && `Welcome to the ${organization} dashboard`}
+        </h4>
+
+        <div className="gap-2 flex-wrap">
           <div className="common-fill dashboard-card-item d-flex flex-column pb-4">
             <h5 className="dashboard-title">
               <a href="/security-dashboard">Security Dashboard</a>
@@ -85,16 +85,23 @@ export default function Dashboard() {
                         <p className="dashboard-inner-count  pt-4 pb-2 common-danger">
                           {fileTypeCount.without_encryption_count || 0}
                         </p>
-                        <p className="dashboard-inner-text">
-                          Without Encryption
-                        </p>
+                        <p className="dashboard-inner-text">No Encryption</p>
                       </div>
                       <div className="dashboard-inner-box px-1">
                         <p className=" dashboard-inner-count  pt-4 pb-2 common-warning">
                           {fileTypeCount.without_access_control_count || 0}
                         </p>
                         <p className="dashboard-inner-text">
-                          Without Access Control
+                          Open access control
+                        </p>
+                      </div>
+                      <div className="dashboard-inner-box px-1">
+                        <p className=" dashboard-inner-count  pt-4 pb-2 common-warning">
+                          {fileTypeCount.without_access_control_and_encryption_count ||
+                            0}
+                        </p>
+                        <p className="dashboard-inner-text">
+                          No encryption and open access control
                         </p>
                       </div>
                     </div>

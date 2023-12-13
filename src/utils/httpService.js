@@ -12,7 +12,9 @@ const getHeader = () => {
 };
 
 const redirectToLogin = () => {
-  window.location.href = `${window.location.origin}/sign-in`;
+  if (["/sign-in", "/register"].indexOf(window.location.pathname) === -1) {
+    window.location.href = `${window.location.origin}/sign-in`;
+  }
 };
 
 // GET Request

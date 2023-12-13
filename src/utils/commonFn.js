@@ -15,7 +15,16 @@ const setInitialValues = (data) => {
   data?.display_name && localStorage.setItem("display_name", data.display_name);
   data?.email && localStorage.setItem("email", data.email);
   data?.role && localStorage.setItem("role", data.role);
-  data?.organization && localStorage.setItem("organization", data.organization);
+  data.email &&
+    data?.organization &&
+    localStorage.setItem(
+      "organization",
+      data.organization ||
+        data.email.substring(
+          data.email.indexOf("@") + 1,
+          data.email.lastIndexOf(".")
+        )
+    );
 };
 
 const redirectToSsoUrl = (ssoUrl) => {
