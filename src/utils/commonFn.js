@@ -15,8 +15,7 @@ const setInitialValues = (data) => {
   data?.display_name && localStorage.setItem("display_name", data.display_name);
   data?.email && localStorage.setItem("email", data.email);
   data?.role && localStorage.setItem("role", data.role);
-  data.email &&
-    data?.organization &&
+  (data.email || data?.organization) &&
     localStorage.setItem(
       "organization",
       data.organization ||
