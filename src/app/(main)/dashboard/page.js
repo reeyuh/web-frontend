@@ -12,6 +12,8 @@ export default function Dashboard() {
   const [fileTypeError, setFileTypeError] = useState();
   const [userCount, setUserCount] = useState();
   const [userError, setUserError] = useState();
+  const [controlCount, setControlCount] = useState();
+  const [controlError, setControlError] = useState();
 
   const fetchData = async (api, setCounts, setError) => {
     const result = await getService(api);
@@ -27,6 +29,7 @@ export default function Dashboard() {
     fetchData(apiList.dashboardFileType, setFileTypeCount, setFileTypeError);
     fetchData(apiList.dashboardAgentStatus, setAgentCount, setAgentError);
     fetchData(apiList.dashboardUserManagement, setUserCount, setUserError);
+    fetchData(apiList.dashboardControlAccess, setControlCount, setControlError);
   }, []);
 
   return (
@@ -96,7 +99,7 @@ export default function Dashboard() {
                         </p>
                       </div>
                       <div className="dashboard-inner-box px-1">
-                        <p className=" dashboard-inner-count  pt-4 pb-2 common-warning">
+                        <p className=" dashboard-inner-count  pt-4 pb-2 common-danger">
                           {fileTypeCount.without_access_control_and_encryption_count ||
                             0}
                         </p>
@@ -221,20 +224,30 @@ export default function Dashboard() {
               sx={{ overflow: "visible" }}
               className="common-card mt-0 common-fill text-center"
             >
-              <CardContent className="d-flex gap-2 p-md-3 p-2 flex-wrap">
-                <div className="dashboard-box d-flex flex-column px-2">
-                  <p className="dashboard-box-count my-4 pt-2 common-success">
-                    34
-                  </p>
-                  <p className="mb-3">Security Controls in Place</p>
+              {controlCount ? (
+                <CardContent className="d-flex gap-2 p-md-3 p-2 flex-wrap">
+                  <div className="dashboard-box d-flex flex-column px-2">
+                    <p className="dashboard-box-count my-4 pt-2 common-success">
+                      {controlCount.security_control_in_place || 0}
+                    </p>
+                    <p className="mb-3">Security Controls in Place</p>
+                  </div>
+                  <div className="dashboard-box d-flex flex-column px-2">
+                    <p className="dashboard-box-count my-4 pt-2 common-warning">
+                      {controlCount.security_control_missing || 0}
+                    </p>
+                    <p className="mb-3">Security Controls Missing</p>
+                  </div>
+                </CardContent>
+              ) : (
+                <div className="dashboard-user-min-height d-flex align-items-center justify-content-center">
+                  {controlError ? (
+                    <span className="error">{controlError}</span>
+                  ) : (
+                    <CircularProgress />
+                  )}
                 </div>
-                <div className="dashboard-box d-flex flex-column px-2">
-                  <p className="dashboard-box-count my-4 pt-2 common-warning">
-                    0
-                  </p>
-                  <p className="mb-3">Security Controls Missing</p>
-                </div>
-              </CardContent>
+              )}
             </Card>
           </div>
         </div>

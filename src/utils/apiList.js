@@ -34,4 +34,5 @@ export const apiList = {
   dashboardAgentStatus: `${dashboardApiServer}agent_status_count`,
   dashboardFileType: `${dashboardApiServer}file_type_count`,
   dashboardUserManagement: `${dashboardApiServer}user_management`,
+  dashboardControlAccess: `${dashboardApiServer}get_control_access`,
 };
