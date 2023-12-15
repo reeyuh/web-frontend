@@ -5,19 +5,19 @@ export const AUDIT_COLUMNS = [
     hide: true,
   },
   {
-    key: "user",
+    key: "User",
     label: "User",
   },
   {
-    key: "role",
+    key: "Role",
     label: "Role",
   },
   {
-    key: "created_date",
+    key: "Action",
     label: "Action",
   },
   {
-    key: "status",
+    key: "Timestamp",
     label: "Timestamp",
   },
 ];

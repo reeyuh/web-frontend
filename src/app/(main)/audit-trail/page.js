@@ -22,15 +22,15 @@ export default function SecurityTable() {
 
   const fetchData = async (pageCount) => {
     const result = await getService(
-      `${apiList.securityDashboard}?offset=${
+      `${apiList.auditLogs}?offset=${
         (pageCount - 1) * itemsPerPage
       }&limit=${itemsPerPage}`
     );
     const response = result[0]?.data;
     setIsLoading(false);
     if (response) {
-      //setData(response.list);
-      // setTotalCount(response.total_count);
+      setData(response.audit_list);
+      setTotalCount(response.total_count);
     } else {
       setErrMessage(result[1].message);
     }
