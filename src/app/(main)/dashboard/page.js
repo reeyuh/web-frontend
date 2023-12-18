@@ -79,6 +79,13 @@ export default function Dashboard() {
                         </p>
                         <p className="dashboard-inner-text">Genomics</p>
                       </div>
+                      <div className="dashboard-inner-box px-1">
+                        <p className="dashboard-inner-count  pt-4 pb-2">
+                          {" "}
+                          {fileTypeCount.Unknown || 0}
+                        </p>
+                        <p className="dashboard-inner-text">Unknown</p>
+                      </div>
                     </div>
                     <p className="mb-2 mt-1">Sensitive Data Type</p>
                   </div>
