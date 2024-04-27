@@ -8,6 +8,9 @@ import { apiList, getService, postService } from "@/utils";
 import { useRouter } from "next/navigation";
 import { getPaginationProps } from "@/utils/commonFn";
 
+"""SecurityTable component manages organization-related security data."""
+"""It handles data fetching, pagination, modal control for organization creation, and form submission for creating organizations."""
+
 export default function SecurityTable() {
   const { setFns } = useContext(CommonContext);
   const router = useRouter();
@@ -30,6 +33,10 @@ export default function SecurityTable() {
     readonly: {},
     key: "user",
   });
+""" Fetches organization data from the server based on pagination."""
+"""Constructs the API URL with appropriate offset and limit parameters to retrieve a specific page of organization data."""
+"""Updates the component state with the fetched data or sets an error message if an error occurs."""
+"""@param {number} pageCount - The page number to fetch."""
 
   const fetchData = async (pageCount) => {
     const result = await getService(
@@ -47,6 +54,9 @@ export default function SecurityTable() {
     }
   };
 
+"""Initiates the organization creation process."""
+"""Sets the `openModal` state to `true`, which opens the modal for creating a new organization."""
+
   const createOrg = () => {
     setOpenModal(true);
   };
@@ -61,13 +71,26 @@ export default function SecurityTable() {
     fetchData(pageCount);
   }, [page]);
 
+"""Handles pagination change."""
+"""Updates the URL query parameter for the page and triggers a router navigation to load the corresponding page of organization data."""
+"""@param {Event} event - The event object.""""
+"""@param {number} page - The page number to navigate to."""
+
   const handlePaginationChange = (event, page) => {
     router.push(`?page=${page}`, { scroll: true });
   };
 
+ """Closes the modal used for organization creation."""
+ """Sets the `openModal` state to `false`, hiding the modal from the UI."""
+
   const closeModal = () => {
     setOpenModal(false);
   };
+
+"""Handles form submission for creating a new organization."""
+"""Sends a POST request to the server with the organization data."""
+"""Updates the UI with success or error messages and refetches organization data if successful."""
+"""@param {Object} data - The organization data to submit."""
 
   const onCreateSubmit = async (data) => {
     setCreateActionHandler((val) => ({

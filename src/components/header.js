@@ -13,19 +13,36 @@ export const Header = () => {
   const [profile, setProfile] = useState({});
   const [anchorPopOver, setAnchorPopOver] = useState(false);
 
+/**
+   * Handler function to open popover menu
+   * @param {Object} event - Click event object
+   */
+
   const handlePopoverOpen = (event) => {
     setAnchorPopOver(event.currentTarget);
   };
 
+/**
+   * Handler function to close popover menu
+   */
+
   const handlePopoverClose = () => {
     setAnchorPopOver(null);
   };
+
+/**
+   * Fetch user profile information from local storage on component mount
+   */
 
   useEffect(() => {
     const name = getLocalStore("display_name");
     const initials = getInitials(name);
     setProfile({ name, initials });
   }, []);
+
+/**
+   * Function to handle user logout
+   */
 
   const onLogout = async () => {
     localStorage.clear();

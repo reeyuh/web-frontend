@@ -9,6 +9,11 @@ import { useRouter } from "next/navigation";
 import { getPaginationProps } from "@/utils/commonFn";
 import { Tooltip } from "@mui/material";
 
+
+
+""" Renders a tooltip with user access information."""
+"""@param {Object} access - The access object containing user and permissions. """
+
 const UserAccessItem = ({ access }) =>
   access.user && (
     <Tooltip title={access.permission}>
@@ -17,6 +22,11 @@ const UserAccessItem = ({ access }) =>
       </span>
     </Tooltip>
   );
+
+
+""" Renders the list of access users with the option to view more."""
+"""@param {Object} row - The row object containing access information."""
+"""@param {Function} clickOnMore - Function to handle 'More' click event.""""
 
 const Access = ({ row, clickOnMore }) => (
   <div>
@@ -30,6 +40,9 @@ const Access = ({ row, clickOnMore }) => (
     )}
   </div>
 );
+
+
+"""Manages security controls and displays access user information."""
 
 export default function SecurityTable() {
   const router = useRouter();
@@ -45,6 +58,8 @@ export default function SecurityTable() {
   const [openModal, setOpenModal] = useState(false);
   const [lisOfAccess, setLisOfAccess] = useState([]);
   const [accessUserErr, setAccessUserErr] = useState("");
+
+""" Fetches security control data from the server. """
 
   const fetchData = async (pageCount) => {
     const result = await getService(
@@ -66,6 +81,8 @@ export default function SecurityTable() {
     }
   };
 
+  """Maps the list of access users."""
+
   const mapUserAccessList = (userList) => {
     return userList.map((user) => ({
       user: user[0],
@@ -76,6 +93,7 @@ export default function SecurityTable() {
     }));
   };
 
+  """ Fetches access user data for a specific location. """
   const fetchAccessUserData = async (path) => {
     const result = await postService(apiList.accessUserList, {
       path: path.replace("Dynamodb - ", "").replace("s3 - ", ""),
@@ -89,6 +107,8 @@ export default function SecurityTable() {
       setAccessUserErr("Something went wrong, please try again!");
     }
   };
+
+  """Handles the 'More' button click event. """
 
   const clickOnMore = (filename) => {
     setOpenModal(true);
@@ -107,9 +127,13 @@ export default function SecurityTable() {
     fetchData(pageCount);
   }, [page]);
 
+"""Handles the pagination change event."""
+
   const handlePaginationChange = (event, page) => {
     router.push(`?page=${page}`, { scroll: true });
   };
+
+"""Closes the modal dialog."""
 
   const closeModal = () => {
     setLisOfAccess([]);

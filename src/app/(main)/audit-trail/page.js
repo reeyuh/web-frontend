@@ -8,6 +8,8 @@ import { apiList, getService } from "@/utils";
 import { useRouter } from "next/navigation";
 import { getPaginationProps } from "@/utils/commonFn";
 
+"""Displays security audit logs in a table."""
+
 export default function SecurityTable() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -19,6 +21,8 @@ export default function SecurityTable() {
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(parseInt(page));
   const itemsPerPage = 10;
+
+"""Fetches security audit log data from the server.""""
 
   const fetchData = async (pageCount) => {
     const result = await getService(
@@ -41,6 +45,8 @@ export default function SecurityTable() {
     setCurrentPage(pageCount);
     fetchData(pageCount);
   }, [page]);
+
+ """ Handles the pagination change event. """
 
   const handlePaginationChange = (event, page) => {
     router.push(`?page=${page}`, { scroll: true });

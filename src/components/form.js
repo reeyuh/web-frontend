@@ -18,6 +18,13 @@ import {
   SelectWrapper,
 } from "@/components";
 
+
+/**
+ * Component for rendering buttons
+ * @param {Object[]} list - List of buttons to render
+ * @param {boolean} isLoading - Indicates whether buttons are in loading state
+ */
+
 export const Btns = ({ list = [], isLoading }) => {
   return (
     <Box className="mx-md-2 mx-0 px-md-2 py-3 d-flex">
@@ -47,6 +54,17 @@ export const Btns = ({ list = [], isLoading }) => {
     </Box>
   );
 };
+
+/**
+ * Form component for rendering form fields and handling form submissions
+ * @param {Object} props - Component props
+ * @param {Object[]} props.list - List of form field groups and configurations
+ * @param {Function} props.formSubmit - Function to handle form submission
+ * @param {Object[]} props.btnList - List of buttons to be rendered
+ * @param {Object} props.values - Default form values
+ * @param {Object} props.actionHandler - Action handler object containing error, success, loading states, etc.
+ * @param {Object} props.options - Options for select dropdowns
+ */
 
 export const Form = ({
   list,

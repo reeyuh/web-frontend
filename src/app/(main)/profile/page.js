@@ -8,6 +8,9 @@ import { apiList } from "@/utils/apiList";
 import { MfaOptions } from "./mfaOptions";
 import CircularProgress from "@mui/material/CircularProgress";
 
+"""Profile component manages the user profile settings including profile update, password change,and multi-factor authentication setup.
+"""
+
 export default function Profile() {
   const [formValues, setFormValues] = useState({});
   const [isMfaLoading, setIsMfaLoading] = useState(false);
@@ -32,6 +35,9 @@ export default function Profile() {
   });
 
   const { setSnackBarMessage } = useContext(CommonContext);
+
+  """ Fetches the user profile data from the server."""
+
   const fetchProfile = async () => {
     const response = await getService(apiList.getProfile);
     const result = response[0]?.data;
@@ -51,6 +57,10 @@ export default function Profile() {
   useEffect(() => {
     fetchProfile();
   }, []);
+
+"""Handles profile update by sending a POST request to the server with the updated data."""
+"""Updates the UI with success or error messages."""
+"""@param {Object} data - The updated profile data."""
 
   const onUpdateProfile = async (data) => {
     setProfileActionHandler((val) => ({
@@ -86,6 +96,11 @@ export default function Profile() {
       }));
     }
   };
+
+"""Handles password change by sending a POST request to the server with the new password data."""
+"""Validates whether the new password matches the confirmation password."""
+"""Updates the UI with success or error messages."""
+"""@param {Object} data - The new password data."""
 
   const onChangePassword = async (data) => {
     setPasswordActionHandler((val) => ({

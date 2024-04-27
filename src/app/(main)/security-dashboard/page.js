@@ -9,6 +9,8 @@ import { useRouter } from "next/navigation";
 import { getPaginationProps } from "@/utils/commonFn";
 import { Tooltip } from "@mui/material";
 
+"""SecurityTable component manages the security dashboard table and access user modal."""
+
 const UserAccessItem = ({ access }) =>
   access.user && (
     <Tooltip title={access.permission}>
@@ -46,6 +48,8 @@ export default function SecurityTable() {
   const [lisOfAccess, setLisOfAccess] = useState([]);
   const [accessUserErr, setAccessUserErr] = useState("");
 
+"""Fetches security dashboard data from the server based on pagination."""
+
   const fetchData = async (pageCount) => {
     const result = await getService(
       `${apiList.securityDashboard}?offset=${
@@ -66,6 +70,8 @@ export default function SecurityTable() {
     }
   };
 
+"""Maps the user access list."""
+
   const mapUserAccessList = (userList) => {
     return userList.map((user) => ({
       user: user[0],
@@ -75,6 +81,8 @@ export default function SecurityTable() {
           : "permission is not found",
     }));
   };
+
+"""Fetches access user data for a specific file or location."""
 
   const fetchAccessUserData = async (path) => {
     const result = await postService(apiList.accessUserList, {
@@ -89,6 +97,8 @@ export default function SecurityTable() {
       setAccessUserErr("Something went wrong, please try again!");
     }
   };
+
+"""Handles click on 'More' link to open access user modal and fetch access user data."""
 
   const clickOnMore = (filename) => {
     setOpenModal(true);
@@ -110,6 +120,8 @@ export default function SecurityTable() {
   const handlePaginationChange = (event, page) => {
     router.push(`?page=${page}`, { scroll: true });
   };
+
+"""Closes the access user modal."""
 
   const closeModal = () => {
     setLisOfAccess([]);

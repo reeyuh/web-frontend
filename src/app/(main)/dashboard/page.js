@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { Card, CardContent, CircularProgress } from "@mui/material";
 import { getService, apiList, getLocalStore } from "@/utils";
 
+"""Dashboard component to display various statistics and information related to the organization's security."""
+
 export default function Dashboard() {
   const [organization, setOrganization] = useState();
   const [agentCount, setAgentCount] = useState();
@@ -14,6 +16,8 @@ export default function Dashboard() {
   const [userError, setUserError] = useState();
   const [controlCount, setControlCount] = useState();
   const [controlError, setControlError] = useState();
+
+""" Fetches data from the server based on the given API and updates the state accordingly. """
 
   const fetchData = async (api, setCounts, setError) => {
     const result = await getService(api);

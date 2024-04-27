@@ -95,3 +95,16 @@ const FilterComponent = ({ columns, onFilterSubmit }) => {
 };
 
 export default FilterComponent;
+
+
+
+/*"""
+- FilterComponent: This functional component represents a filter component used to filter data based on user-defined criteria.
+- useState: This hook is used to define state variables for managing filter values.
+- handleFilterChange: This function is called when the user changes a filter value. It updates the corresponding filter value in the state.
+- renderFilterInput: This function dynamically renders different types of filter inputs based on the column's filterType.
+- TextField, Select, MenuItem, FormControl, InputLabel: These are components from the Material-UI library used to create various input fields and form controls.
+- columns: This prop contains an array of column configurations, each defining the label, key, filterType, and options for a filter input.
+- onFilterSubmit: This prop is a function passed from the parent component to handle filter submissions. It receives the filter values as an argument.
+- PrimaryButton: This component is used to render a button for submitting filters.
+"""*/

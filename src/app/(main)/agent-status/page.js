@@ -8,6 +8,8 @@ import { getService, apiList } from "@/utils";
 import { useRouter } from "next/navigation";
 import { getPaginationProps } from "@/utils/commonFn";
 
+"""""Renders the live/offline status of an agent. """""
+
 const LiveOffline = ({ row }) => (
   <>
     {row.alive_status === "off" ? (
@@ -22,7 +24,13 @@ const LiveOffline = ({ row }) => (
   </>
 );
 
+"""""Renders the health status of an agent."""""
+
+
 const HealthStatus = ({ row }) => {
+
+""" Determines the CSS class based on the health status value. """
+
   const getClass = (value) => {
     if (value >= 90) {
       return "critical";
@@ -57,6 +65,8 @@ const HealthStatus = ({ row }) => {
   );
 };
 
+""" Displays and manages agent status data. """
+
 export default function AgentStatus() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -68,6 +78,8 @@ export default function AgentStatus() {
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(parseInt(page));
   const itemsPerPage = 10;
+
+""" Fetches agent status data from the server based on the current page. """
 
   const fetchData = async (pageCount) => {
     setData([]);
@@ -93,9 +105,15 @@ export default function AgentStatus() {
     fetchData(pageCount);
   }, [page]);
 
+
+""" Handles the pagination change event."""
+
+
   const handlePaginationChange = (event, page) => {
     router.push(`?page=${page}`, { scroll: true });
   };
+
+""" Renderer functions for custom cell rendering in the table."""
 
   const renderer = {
     LiveOffline: ({ row, key }) => <LiveOffline row={row} key={key} />,

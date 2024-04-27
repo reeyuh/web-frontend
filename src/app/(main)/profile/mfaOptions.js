@@ -24,6 +24,9 @@ const LabelWrapper = styled(FormControlLabel)`
   }
 `;
 
+"""MfaOptions component manages multi-factor authentication setup options."""
+"""It handles enabling or updating multi-factor authentication using OTP or mobile authenticator."""
+
 export const MfaOptions = ({ values, fetchProfile }) => {
   const {
     control: otpControl,
@@ -43,6 +46,11 @@ export const MfaOptions = ({ values, fetchProfile }) => {
   const [success, setSuccess] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [qrcodeUrl, setqrCodeUrl] = useState("");
+
+"""Handles form submission for enabling or updating multi-factor authentication."""
+"""Sends a POST request to the server with the provided data."""
+"""Updates the UI with success or error messages and refetches the user's profile if successful."""
+""" @param {Object} data - The form data containing multi-factor authentication options."""
 
   const onEnabledMfa = async (data) => {
     setIsLoading(true);
@@ -73,6 +81,9 @@ export const MfaOptions = ({ values, fetchProfile }) => {
       setError(response[1].message);
     }
   };
+
+"""Generates QR code for mobile authenticator setup if not already generated."""
+"""Fetches QR code URL from the server and converts it to data URL."""
 
   const generateBarCode = async () => {
     const response = await getService(apiList.getQRlink);
